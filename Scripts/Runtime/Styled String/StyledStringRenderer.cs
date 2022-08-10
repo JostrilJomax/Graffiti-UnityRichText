@@ -133,8 +133,8 @@ internal static class StyledStringRenderer {
 	private static void Render(StringBuilder sb, StringStyle style, int start, int end, int gradientSimulationStart, int gradientSimulationEnd, char[] ignoredSymbols) {
 		int prevLength = sb.Length;
 
-		if (style.HasModifierCharacterSet) GraffitiStylist.ModifierCharacter.InsertChar(sb, style.Gradient, style.ModifierCharacterSet.Unpack(), start, end, gradientSimulationStart, gradientSimulationEnd, null, GraffitiConfigSo.Config.HexColorUsage == HexColorUsage.ShortHex);
-		else if (style.HasGradient)        GraffitiStylist.AddGradient(                 sb, style.Gradient, start, end, gradientSimulationStart, gradientSimulationEnd, GraffitiConfigSo.Config.HexColorUsage == HexColorUsage.ShortHex);
+		if (style.HasModifierCharacterSet) GraffitiStylist.ModifierCharacter.InsertChar(sb, style.Gradient, style.ModifierCharacterSet.Unpack(), start, end, gradientSimulationStart, gradientSimulationEnd, null);
+		else if (style.HasGradient)        GraffitiStylist.AddGradient(                 sb, style.Gradient, start, end, gradientSimulationStart, gradientSimulationEnd);
 		if (style.HasOnlyOneColor)         GraffitiStylist.AddTag.Color(                sb, style.Color.GetColorHexValue(), start, AdjustedEndIndex());
 		if (style.HasSize)                 GraffitiStylist.AddTag.Size(                 sb, style.SizeValue, start, AdjustedEndIndex());
 		if (style.HasFont)                 GraffitiStylist.AddTag.FontStyle(                 sb, style.FontStyle, start, AdjustedEndIndex());

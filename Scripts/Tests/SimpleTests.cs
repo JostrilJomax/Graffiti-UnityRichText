@@ -77,8 +77,8 @@ public static class SimpleTests {
 #line hidden
 	private static int    _assertsCount      = 100;
 	private static bool   _addPreceedingSpaces = true;
-	private static string Color1 => ColorPalette.DefaultInstance.Green.Value.ShortHex;
-	private static string Color2 => ColorPalette.DefaultInstance.White.Value.ShortHex;
+	private static string Color1 => ColorPalette.DefaultInstance.Green.ShortHex;
+	private static string Color2 => ColorPalette.DefaultInstance.White.ShortHex;
 
 	private static void Log(object self, string description = null) {
 		Debug.Log(AddLogNumber()   + AddSpaces() + $"|{self}|" + "\n" +

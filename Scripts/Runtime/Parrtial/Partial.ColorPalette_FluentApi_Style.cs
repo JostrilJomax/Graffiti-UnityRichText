@@ -95,8 +95,8 @@ public partial class StyledString : StyledString.IOnlyColor {
 	public StyledString Dotted            { get { LastStyle.PrepareModifierCharacter(ModifierCharacterType.Dotted           ); return this; } }
 	public StyledString Wheel             { get { LastStyle.PrepareModifierCharacter(ModifierCharacterType.Wheel            ); return this; } }
 
-	public IOnlyColor   Dark  { get { LastStyle.PrepareColorModification(Color3Set.Modifier.Dark);  return this; } }
-	public IOnlyColor   Light { get { LastStyle.PrepareColorModification(Color3Set.Modifier.Light); return this; } }
+	public IOnlyColor   Dark  { get { LastStyle.PrepareColorModification(GffColor.Modifier.Dark);  return this; } }
+	public IOnlyColor   Light { get { LastStyle.PrepareColorModification(GffColor.Modifier.Light); return this; } }
 	public StyledString Bold   { get { LastStyle.PrepareFontStyle(UnityBuildInFontStyleType.Bold  ); return this; } }
 	public StyledString Italic { get { LastStyle.PrepareFontStyle(UnityBuildInFontStyleType.Italic); return this; } }
 	public StyledString DefaultColor { get { LastStyle.PrepareColor(ColorType.Default ); return this; } }
@@ -107,18 +107,18 @@ public partial class StyledString : StyledString.IOnlyColor {
 namespace Graffiti {
 public partial class ColorPalette {
 
-	[field: SerializeField] public Color3Set White  { get; private set; } = new Color3Set(new Color(0.93f, 0.93f, 0.93f), "#eeeeee", "#eee");
-	[field: SerializeField] public Color3Set Grey   { get; private set; } = new Color3Set(new Color(0.67f, 0.67f, 0.67f), "#aaaaaa", "#aaa");
-	[field: SerializeField] public Color3Set Black  { get; private set; } = new Color3Set(new Color(0.07f, 0.07f, 0.07f), "#111111", "#111");
-	[field: SerializeField] public Color3Set Red    { get; private set; } = new Color3Set(new Color(0.93f, 0.23f, 0.25f), "#EC3A41", "#F45");
-	[field: SerializeField] public Color3Set Orange { get; private set; } = new Color3Set(new Color(0.93f, 0.59f, 0.18f), "#ED962F", "#FA3");
-	[field: SerializeField] public Color3Set Yellow { get; private set; } = new Color3Set(new Color(1f, 0.89f, 0.26f),    "#FFE443", "#FF5");
-	[field: SerializeField] public Color3Set Green  { get; private set; } = new Color3Set(new Color(0.22f, 0.8f, 0.5f),   "#39CD7F", "#4D8");
-	[field: SerializeField] public Color3Set Blue   { get; private set; } = new Color3Set(new Color(0.19f, 0.63f, 0.69f), "#30a0b0", "#3AB");
-	[field: SerializeField] public Color3Set Purple { get; private set; } = new Color3Set(new Color(0.89f, 0.27f, 0.69f), "#E245B0", "#E4B");
-	[field: SerializeField] public Color3Set Violet { get; private set; } = new Color3Set(new Color(0.49f, 0.38f, 0.76f), "#7d60c3", "#86D");
+	[field: SerializeField] public GffColor White  { get; private set; } = new GffColor(new Color(0.93f, 0.93f, 0.93f) /*"#eeeeee"*/, "#eee");
+	[field: SerializeField] public GffColor Grey   { get; private set; } = new GffColor(new Color(0.67f, 0.67f, 0.67f) /*"#aaaaaa"*/, "#aaa");
+	[field: SerializeField] public GffColor Black  { get; private set; } = new GffColor(new Color(0.07f, 0.07f, 0.07f) /*"#111111"*/, "#111");
+	[field: SerializeField] public GffColor Red    { get; private set; } = new GffColor(new Color(0.93f, 0.23f, 0.25f) /*"#EC3A41"*/, "#F45");
+	[field: SerializeField] public GffColor Orange { get; private set; } = new GffColor(new Color(0.93f, 0.59f, 0.18f) /*"#ED962F"*/, "#FA3");
+	[field: SerializeField] public GffColor Yellow { get; private set; } = new GffColor(new Color(1f, 0.89f, 0.26f)    /*"#FFE443"*/, "#FF5");
+	[field: SerializeField] public GffColor Green  { get; private set; } = new GffColor(new Color(0.22f, 0.8f, 0.5f)   /*"#39CD7F"*/, "#4D8");
+	[field: SerializeField] public GffColor Blue   { get; private set; } = new GffColor(new Color(0.19f, 0.63f, 0.69f) /*"#30a0b0"*/, "#3AB");
+	[field: SerializeField] public GffColor Purple { get; private set; } = new GffColor(new Color(0.89f, 0.27f, 0.69f) /*"#E245B0"*/, "#E4B");
+	[field: SerializeField] public GffColor Violet { get; private set; } = new GffColor(new Color(0.49f, 0.38f, 0.76f) /*"#7d60c3"*/, "#86D");
 
-	public Color3Set FindColorsSet(ColorType color) {
+	public GffColor FindColorsSet(ColorType color) {
 		switch (color) {
 			default:
 			case ColorType.Default: return DefaultConsoleColors;
@@ -161,8 +161,8 @@ public static partial class Style {
 	public static StringStyle Dotted            { get { var stl = new StringStyle(); stl.PrepareModifierCharacter(ModifierCharacterType.Dotted            ); return stl; } }
 	public static StringStyle Wheel             { get { var stl = new StringStyle(); stl.PrepareModifierCharacter(ModifierCharacterType.Wheel             ); return stl; } }
 
-	public static StringStyle.IOnlyColor Dark  { get { var stl = new StringStyle(); stl.PrepareColorModification(Color3Set.Modifier.Dark);  return stl; } }
-	public static StringStyle.IOnlyColor Light { get { var stl = new StringStyle(); stl.PrepareColorModification(Color3Set.Modifier.Light); return stl; } }
+	public static StringStyle.IOnlyColor Dark  { get { var stl = new StringStyle(); stl.PrepareColorModification(GffColor.Modifier.Dark);  return stl; } }
+	public static StringStyle.IOnlyColor Light { get { var stl = new StringStyle(); stl.PrepareColorModification(GffColor.Modifier.Light); return stl; } }
 	// public StringStyle Bold   { get { PrepareFontStyle(UnityBuildInFontStyleType.Bold  ); return this; } }
 	// public StringStyle Italic { get { PrepareFontStyle(UnityBuildInFontStyleType.Italic); return this; } }
 	public static StringStyle DefaultColor   { get { var stl = new StringStyle(); stl.PrepareColor(ColorType.Default ); return stl; } }
@@ -207,8 +207,8 @@ public partial class StringStyle : StringStyle.IOnlyColor {
 	public StringStyle Dotted            { get { PrepareModifierCharacter(ModifierCharacterType.Dotted            ); return this; } }
 	public StringStyle Wheel             { get { PrepareModifierCharacter(ModifierCharacterType.Wheel             ); return this; } }
 
-	public IOnlyColor   Dark  { get { PrepareColorModification(Color3Set.Modifier.Dark);  return this; } }
-	public IOnlyColor   Light { get { PrepareColorModification(Color3Set.Modifier.Light); return this; } }
+	public IOnlyColor   Dark  { get { PrepareColorModification(GffColor.Modifier.Dark);  return this; } }
+	public IOnlyColor   Light { get { PrepareColorModification(GffColor.Modifier.Light); return this; } }
 	// public StringStyle Bold   { get { PrepareFontStyle(UnityBuildInFontStyleType.Bold  ); return this; } }
 	// public StringStyle Italic { get { PrepareFontStyle(UnityBuildInFontStyleType.Italic); return this; } }
 	public StringStyle DefaultColor { get { PrepareColor(ColorType.Default ); return this; } }

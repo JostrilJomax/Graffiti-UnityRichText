@@ -36,21 +36,20 @@ internal static partial class GraffitiStylist {
 		};
 
 
-		internal static void InsertChar(StringBuilder                       self,
+		internal static void InsertChar(StringBuilder                     self,
 		                              Gradient                            gradient,
 		                              (char[] chars, Gradient gradient)[] modifierPair,
 		                              int                                 startIndex,
 		                              int                                 endIndex,
 		                              int                                 gradientSimulationStart,
 		                              int                                 gradientSimulationEnd,
-		                              char[]                              ignoredSymbols,
-		                              bool                                toShortHex) {
+		                              char[]                              ignoredSymbols) {
 			var scope = GetScope(self, startIndex, endIndex);
 			self.Clear();
 			self.Append(scope.before);
 			AppendGradient(self, scope.between, gradient, modifierPair,
 				gradientSimulationStart, gradientSimulationEnd,
-				ignoredSymbols, toShortHex);
+				ignoredSymbols);
 			self.Append(scope.after);
 		}
 
@@ -60,8 +59,7 @@ internal static partial class GraffitiStylist {
 		                                   (char[] chars, Gradient gradient)[] modifierPairs,
 		                                   int                                 gradientSimulationStart,
 		                                   int                                 gradientSimulationEnd,
-		                                   char[]                              ignoredSymbols,
-		                                   bool                                toShortHex) {
+		                                   char[]                              ignoredSymbols) {
 			int gradientLength = gradientSimulationEnd - gradientSimulationStart + 1;
 			int startIndex = sb.Length;
 
@@ -76,12 +74,12 @@ internal static partial class GraffitiStylist {
 				foreach (var pair in modifierPairs) {
 					Add(tempChars,
 						pair.gradient != null
-							? Colorize(pair.chars, pair.gradient, GetGradientTime(i), gradientLength, toShortHex)
+							? Colorize(pair.chars, pair.gradient, GetGradientTime(i), gradientLength)
 							: pair.chars);
 				}
 
 				sb.Append(charsGradient != null
-					? Colorize(tempChars.ToArray(), charsGradient, GetGradientTime(i), gradientLength, toShortHex)
+					? Colorize(tempChars.ToArray(), charsGradient, GetGradientTime(i), gradientLength)
 					: tempChars.ToArray());
 
 				int GetGradientTime(int offset) => startIndex - gradientSimulationStart + offset;

@@ -46,9 +46,9 @@ internal static class UnityConsoleColors {
 	}
 
 	/// <summary>Default color of text (when light theme)</summary>
-	internal static readonly Color3 DefaultLight = new Color3(new Color(0.2f, 0.2f, 0.2f),    "#020202", "#000");
+	internal static readonly GffColor DefaultLight = new GffColor(new Color(0.2f, 0.2f, 0.2f),    /*"#020202",*/ "#000");
 	/// <summary>Default color of text (when dark theme)</summary>
-	internal static readonly Color3 DefaultDark  = new Color3(new Color(0.82f, 0.82f, 0.82f), "#d2d2d2", "#ddd");
+	internal static readonly GffColor DefaultDark  = new GffColor(new Color(0.82f, 0.82f, 0.82f), /*"#d2d2d2",*/ "#ddd");
 
 	internal static readonly NamedHexColor White     = new NamedHexColor(name: "white"    , hex: "#ffffff", shortHex: "#fff");
 	internal static readonly NamedHexColor Silver    = new NamedHexColor(name: "silver"   , hex: "#c0c0c0", shortHex: "#ccc");

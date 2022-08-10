@@ -67,13 +67,12 @@ internal static partial class GraffitiStylist {
 
 
 
-	public static void AddGradient(StringBuilder      self,
+	public static void AddGradient(StringBuilder  self,
                                [NotNull] Gradient gradient,
                                int                startIndex,
                                int                endIndex,
                                int                gradientSimulationStart,
-                               int                gradientSimulationEnd,
-                               bool               toShortHex) {
+                               int                gradientSimulationEnd) {
 		var scope = GetScope(self, startIndex, endIndex);
 		int gradientLength = gradientSimulationEnd - gradientSimulationStart + 1;
 
@@ -84,8 +83,7 @@ internal static partial class GraffitiStylist {
 				self.Append(scope.between[i]);
 				continue;
 			}
-			self.Append(Colorize(scope.between[i].ToString(), gradient, GetGradientTime(i), gradientLength,
-				toShortHex));
+			self.Append(Colorize(scope.between[i].ToString(), gradient, GetGradientTime(i), gradientLength));
 		}
 		self.Append(scope.after);
 
@@ -98,7 +96,7 @@ internal static partial class GraffitiStylist {
 	                                     [NotNull] Gradient gradient,
 	                                     int                t,
 	                                     int                length,
-	                                     bool               toShortHex)
+	                                     bool               toShortHex = true)
 		=> AddTag.Color(self, toShortHex
 			? ColorConvertor.ToShortHexColor(gradient.Evaluate((float) t/length))
 			: ColorConvertor.ToHexColor(gradient.Evaluate((float) t/length)));
@@ -107,7 +105,7 @@ internal static partial class GraffitiStylist {
 	                                     [NotNull] Gradient gradient,
 	                                     int                t,
 	                                     int                length,
-	                                     bool               toShortHex)
+	                                     bool               toShortHex = true)
 		=> AddTag.Color(self, toShortHex
 			? ColorConvertor.ToShortHexColor(gradient.Evaluate((float) t/length))
 			: ColorConvertor.ToHexColor(gradient.Evaluate((float) t/length)));
@@ -116,7 +114,7 @@ internal static partial class GraffitiStylist {
 	                                     [NotNull] Gradient gradient,
 	                                     int                t,
 	                                     int                length,
-	                                     bool               toShortHex)
+	                                     bool               toShortHex = true)
 		=> AddTag.Color(self, toShortHex
 			? ColorConvertor.ToShortHexColor(gradient.Evaluate((float) t/length))
 			: ColorConvertor.ToHexColor(gradient.Evaluate((float) t/length)));

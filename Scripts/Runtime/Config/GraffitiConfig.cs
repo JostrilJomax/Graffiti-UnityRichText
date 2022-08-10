@@ -44,12 +44,5 @@ public class GraffitiConfig {
 	         "Example (Blue Text with Yellow Underline):\n\n" +
 	         "\"My Cool Text\".Stylize().Blue.Underline[Style.Yellow]")]
 	public bool AllowModifierCharacterStyle = true;
-
-
-	[Header("Internal Behaviour")]
-	[Tooltip("Usually you want to use ShortHex because it's shorter (instead of 6 characters you write 3).\n" +
-	         "But some IDEs cannot handle #RGB format, so if you are using something like [Rider] console logs window\n" +
-	         "you probably want to use Hex instead of ShortHex.\n")]
-	public HexColorUsage HexColorUsage = HexColorUsage.ShortHex;
 }
 }

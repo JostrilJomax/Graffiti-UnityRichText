@@ -28,7 +28,7 @@ internal class ModifierCharacter {
 		if (style.HasOnlyOneColor)
 			sb = GraffitiStylist.AddTag.Color(sb, style.Color.GetColorHexValue());
 		else if (style.HasNoColor && GraffitiConfigSo.Config.AddDefaultColorToModifierCharacter)
-			sb = GraffitiStylist.AddTag.Color(sb, ColorPalette.DefaultConsoleColors.Value.GetHexValue());
+			sb = GraffitiStylist.AddTag.Color(sb, ColorPalette.DefaultConsoleColors.GetHexValue());
 
 		if (style.HasSize)
 			sb = GraffitiStylist.AddTag.Size(sb, style.SizeValue);

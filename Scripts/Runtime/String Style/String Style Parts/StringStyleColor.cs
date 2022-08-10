@@ -8,7 +8,7 @@ internal struct StringStyleColor {
 	[SerializeField] private string    _strColor;
 	[SerializeField] private ColorType _graffitiColorType;
 
-	[SerializeField] private Color3Set.Modifier _modifier;
+	[SerializeField] private GffColor.Modifier _modifier;
 
 	internal bool HasColor() => (_graffitiColorType != ColorType.Undefined) || (_strColor != null);
 
@@ -16,7 +16,7 @@ internal struct StringStyleColor {
 	/// <remarks> Only one color parameter will be applied (+modificator) </remarks>
 	internal StringStyleColor __SetColor(ColorType          colorType,
 	                                     string             strColor,
-	                                     Color3Set.Modifier modifier) {
+	                                     GffColor.Modifier modifier) {
 		_modifier = modifier;
 		if (colorType != ColorType.Undefined) _graffitiColorType = colorType;
 		else if (strColor != null) _strColor = strColor;
@@ -40,12 +40,12 @@ internal struct StringStyleColor {
 		return default;
 	}
 
-	private Color3 GetColorVariant(ColorType color) {
+	private GffColor GetColorVariant(ColorType color) {
 		switch (_modifier) {
 			default:
-			case Color3Set.Modifier.None:  return GraffitiConfigSo.Palette.FindColorsSet(color).Value;
-			case Color3Set.Modifier.Dark:  return GraffitiConfigSo.Palette.FindColorsSet(color).ValueDarker;
-			case Color3Set.Modifier.Light: return GraffitiConfigSo.Palette.FindColorsSet(color).ValueLighter;
+			case GffColor.Modifier.None:  return GraffitiConfigSo.Palette.FindColorsSet(color);
+			case GffColor.Modifier.Dark:  return GraffitiConfigSo.Palette.FindColorsSet(color).Clone().MakeDarker();
+			case GffColor.Modifier.Light: return GraffitiConfigSo.Palette.FindColorsSet(color).Clone().MakeLighter();
 		}
 	}
 }

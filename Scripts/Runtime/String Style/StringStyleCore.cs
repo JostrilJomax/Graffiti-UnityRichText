@@ -51,7 +51,7 @@ public class StringStyleCore {
 	/// <remarks> Count can only be between 2 and 8 including. 8 is Unity's Gradient max count of colorKeys </remarks>
 	[SerializeField] [CanBeNull] private List<StringStyleColor> _collectedColors;
 
-	private Color3Set.Modifier _currentColorModifier;
+	private GffColor.Modifier _currentColorModifier;
 
 	internal virtual void PrepareColor(ColorType gffColor) => __PrepareColor(gffColor, null);
 	internal virtual void PrepareColor(string strColor)    => __PrepareColor(ColorType.Undefined, strColor);
@@ -70,7 +70,7 @@ public class StringStyleCore {
 	}
 
 	internal virtual void PrepareGradient(Gradient gradient) { if (gradient != null) _cachedGradient = gradient; }
-	internal virtual void PrepareColorModification(Color3Set.Modifier modifier) => _currentColorModifier = modifier;
+	internal virtual void PrepareColorModification(GffColor.Modifier modifier) => _currentColorModifier = modifier;
 	internal virtual void PrepareSize(int size) => _size.Value = size;
 	internal virtual void PrepareFontStyle(UnityBuildInFontStyleType fontStyle) => this.fontStyle =
 		(this.fontStyle == UnityBuildInFontStyleType.Bold && fontStyle == UnityBuildInFontStyleType.Italic) ||
@@ -85,9 +85,9 @@ public class StringStyleCore {
 	internal virtual void PrepareScope(int   startIndex, bool isFromEnd1, int endIndex, bool isFromEnd2) => _scope.ApplyScope(startIndex, isFromEnd1, endIndex, isFromEnd2);
 	internal virtual void PrepareScope(float percentage)                                                 => _scope.ApplyScope(percentage);
 
-	private Color3Set.Modifier GetColorModificator() {
+	private GffColor.Modifier GetColorModificator() {
 		var usedModificator = _currentColorModifier;
-		_currentColorModifier = Color3Set.Modifier.None;
+		_currentColorModifier = GffColor.Modifier.None;
 		return usedModificator;
 	}
 }
