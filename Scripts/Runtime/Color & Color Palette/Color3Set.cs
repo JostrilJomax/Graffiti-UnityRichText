@@ -7,6 +7,10 @@ namespace Graffiti {
 [Serializable]
 public struct Color3Set {
 
+	public static string __nameof_Value => nameof(Value);
+	public static string __nameof_ValueDarker => nameof(ValueDarker);
+	public static string __nameof_ValueLighter => nameof(ValueLighter);
+
 	public enum Modifier {
 		None,
 		Dark,

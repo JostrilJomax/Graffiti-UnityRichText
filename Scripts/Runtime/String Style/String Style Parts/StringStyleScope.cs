@@ -86,11 +86,6 @@ internal struct StringStyleScope {
 		_isFromEnd1 = isFromEnd;
 	}
 
-	internal void ApplyScope(int index) {
-		_useIndex = true;
-		_from = index;
-	}
-
 	internal void ApplyScope(float percentage) {
 		if (Mathf.Abs(percentage) < .003f) // note: to prevent float from being compared to 0
 			return;

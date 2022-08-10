@@ -20,8 +20,8 @@ MonoBehaviour:
     ApplyColor: 1
     ApplyGradient: 1
     ApplyFontStyle: 1
-    AllowCharModifiers: 1
-    AllowMultipleCharModifiers: 1
-    AddDefaultColorToCharModifier: 0
-    AllowCharModifierStyle: 1
+    AllowModifierCharacters: 1
+    AllowMultipleModifierCharacters: 1
+    AddDefaultColorToModifierCharacter: 0
+    AllowModifierCharacterStyle: 1
     HexColorUsage: 1

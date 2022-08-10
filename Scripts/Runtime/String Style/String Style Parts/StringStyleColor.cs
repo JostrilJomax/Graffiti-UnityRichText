@@ -5,10 +5,10 @@ namespace Graffiti.Internal {
 [Serializable]
 internal struct StringStyleColor {
 
-	private string _strColor;
-	private ColorType _graffitiColorType;
+	[SerializeField] private string    _strColor;
+	[SerializeField] private ColorType _graffitiColorType;
 
-	private Color3Set.Modifier _modifier;
+	[SerializeField] private Color3Set.Modifier _modifier;
 
 	internal bool HasColor() => (_graffitiColorType != ColorType.Undefined) || (_strColor != null);
 

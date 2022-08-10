@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using Graffiti.Internal;
 using JetBrains.Annotations;
 using UnityEditor;
@@ -10,6 +11,9 @@ namespace Graffiti {
 [CreateAssetMenu(fileName = ResourceName, menuName = "ScriptableObjects/" + ResourceName)]
 public class GraffitiConfigSo : ScriptableObject {
 
+	public static string __nameof_config       = nameof(_config);
+	public static string __nameof_colorPalette = nameof(_colorPalette);
+
 	public static ColorPalette   Palette => _instance == null ? ColorPalette.DefaultInstance : _instance.GetPalette;
 	public static GraffitiConfig Config  => _instance == null ? GraffitiConfig.DefaultInstance : _instance._config;
 
@@ -18,19 +22,16 @@ public class GraffitiConfigSo : ScriptableObject {
 
 	private ColorPalette GetPalette => _colorPalette == null ? ColorPalette.DefaultInstance : _colorPalette.Palette;
 
-	[FormerlySerializedAs("_colorPalette")]
 	[Tooltip("The palette that will be used to colorize text. If it's null, the default palette will be used.")]
 	[CanBeNull]
 	[SerializeField]
 	private ColorPaletteSo _colorPalette;
 
-	[FormerlySerializedAs("_config")]
 	[CanBeNull]
 	[SerializeField]
 	private GraffitiConfig  _config = new GraffitiConfig();
 
 	private static GraffitiConfigSo _instance;
-
 
 
 	internal static void Initialize() {

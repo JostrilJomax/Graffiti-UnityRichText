@@ -2,7 +2,7 @@
 using UnityEngine;
 
 namespace Graffiti.Tests {
-public static class GraffitiTests {
+public static class AdditionalTests {
 
 	public const string TEST_TEXT_100 = "L";
 	public const string TEST_TEXT_101 = "L ";
@@ -21,7 +21,7 @@ public static class GraffitiTests {
 	public const string TEST_TEXT_404 = "My name is ";
 	public const string TEST_TEXT_040 = "Giovanni Giorgio";
 
-    [Shortcut("Testing Graffiti 001", KeyCode.Alpha0, ShortcutModifiers.Control | ShortcutModifiers.Alt | ShortcutModifiers.Shift)]
+    //[Shortcut("Testing Graffiti 001", KeyCode.Alpha0, ShortcutModifiers.Control | ShortcutModifiers.Alt | ShortcutModifiers.Shift)]
     public static void Run_OnlyInteresting() {
 		Debug.Log("Oh, my beautiful, gorgeous text... It's perfect. Simply delightful..."
 			.Stylize(..4).Purple.Yellow
@@ -39,13 +39,13 @@ public static class GraffitiTests {
 		Debug.Log("Going really craaaazyyyy now normal again"
 		          .Stylize(.5f).Red.Blue.Yellow.Purple.Green.Blue.Orange.Red.Bold.Strikethrough.SmokingHot.Underline);
 
-		Debug.Log("Some Cool Text".Stylize().Blue);
-		Debug.Log("Some Cool Text".Stylize().Blue.Underline);
-		Debug.Log("Some Cool Text".Stylize().Blue.Underline[Style.Yellow]);
-		Debug.Log("Some Cool Text".Stylize().Underline.Blue[Style.Yellow]);
+		// Debug.Log("Some Cool Text".Stylize().Blue);
+		// Debug.Log("Some Cool Text".Stylize().Blue.Underline);
+		// Debug.Log("Some Cool Text".Stylize().Blue.Underline[Style.Yellow]);
+		// Debug.Log("Some Cool Text".Stylize().Underline.Blue[Style.Yellow]);
 	}
 
-    [Shortcut("Testing Graffiti 002", KeyCode.Alpha5, ShortcutModifiers.Control | ShortcutModifiers.Alt | ShortcutModifiers.Shift)]
+    //[Shortcut("Testing Graffiti 002", KeyCode.Alpha5, ShortcutModifiers.Control | ShortcutModifiers.Alt | ShortcutModifiers.Shift)]
 	public static void Run_All() {
 		Run_DifferentStringInputs();
 		Run_DifferentScopes();

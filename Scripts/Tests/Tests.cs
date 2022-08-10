@@ -7,10 +7,17 @@ using Graffiti;
 using UnityEditor;
 using UnityEngine;
 
+namespace Graffiti.Tests {
 public class Tests {
 
+	public static void RunAllTests() {
+		Run_Main001();
+		Run_Main004();
+		Run_Main005();
+	}
 
-	[MenuItem("Tools/Sugar/RunTest_1 &#%7")]
+
+	//[MenuItem("Tools/Sugar/RunTest_1 &#%7")]
 	public static void RunTest_1() {
 
 		Debug.Log("Test is Running...");
@@ -27,7 +34,7 @@ public class Tests {
 		Run_Main001();
 	}
 
-	[MenuItem("Tools/Sugar/RunTest_2 &#%6")]
+	//[MenuItem("Tools/Sugar/RunTest_2 &#%6")]
 	public static void RunTest_2() {
 
 
@@ -54,18 +61,22 @@ public class Tests {
 		Run_Main004();
 	}
 
-	[MenuItem("Tools/Sugar/RunTest_3 &#%8")]
+	//[MenuItem("Tools/Sugar/RunTest_3 &#%8")]
 	public static void RunTest_3() {
 
 		Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize(..3).Red.Yellow.Bold.And(2..).Blue.Orange.Bold);
 		Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize(..3).Underline.Red.Yellow.Bold.And(2..).Strikethrough.Blue.Orange.Bold);
-		Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize(..3).Underline[Style.Blue].Red.Yellow.Bold.And(2..).Strikethrough[Style.Red.White].Blue.Orange.Bold);
-		Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize(..3).Strikethrough[Style.Blue].Red.Yellow.Bold.And(2..).Strikethrough[Style.Red.White].Blue.Orange.Bold);
+		Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize(..3).Underline[Style.Blue].Red.Yellow.Bold.And(2..).Strikethrough[Style.Red.White].Blue
+		                                                         .Orange.Bold);
+		Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize(..3).Strikethrough[Style.Blue].Red.Yellow.Bold.And(2..).Strikethrough[Style.Red.White]
+		                                                         .Blue.Orange.Bold);
 		Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize(..3).DoubleUnderline.Blue.Orange.Bold.And(2..).Dotted[Style.DefaultColor]);
 		Debug.Log("Helicopter helicopter, TWO ".Stylize().Underline[Style.Blue].Red.Yellow.Bold);
 		Debug.Log("[" + " Babardar".Stylize().Blue.Yellow);
+
 		Debug.Log("Artabra".Stylize().Violet.Red + " Babardar".Stylize().Blue.Yellow);
-		Debug.Log("Helicopter helicopter, TWO".Stylize().Underline[Style.Blue].Red.Yellow.Bold + " Tree Four Five Six".Stylize().Strikethrough[Style.Red.White].Blue.Orange.Bold);
+		Debug.Log("Helicopter helicopter, TWO".Stylize().Underline[Style.Blue].Red.Yellow.Bold +
+		          " Tree Four Five Six".Stylize().Strikethrough[Style.Red.White].Blue.Orange.Bold);
 
 
 
@@ -153,7 +164,7 @@ public class Tests {
 	// }
 
 	public static void Run_TestAddColor() {
-		char[] a = new[] {'H', 'e', 'l', 'l', 'o', ' ', 't', 'h', 'e', 'r', 'e',};
+		var a  = new[] { 'H', 'e', 'l', 'l', 'o', ' ', 't', 'h', 'e', 'r', 'e', };
 		var sb = new StringBuilder();
 		//sb.Append(Color(a, UnityConsoleColors.GetColor(UnityConsoleColors.UnityColorType.Cyan)));
 		Debug.Log(sb);
@@ -186,15 +197,15 @@ public class Tests {
 		Debug.Log("M͓̽y͓̽ ͓̽t͓̽e͓̽x͓̽t͓̽ ͓̽i͓̽s͓̽ ͓̽B͓̽O͓̽L͓̽D͓̽".Stylize().Size(24));
 
 		Debug.Log("Example       \n   ^Default".Stylize().Size(24));
-		Debug.Log("E̥x̥ḁm̥p̥l̥e̥       \n   ^Wheels".Stylize().Size(24));          // ok
+		Debug.Log("E̥x̥ḁm̥p̥l̥e̥       \n   ^Wheels".Stylize().Size(24));             // ok
 		Debug.Log("E̴x̴a̴m̴p̴l̴e̴\n   ^Strikethrough wavy".Stylize().Size(24)); // ok+
-		Debug.Log("E̶x̶a̶m̶p̶l̶e̶       \n   ^Strikethrough".Stylize().Size(24));   // ok+
-		Debug.Log("E̲x̲a̲m̲p̲l̲e̲       \n   ^Underline".Stylize().Size(24));       // ok
-		Debug.Log("E̠x̠a̠m̠p̠l̠e̠       \n   ^Single Underline".Stylize().Size(24));// bad
-		Debug.Log("E̳x̳a̳m̳p̳l̳e̳       \n   ^Double Underline".Stylize().Size(24));// ok
-		Debug.Log("E̤x̤a̤m̤p̤l̤e̤       \n   ^Dotted".Stylize().Size(24));          // ok
-		Debug.Log("E̷x̷a̷m̷p̷l̷e̷\n   ^Shadow".Stylize().Size(24));          // ok+
-		Debug.Log("E̸x̸a̸m̸p̸l̸e̸\n   ^Big Shadow".Stylize().Size(24));      // ok+
+		Debug.Log("E̶x̶a̶m̶p̶l̶e̶       \n   ^Strikethrough".Stylize().Size(24));      // ok+
+		Debug.Log("E̲x̲a̲m̲p̲l̲e̲       \n   ^Underline".Stylize().Size(24));          // ok
+		Debug.Log("E̠x̠a̠m̠p̠l̠e̠       \n   ^Single Underline".Stylize().Size(24));   // bad
+		Debug.Log("E̳x̳a̳m̳p̳l̳e̳       \n   ^Double Underline".Stylize().Size(24));   // ok
+		Debug.Log("E̤x̤a̤m̤p̤l̤e̤       \n   ^Dotted".Stylize().Size(24));             // ok
+		Debug.Log("E̷x̷a̷m̷p̷l̷e̷\n   ^Shadow".Stylize().Size(24));             // ok+
+		Debug.Log("E̸x̸a̸m̸p̸l̸e̸\n   ^Big Shadow".Stylize().Size(24));         // ok+
 	}
 
 	// public static void Run_GetWordTest() {
@@ -238,4 +249,5 @@ public class Tests {
 	// 		Debug.Log(a.ToString().To().Orange);
 	// 	}
 	// }
+}
 }

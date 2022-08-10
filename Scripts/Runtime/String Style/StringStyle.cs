@@ -17,7 +17,7 @@ public partial class StringStyle : StringStyleCore {
 
 	public override bool IsEmpty =>
 		IsScopeEmpty ||
-		IsEmpty_WithoutScope && (_charModifierSet == null || !_charModifierSet.HasAnydModifierCharacter);
+		IsEmpty_WithoutScope && (_modifierCharSet == null || !_modifierCharSet.HasAnyModifierCharacter);
 
 	/// <summary>
 	/// Modifier character is a special character that modifies the character that precedes it.
@@ -27,10 +27,10 @@ public partial class StringStyle : StringStyleCore {
 	/// Modifier characters can be combined, so you can have underline <b>and</b> strikethrough modification for the same character.
 	/// </remarks>
 	internal bool ModifierCharacterExists { get; private set; }
-	internal bool HasModifierCharacterSet => _charModifierSet != null;
-	internal ModifierCharacterSet ModifierCharacterSet => _charModifierSet ??= new ModifierCharacterSet();
+	internal bool HasModifierCharacterSet => _modifierCharSet != null;
+	internal ModifierCharacterSet ModifierCharacterSet => _modifierCharSet ??= new ModifierCharacterSet();
 
-	[SerializeField] private ModifierCharacterSet _charModifierSet;
+	[SerializeField] private ModifierCharacterSet _modifierCharSet;
 
 	internal override void PrepareSize(int size) {
 		if (!GraffitiConfigSo.Config.ApplySize) return;

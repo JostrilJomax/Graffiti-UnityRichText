@@ -40,23 +40,19 @@ public class GraffitiColorPropertyDrawer : PropertyDrawer {
 
 	public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
 
-		var valueNormal     = property.FindPropertyRelative("<Value>k__BackingField");
-		var valueDark       = property.FindPropertyRelative("<ValueDarker>k__BackingField");
-		var valueLight      = property.FindPropertyRelative("<ValueLighter>k__BackingField");
+		var valueNormal     = property.FindPropertyRelative_BackingField(Color3Set.__nameof_Value);
+		var valueDark       = property.FindPropertyRelative_BackingField(Color3Set.__nameof_ValueDarker);
+		var valueLight      = property.FindPropertyRelative_BackingField(Color3Set.__nameof_ValueLighter);
 
-		string __UnityColor = "UnityColor";
-		string __Hex = "Hex";
-		string __ShortHex = "ShortHex";
-
-		var vNormalColor    = valueNormal.FindPropertyRelative(__UnityColor);
-		var vNormalHex      = valueNormal.FindPropertyRelative(__Hex);
-		var vNormalShortHex = valueNormal.FindPropertyRelative(__ShortHex);
-		var vDarkColor      = valueDark.FindPropertyRelative(__UnityColor);
-		var vDarkHex        = valueDark.FindPropertyRelative(__Hex);
-		var vDarkShortHex   = valueDark.FindPropertyRelative(__ShortHex);
-		var vLightColor     = valueLight.FindPropertyRelative(__UnityColor);
-		var vLightHex       = valueLight.FindPropertyRelative(__Hex);
-		var vLightShortHex  = valueLight.FindPropertyRelative(__ShortHex);
+		var vNormalColor    = valueNormal.FindPropertyRelative(Color3.__nameof_UnityColor);
+		var vNormalHex      = valueNormal.FindPropertyRelative(Color3.__nameof_Hex);
+		var vNormalShortHex = valueNormal.FindPropertyRelative(Color3.__nameof_ShortHex);
+		var vDarkColor      = valueDark  .FindPropertyRelative(Color3.__nameof_UnityColor);
+		var vDarkHex        = valueDark  .FindPropertyRelative(Color3.__nameof_Hex);
+		var vDarkShortHex   = valueDark  .FindPropertyRelative(Color3.__nameof_ShortHex);
+		var vLightColor     = valueLight .FindPropertyRelative(Color3.__nameof_UnityColor);
+		var vLightHex       = valueLight .FindPropertyRelative(Color3.__nameof_Hex);
+		var vLightShortHex  = valueLight .FindPropertyRelative(Color3.__nameof_ShortHex);
 
 
 		float rvHeightStep = contentHeight/rvHeightMultiplier;
@@ -90,11 +86,11 @@ public class GraffitiColorPropertyDrawer : PropertyDrawer {
 		float rvSmallColorBoxWidth = rvSmallColorBoxWidthStep*4;
 
 		var rSmallColorBox = new Rect(rvSmallColorBoxX, position.y, rvSmallColorBoxWidthStep, rvHeightStep - 4);
-		GraffitiUI.DrawRect(rSmallColorBox, vLightColor.colorValue);
+		GraffitiGUI.DrawRect(rSmallColorBox, vLightColor.colorValue);
 		rvSmallColorBoxX += rvSmallColorBoxWidthStep + 4;
 
 		rSmallColorBox = new Rect(rvSmallColorBoxX, position.y, rvSmallColorBoxWidthStep, rvHeightStep - 4);
-		GraffitiUI.DrawRect(rSmallColorBox, vDarkColor.colorValue);
+		GraffitiGUI.DrawRect(rSmallColorBox, vDarkColor.colorValue);
 		rvSmallColorBoxX += rvSmallColorBoxWidthStep - 12;
 
 		rSmallColorBox = new Rect(rvSmallColorBoxX, position.y, rvSmallColorBoxWidth, rvHeightStep);
@@ -118,40 +114,43 @@ public class GraffitiColorPropertyDrawer : PropertyDrawer {
 		position.y += SPACE;
 
 		// Hex values
-		var gHex = new GUIContent("Hex:");
-		var rHexBut = new Rect(position.x, position.y + rvHeightStep, 60, rvHeightStep);
-		rHexBut.x += 80;
-		if (GUI.Button(rHexBut, new GUIContent("Normal"), EditorStyles.miniButton))
+		var rect_HexBut = new Rect(position.x, position.y + rvHeightStep, 60, rvHeightStep);
+
+		rect_HexBut.x += 80;
+		if (GUI.Button(rect_HexBut, "Normal", EditorStyles.miniButton))
 			exampleTextColor = Color3Set.Modifier.None;
-		rHexBut.x += 70;
-		if (GUI.Button(rHexBut, new GUIContent("Light"), EditorStyles.miniButton))
+
+		rect_HexBut.x += 70;
+		if (GUI.Button(rect_HexBut, "Light", EditorStyles.miniButton))
 			exampleTextColor = Color3Set.Modifier.Light;
-		rHexBut.x += 70;
-		if (GUI.Button(rHexBut, new GUIContent("Dark"), EditorStyles.miniButton))
+
+		rect_HexBut.x += 70;
+		if (GUI.Button(rect_HexBut, "Dark", EditorStyles.miniButton))
 			exampleTextColor = Color3Set.Modifier.Dark;
 
 		position.y += SPACE;
 
-		var rHex = new Rect(position.x, position.y + rvHeightStep*2, 80, rvHeightStep);
-		EditorGUI.LabelField(rHex, gHex);
-		rHex.x += 65;
-		EditorGUI.TextField(rHex, vLightHex.stringValue);
-		rHex.x += 70;
-		EditorGUI.TextField(rHex, vDarkHex.stringValue);
-		rHex.x += 70;
-		EditorGUI.TextField(rHex, vNormalHex.stringValue);
+		var content_Hex = new GUIContent("Hex:");
+		var rect_Hex = new Rect(position.x, position.y + rvHeightStep *2, 80, rvHeightStep);
+		EditorGUI.LabelField(rect_Hex, content_Hex);
+		rect_Hex.x += 65;
+		EditorGUI.TextField(rect_Hex, vNormalHex.stringValue);
+		rect_Hex.x += 70;
+		EditorGUI.TextField(rect_Hex, vLightHex.stringValue);
+		rect_Hex.x += 70;
+		EditorGUI.TextField(rect_Hex, vDarkHex.stringValue);
 
 		position.y += SPACE;
 
-		gHex.text = "Short Hex:";
+		content_Hex.text = "Short Hex:";
 		var rShortHex = new Rect(position.x, position.y + rvHeightStep*3, 80, rvHeightStep);
-		EditorGUI.LabelField(rShortHex, gHex);
+		EditorGUI.LabelField(rShortHex, content_Hex);
 		rShortHex.x += 65;
+		EditorGUI.TextField(rShortHex, vNormalShortHex.stringValue);
+		rShortHex.x += 70;
 		EditorGUI.TextField(rShortHex, vLightShortHex.stringValue);
 		rShortHex.x += 70;
 		EditorGUI.TextField(rShortHex, vDarkShortHex.stringValue);
-		rShortHex.x += 70;
-		EditorGUI.TextField(rShortHex, vNormalShortHex.stringValue);
 
 		position.y += SPACE;
 		position.y += SPACE;
@@ -163,7 +162,7 @@ public class GraffitiColorPropertyDrawer : PropertyDrawer {
 				Color3Set.Modifier.None  => vNormalShortHex.stringValue,
 				Color3Set.Modifier.Dark  => vDarkShortHex.stringValue,
 				Color3Set.Modifier.Light => vLightShortHex.stringValue,
-				_                                => vNormalShortHex.stringValue
+				_                        => vNormalShortHex.stringValue
 			};
 			exampleStr = GraffitiStylist.ReplaceTag.Color(exampleStr, colorForExampleText);
 			var gTextArea = new GUIStyle("TextArea");

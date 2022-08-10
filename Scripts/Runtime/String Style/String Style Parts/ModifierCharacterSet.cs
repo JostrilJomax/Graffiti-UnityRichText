@@ -11,24 +11,27 @@ namespace Graffiti.Internal {
 [Serializable]
 internal class ModifierCharacterSet {
 
-	internal bool HasAnydModifierCharacter { get; private set; }
-	internal List<ModifierCharacter> ModifierCharacters { get; } = new List<ModifierCharacter>();
+	[field: SerializeField]
+	public bool HasAnyModifierCharacter { get; private set; }
+
+	[field: SerializeField]
+	public List<ModifierCharacter> ModifierCharacters { get; } = new List<ModifierCharacter>();
 
 
-	internal void SetModifierCharacter(ModifierCharacterType type) {
+	public void SetModifierCharacter(ModifierCharacterType type) {
 		if (type == ModifierCharacterType.None)
 			return;
-		if (!GraffitiConfigSo.Config.AllowMultipleModifierCharacters && HasAnydModifierCharacter)
+		if (!GraffitiConfigSo.Config.AllowMultipleModifierCharacters && HasAnyModifierCharacter)
 			return;
 
 		ModifierCharacters.Add(new ModifierCharacter { Type = type });
-		HasAnydModifierCharacter = true;
+		HasAnyModifierCharacter = true;
 	}
 
 	public void SetStyleToLastAddedModifierCharacter(StringStyleCore style) =>
 		ModifierCharacters[^1].Style = style;
 
-	internal (char[], Gradient)[] Unpack() {
+	public (char[], Gradient)[] Unpack() {
 		var pairs = new (char[], Gradient)[ModifierCharacters.Count];
 
 		for (int i = 0; i < ModifierCharacters.Count; i++) {

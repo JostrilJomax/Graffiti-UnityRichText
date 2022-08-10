@@ -1,6 +1,6 @@
-﻿#define TESTS_SUGAR_002
-#undef TESTS_SUGAR_002 // Comment me if you want to run this
-#if TESTS_SUGAR_002
+﻿#define TESTS_GRAFFITI_002
+#undef TESTS_GRAFFITI_002 // Comment me if you want to run this
+#if TESTS_GRAFFITI_002
 using UnityEngine;
 using Graffiti;
 

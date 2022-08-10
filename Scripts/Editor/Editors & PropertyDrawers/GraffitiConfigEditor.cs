@@ -1,7 +1,11 @@
-﻿using Graffiti;
+﻿using System.Runtime.CompilerServices;
+using Graffiti;
 using Graffiti.Tests;
+using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
+using GUI = GraffitiEditor.GraffitiGUI;
+
 
 namespace GraffitiEditor {
 [CustomEditor(typeof(GraffitiConfigSo))]
@@ -14,63 +18,68 @@ public class GraffitiConfigEditor : Editor {
 		"Duis auctor ipsum nec urna tincidunt, non tincidunt quam facilisis.";
 
 	private GraffitiConfigSo   _target;
-	private SerializedProperty _spPaletteSO;
-	private ColorPaletteSo _paletteSO;
-	private SerializedProperty _spConfig;
-
+	private SerializedProperty _SP_config;
+	[CanBeNull] private SerializedProperty _SP_palette;
+	[CanBeNull] private ColorPaletteSo     _SO_palette;
 
 
 	private void OnEnable() {
-		_target = target as GraffitiConfigSo;
-		_spPaletteSO = serializedObject.FindProperty("_colorPalette");
-		_paletteSO = (ColorPaletteSo) _spPaletteSO.objectReferenceValue;
-		_spConfig = serializedObject.FindProperty("_config");
+		UpdateVariables();
+	}
+
+	private void UpdateVariables() {
+		_target     = target as GraffitiConfigSo;
+		_SP_config  = serializedObject.FindProperty(GraffitiConfigSo.__nameof_config);
+		_SP_palette = serializedObject.FindProperty(GraffitiConfigSo.__nameof_colorPalette);
+		_SO_palette = _SP_palette?.CastTo<ColorPaletteSo>();
 	}
 
 
 	public override void OnInspectorGUI() {
 
+		UpdateVariables();
 		serializedObject.Update();
 
-		using (GraffitiUI.Group)
-			GUILayout.Label(new GUIContent("Version: " + GraffitiInfo.Version +
-				"  |  Version Date: " + GraffitiInfo.VersionDate.ToShortDateString()),
-				EditorStyles.miniLabel);
+		GUI.DrawGraffitiVersion();
 
-		using (new EditorGUI.IndentLevelScope(1)) {
-			using (GraffitiUI.Group) {
-				EditorGUILayout.PropertyField(_spPaletteSO);
-				GraffitiUI.DrawPropertyFields(_paletteSO, "Expand Color Palette");
-			}
+		using (GUI.Group("Color Palette Selection")) {
+			GUI.DrawProperty(_SP_palette);
 
-			using (GraffitiUI.TempLabelWidth(250))
-				using (GraffitiUI.Group)
-					EditorGUILayout.PropertyField(_spConfig);
+			using (GUI.IndentLevel(1))
+				if (_SO_palette != null)
+					GUI.DrawScriptableObject(_SO_palette);
 		}
 
-		using (GraffitiUI.Group) {
-			var gTextArea = new GUIStyle("TextArea");
-			gTextArea.richText = true;
-			GUILayout.Label(new GUIContent("Example long text with lots of modifiers:"), EditorStyles.boldLabel);
+		using (GUI.Group("Settings")) {
+			using (GUI.IndentLevel(1))
+			using (GUI.LabelWidth(250))
+				GUI.DrawChildrenProperties(_SP_config, false);
+		}
+
+		using (GUI.Group("Example text")) {
 			EditorGUILayout.TextArea(LONG_LOREM_IPSUM_TEXT
 			                         .Stylize(..).Green.Blue.Red.Purple
 			                         .And(..1).Size(18)
 			                         .And(2, 15).Italic.Bold
 			                         .And(-.5f).Underline[Style.Purple.Yellow]
 			                         .And(24..30).Strikethrough[Style.DefaultColor],
-				                     gTextArea);
+			                         new GUIStyle("TextArea") { richText = true, });
+		}
 
-			GUILayout.Space(10);
-
-			if (GraffitiUI.CenteredButton(new GUIContent("Log Cool Test")))
-				GraffitiTests.Run_OnlyInteresting();
-
-			GUILayout.Space(10);
-
-			if (GraffitiUI.CenteredButton(new GUIContent("Log Boring Test")))
-				GraffitiTests.Run_All();
-
-			GUILayout.Space(10);
+		using (GUI.Group("Debug.Log examples")) {
+			GUI.Space();
+			GUI.CenteredButton("Log Cool Test", width: 250, height: 26,
+			                   action: AdditionalTests.Run_OnlyInteresting);
+			GUI.Space();
+			GUI.CenteredButton("Log Boring Test", width: 250, height: 26,
+			                   action: AdditionalTests.Run_All);
+			GUI.Space();
+			GUI.CenteredButton("Tests With Description", width: 250, height: 26,
+			                   action: SimpleTests.RunAllTests);
+			GUI.Space();
+			GUI.CenteredButton("Old Tests", width: 250, height: 26,
+			                   action: Tests.RunAllTests);
+			GUI.Space();
 		}
 
 		serializedObject.ApplyModifiedProperties();

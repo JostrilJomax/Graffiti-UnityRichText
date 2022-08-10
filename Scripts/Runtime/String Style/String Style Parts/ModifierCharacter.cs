@@ -1,7 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 
 namespace Graffiti.Internal {
+[Serializable]
 internal class ModifierCharacter {
 
 	public ModifierCharacterType Type;

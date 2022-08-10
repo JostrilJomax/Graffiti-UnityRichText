@@ -7,6 +7,10 @@ namespace Graffiti {
 [Serializable]
 public struct Color3 {
 
+	public static string __nameof_UnityColor => nameof(UnityColor);
+	public static string __nameof_Hex => nameof(Hex);
+	public static string __nameof_ShortHex => nameof(ShortHex);
+
 	/// <summary> Color's value in Unity's Color struct </summary>
 	public Color  UnityColor;
 
@@ -34,7 +38,7 @@ public struct Color3 {
 
 	private Color3 ChangeLuminosity(Color color, float value) {
 		Color.RGBToHSV(color, out float H, out float S, out float V);
-		V += value;
+		V = Mathf.Clamp01(V + value);
 		UnityColor = Color.HSVToRGB(H, S, V, false);
 		Hex = ColorConvertor.ToHexColor(UnityColor);
 		ShortHex = ColorConvertor.ToShortHexColor(UnityColor);
