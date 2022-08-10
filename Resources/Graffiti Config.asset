@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ca093054c8648169a6b7935e83e85db, type: 3}
   m_Name: Graffiti Config
   m_EditorClassIdentifier: 
-  _colorPalette: {fileID: 11400000, guid: 460b122be2487b245aab808656508e97, type: 2}
+  _colorPaletteSo: {fileID: 11400000, guid: 460b122be2487b245aab808656508e97, type: 2}
   _config:
     disabled: 0
     disabledInBuild: 1
@@ -24,4 +24,3 @@ MonoBehaviour:
     AllowMultipleModifierCharacters: 1
     AddDefaultColorToModifierCharacter: 0
     AllowModifierCharacterStyle: 1
-    HexColorUsage: 1

@@ -12,7 +12,7 @@ namespace Graffiti {
 public class GraffitiConfigSo : ScriptableObject {
 
 	public static string __nameof_config       = nameof(_config);
-	public static string __nameof_colorPalette = nameof(_colorPalette);
+	public static string __nameof_colorPalette = nameof(_colorPaletteSo);
 
 	public static ColorPalette   Palette => _instance == null ? ColorPalette.DefaultInstance : _instance.GetPalette;
 	public static GraffitiConfig Config  => _instance == null ? GraffitiConfig.DefaultInstance : _instance._config;
@@ -20,12 +20,12 @@ public class GraffitiConfigSo : ScriptableObject {
 	private const string ResourceName = "Graffiti Config";
 	private static readonly string FullPathToResource = $"Assets/Plugins/{nameof(Graffiti)}/Resources/{ResourceName}.asset";
 
-	private ColorPalette GetPalette => _colorPalette == null ? ColorPalette.DefaultInstance : _colorPalette.Palette;
+	private ColorPalette GetPalette => _colorPaletteSo == null ? ColorPalette.DefaultInstance : _colorPaletteSo.Palette;
 
 	[Tooltip("The palette that will be used to colorize text. If it's null, the default palette will be used.")]
 	[CanBeNull]
 	[SerializeField]
-	private ColorPaletteSo _colorPalette;
+	private ColorPaletteSo _colorPaletteSo;
 
 	[CanBeNull]
 	[SerializeField]

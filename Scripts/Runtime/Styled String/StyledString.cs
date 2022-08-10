@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Graffiti.Internal;
-using UnityEngine;
 
 namespace Graffiti {
 [Serializable]
@@ -16,6 +15,12 @@ public partial class StyledString {
 	public StyledString([NotNull] string str, [NotNull] StringStyle stl) {
 		String = str;
 		Styles.Add(stl);
+	}
+
+	public StyledString([NotNull] string str, [NotNull] IEnumerable<StringStyle> stls) {
+		String = str;
+		foreach (var stl in stls)
+			Styles.Add(stl);
 	}
 
 	public override string ToString() {

@@ -6,20 +6,26 @@ using UnityEngine;
 namespace Graffiti.Internal {
 internal static class StyledStringRenderer {
 
-	private static readonly char[] WORD_SEPARATORS = {' ', '\n'};
+	private struct Scope {
+		public Scope((int, int) tuple) { Start = tuple.Item1; End = tuple.Item2; }
+		public Scope(int item1, int item2) { Start = item1; End = item2; }
+		public int Start;
+		public int End;
+	}
 
-	// TODO: remove StringBuilder from parameters or take into account StringBuilder's length
+	private static readonly char[] SeparatorChars = {' ', '\n'};
+
 	internal static StringBuilder Render([NotNull] StringStyle style, [NotNull] string str) {
 
 		var sb = new StringBuilder(str);
 
-		Scope[] elementsScopes = GetWords(str, WORD_SEPARATORS);
+		Scope[] elementBorders = GetWords(str, SeparatorChars);
 
-		(int start, int end) styleScope = style.Scope.CreateScope(elementsScopes.Length);
-		int start = elementsScopes[styleScope.start].Start;
-		int end = elementsScopes[styleScope.end].End;
+		Scope styleScope = new Scope(style.Scope.CreateScope(elementBorders.Length));
+		int start = elementBorders[styleScope.Start].Start;
+		int end = elementBorders[styleScope.End].End;
 
-		Render(sb, style, start, end, start, end, WORD_SEPARATORS);
+		Render(sb, style, start, end, start, end, SeparatorChars);
 
 		return sb;
 	}
@@ -30,24 +36,25 @@ internal static class StyledStringRenderer {
 
 		//  Prefix 'element' means:
 		// 1) Letter (if string has only one word)
-		// 2) World (is string has 2 or more words)
+		// 2) Word (is string has 2 or more words)
+		//  'Word' - any distinct character set that does not include delimiter characters (' ', '\n')
 
-		Scope[] elementsScopes = GetWords(str, WORD_SEPARATORS);
-		if (elementsScopes.Length == 1)
-			elementsScopes = GetLetters(elementsScopes[0]);
+		Scope[] elementBorders = GetWords(str, SeparatorChars);
+		if (elementBorders.Length == 1)
+			elementBorders = GetLetters(elementBorders[0]);
 
-		(int start, int end)[] cachedStyleScopes = new (int, int)[styles.Length];
+		Scope[] cachedStyleScopes = new Scope[styles.Length];
 		for (int i = 0; i < cachedStyleScopes.Length; i++)
-			cachedStyleScopes[i] = styles[i].Scope.CreateScope(elementsScopes.Length);
+			cachedStyleScopes[i] = new Scope(styles[i].Scope.CreateScope(elementBorders.Length));
 
 		//  This 'for' loop is reversed to get rid of the need
 		// to take into account changes in the length of the string
 		// (as we are changing string from the end everything on the left will
 		// stay on the same place).
-		for (int elementIndex = elementsScopes.Length - 1; elementIndex >= 0; elementIndex--) {
-			var tempStyle = new StringStyle();
-			(int start, int end) elementScope = (elementsScopes[elementIndex].Start, elementsScopes[elementIndex].End);
-			(int start, int end) gradientGlobalScope = elementScope;
+		for (int elementIndex = elementBorders.Length - 1; elementIndex >= 0; elementIndex--) {
+			var   tempStyle           = new StringStyle();
+			var   elementScope        = new Scope(elementBorders[elementIndex].Start, elementBorders[elementIndex].End);
+			Scope gradientGlobalScope = elementScope;
 
 			//  This 'for' loop is reversed so that the last style applied
 			// will be the main one in his scope.
@@ -56,20 +63,20 @@ internal static class StyledStringRenderer {
 					continue;
 
 				if (styles[j].HasGradient && !tempStyle.HasGradient)
-					gradientGlobalScope = (elementsScopes[cachedStyleScopes[j].start].Start,
-										   elementsScopes[cachedStyleScopes[j].end].End);
+					gradientGlobalScope = new Scope(elementBorders[cachedStyleScopes[j].Start].Start,
+					                                elementBorders[cachedStyleScopes[j].End].End);
 
 				tempStyle.MergeStyles(styles[j]);
 			}
 
 			Render(sb, tempStyle,
-				elementScope.start, elementScope.end,
-				gradientGlobalScope.start, gradientGlobalScope.end,
-				WORD_SEPARATORS);
+				elementScope.Start, elementScope.End,
+				gradientGlobalScope.Start, gradientGlobalScope.End,
+				SeparatorChars);
 		}
 		return sb;
 
-		bool IsInsideScope((int start, int end) scope, int index) => index >= scope.start && index <= scope.end;
+		bool IsInsideScope(Scope scope, int index) => index >= scope.Start && index <= scope.End;
 	}
 
 
@@ -124,12 +131,6 @@ internal static class StyledStringRenderer {
 		return letters;
 	}
 
-	private struct Scope {
-		internal int Start;
-		internal int End;
-	}
-
-
 	private static void Render(StringBuilder sb, StringStyle style, int start, int end, int gradientSimulationStart, int gradientSimulationEnd, char[] ignoredSymbols) {
 		int prevLength = sb.Length;
 
@@ -137,7 +138,7 @@ internal static class StyledStringRenderer {
 		else if (style.HasGradient)        GraffitiStylist.AddGradient(                 sb, style.Gradient, start, end, gradientSimulationStart, gradientSimulationEnd);
 		if (style.HasOnlyOneColor)         GraffitiStylist.AddTag.Color(                sb, style.Color.GetColorHexValue(), start, AdjustedEndIndex());
 		if (style.HasSize)                 GraffitiStylist.AddTag.Size(                 sb, style.SizeValue, start, AdjustedEndIndex());
-		if (style.HasFont)                 GraffitiStylist.AddTag.FontStyle(                 sb, style.FontStyle, start, AdjustedEndIndex());
+		if (style.HasFont)                 GraffitiStylist.AddTag.FontStyle(            sb, style.FontStyle, start, AdjustedEndIndex());
 
 		int AdjustedEndIndex() => end + (sb.Length - prevLength);
 	}

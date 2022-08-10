@@ -19,7 +19,6 @@ public static class GraffitiGUI {
 	public static SerializedProperty FindPropertyRelative_BackingField(this SerializedProperty self, string fieldName)
 		=> self.FindPropertyRelative($"<{fieldName}>k__BackingField");
 
-
 	// Draw Texture ==============================================================================================================================================
 
 	public static Color guiBgColor;

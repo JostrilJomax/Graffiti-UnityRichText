@@ -118,7 +118,7 @@ public partial class ColorPalette {
 	[field: SerializeField] public GffColor Purple { get; private set; } = new GffColor(new Color(0.89f, 0.27f, 0.69f) /*"#E245B0"*/, "#E4B");
 	[field: SerializeField] public GffColor Violet { get; private set; } = new GffColor(new Color(0.49f, 0.38f, 0.76f) /*"#7d60c3"*/, "#86D");
 
-	public GffColor FindColorsSet(ColorType color) {
+	public GffColor FindColors(ColorType color) {
 		switch (color) {
 			default:
 			case ColorType.Default: return DefaultConsoleColors;

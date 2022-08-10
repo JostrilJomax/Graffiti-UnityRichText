@@ -43,9 +43,9 @@ internal struct StringStyleColor {
 	private GffColor GetColorVariant(ColorType color) {
 		switch (_modifier) {
 			default:
-			case GffColor.Modifier.None:  return GraffitiConfigSo.Palette.FindColorsSet(color);
-			case GffColor.Modifier.Dark:  return GraffitiConfigSo.Palette.FindColorsSet(color).Clone().MakeDarker();
-			case GffColor.Modifier.Light: return GraffitiConfigSo.Palette.FindColorsSet(color).Clone().MakeLighter();
+			case GffColor.Modifier.None:  return GraffitiConfigSo.Palette.FindColors(color);
+			case GffColor.Modifier.Dark:  return GraffitiConfigSo.Palette.FindColors(color).Clone().MakeDarker();
+			case GffColor.Modifier.Light: return GraffitiConfigSo.Palette.FindColors(color).Clone().MakeLighter();
 		}
 	}
 }

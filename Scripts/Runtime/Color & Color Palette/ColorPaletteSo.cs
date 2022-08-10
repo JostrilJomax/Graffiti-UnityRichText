@@ -1,16 +1,12 @@
 ﻿using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Graffiti {
 /// <summary> ScriptableObject that contains one ColorPalette. </summary>
-[CreateAssetMenu(fileName = RESOURCE_NAME, menuName = "ScriptableObjects/" + RESOURCE_NAME)]
+[CreateAssetMenu(fileName = FILE_NAME, menuName = "ScriptableObjects/" + FILE_NAME)]
 public class ColorPaletteSo : ScriptableObject {
 
-	private const string RESOURCE_NAME = "Graffiti Color Palette";
+	private const string FILE_NAME = "Graffiti Color Palette";
 
-	public ColorPalette Palette => _colorPalette;
-
-	[SerializeField]
-	private ColorPalette _colorPalette = new ColorPalette();
+	[field: SerializeField] public ColorPalette Palette { get; private set; } = new ColorPalette();
 }
 }

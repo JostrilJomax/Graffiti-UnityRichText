@@ -13,8 +13,8 @@ public struct GffColor {
 		Light,
 	}
 
-	public static string __nameof_UnityColor => nameof(UnityColor);
-	public static string __nameof_ShortHex => nameof(ShortHex);
+	public static readonly string __nameof_UnityColor = nameof(UnityColor);
+	public static readonly string __nameof_ShortHex   = nameof(ShortHex);
 
 	public bool HasColor;
 

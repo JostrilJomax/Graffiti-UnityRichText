@@ -15,7 +15,7 @@ internal class ModifierCharacterSet {
 	public bool HasAnyModifierCharacter { get; private set; }
 
 	[field: SerializeField]
-	public List<ModifierCharacter> ModifierCharacters { get; } = new List<ModifierCharacter>();
+	public List<ModifierCharacter> ModifierCharacters { get; private set; } = new List<ModifierCharacter>();
 
 
 	public void SetModifierCharacter(ModifierCharacterType type) {

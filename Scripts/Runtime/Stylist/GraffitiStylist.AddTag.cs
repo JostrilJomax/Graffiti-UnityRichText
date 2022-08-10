@@ -31,30 +31,25 @@ internal static partial class GraffitiStylist {
 		// \/ string \/
 
 		/// <summary> Makes your text <b>Bold</b> </summary>
-		[Pure]
-		public static string Bold(string self)
+		[Pure] public static string Bold(string self)
 			=> $"<b>{self}</b>";
 
 		/// <summary> Makes your text <i>Italic</i> </summary>
-		[Pure]
-		public static string Italic(string self)
+		[Pure] public static string Italic(string self)
 			=> $"<i>{self}</i>";
 
 		/// <summary> Makes your text <b><i>Bold and Italic</i></b> </summary>
-		[Pure]
-		public static string BoldItalic(string self)
+		[Pure] public static string BoldItalic(string self)
 			=> $"<b><i>{self}</i></b>";
 
 		/// <summary> Set text size </summary>
 		/// <param name="value"> default value is 12 (in unity console) </param>
-		[Pure]
-		public static string Size(string self, int value)
+		[Pure] public static string Size(string self, int value)
 			=> $"<size={value}>{self}</size>";
 
 		/// <summary> Adds color to your text </summary>
 		/// <param name="color"> Must starts with "#" (if hexadecimal) or be a built-in color name <see cref="UnityConsoleColors"/> </param>
-		[Pure]
-		public static string Color(string self, string color)
+		[Pure] public static string Color(string self, string color)
 			=> $"<color={color}>{self}</color>";
 
 		/// <summary>
@@ -63,8 +58,7 @@ internal static partial class GraffitiStylist {
 		/// <param name="header">A string that will be displayed in console as an underlined blue link (color can be changed). On click will open defined <b>file</b> in defined <b>line</b> in your default text editor.</param>
 		/// <param name="file">Path to file. Must starts with 'Assets\' (or 'Assets/' if Linux, but I haven't tested this).</param>
 		/// <param name="line">Number of line.</param>
-		[Pure]
-		public static string CodeLink(string header, string file, string line)
+		[Pure] public static string CodeLink(string header, string file, string line)
 			=> $"<a href=\"{file}\" line=\"{line}\">{header}</a>";
 
 
@@ -135,30 +129,25 @@ internal static partial class GraffitiStylist {
 		// \/ Char \/
 
 		/// <summary> Makes your text <b>Bold</b> </summary>
-		[Pure]
-		public static char[] Bold(char self)
+		[Pure] public static char[] Bold(char self)
 			=> Bold(new[] {self});
 
 		/// <summary> Makes your text <i>Italic</i> </summary>
-		[Pure]
-		public static char[] Italic(char self)
+		[Pure] public static char[] Italic(char self)
 			=> Italic(new[] {self});
 
 		/// <summary> Makes your text <b><i>Bold and Italic</i></b> </summary>
-		[Pure]
-		public static char[] BoldItalic(char self)
+		[Pure] public static char[] BoldItalic(char self)
 			=> BoldItalic(new[] {self});
 
 		/// <summary> Set text size </summary>
 		/// <param name="value"> default value is 12 (in unity console) </param>
-		[Pure]
-		public static char[] Size(char self, int value)
+		[Pure] public static char[] Size(char self, int value)
 			=> Size(new[] {self}, value);
 
 		/// <summary> Adds color to your text </summary>
 		/// <param name="color"> Must starts with "#" (if hexadecimal) or be a built-in color name <see cref="UnityConsoleColors"/> </param>
-		[Pure]
-		public static char[] Color(char self, string color)
+		[Pure] public static char[] Color(char self, string color)
 			=> Color(new[] {self}, color);
 
 
@@ -166,30 +155,25 @@ internal static partial class GraffitiStylist {
 		// \/ Char[] \/
 
 		/// <summary> Makes your text <b>Bold</b> </summary>
-		[Pure]
-		public static char[] Bold([NotNull] char[] self)
+		[Pure] public static char[] Bold([NotNull] char[] self)
 			=> FillSelfWith(self, START_BOLD, CLOSE_BOLD);
 
 		/// <summary> Makes your text <i>Italic</i> </summary>
-		[Pure]
-		public static char[] Italic([NotNull] char[] self)
+		[Pure] public static char[] Italic([NotNull] char[] self)
 			=> FillSelfWith(self, START_ITALIC, CLOSE_ITALIC);
 
 		/// <summary> Makes your text <b><i>Bold and Italic</i></b> </summary>
-		[Pure]
-		public static char[] BoldItalic([NotNull] char[] self)
+		[Pure] public static char[] BoldItalic([NotNull] char[] self)
 			=> FillSelfWith(self, START_BOLDITALIC, CLOSE_BOLDITALIC);
 
 		/// <summary> Set text size </summary>
 		/// <param name="value"> default value is 12 (in unity console) </param>
-		[Pure]
-		public static char[] Size([NotNull] char[] self, int value)
+		[Pure] public static char[] Size([NotNull] char[] self, int value)
 			=> FillSelfWith(self, OPEN_SIZE_INCOMPLETE, value.ToString(), CLOSE_SIZE);
 
 		/// <summary> Adds color to your text </summary>
 		/// <param name="color"> Must starts with "#" (if hexadecimal) or be a built-in color name <see cref="UnityConsoleColors"/> </param>
-		[Pure]
-		public static char[] Color([NotNull] char[] self, string color)
+		[Pure] public static char[] Color([NotNull] char[] self, string color)
 			=> FillSelfWith(self, OPEN_COLOR_INCOMPLETE, color, CLOSE_COLOR);
 
 
