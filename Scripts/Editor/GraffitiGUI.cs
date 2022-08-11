@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Codice.Client.Commands;
 using Graffiti;
 using JetBrains.Annotations;
 using UnityEditor;
@@ -9,7 +11,9 @@ namespace GraffitiEditor {
 /// <summary> Editor GUI helper class. </summary>
 public static class GraffitiGUI {
 
-	// Other =====================================================================================================================================================
+	// -------------------------------------------------------------------------------
+	// Other
+	// -------------------------------------------------------------------------------
 
 	public static void Space(int size = 10) => GUILayout.Space(size);
 
@@ -19,7 +23,10 @@ public static class GraffitiGUI {
 	public static SerializedProperty FindPropertyRelative_BackingField(this SerializedProperty self, string fieldName)
 		=> self.FindPropertyRelative($"<{fieldName}>k__BackingField");
 
-	// Draw Texture ==============================================================================================================================================
+	// -------------------------------------------------------------------------------
+	// Draw Texture
+	// -------------------------------------------------------------------------------
+
 
 	public static Color guiBgColor;
 	public static void  SaveGuiBgColor()   => guiBgColor = GUI.backgroundColor;
@@ -49,7 +56,9 @@ public static class GraffitiGUI {
 	}
 
 
-	// Scopes ====================================================================================================================================================
+	// -------------------------------------------------------------------------------
+	// Scopes
+	// -------------------------------------------------------------------------------
 
 	public static EditorGUI.IndentLevelScope      IndentLevel(int value)   => new EditorGUI.IndentLevelScope(value);
 	public static EditorGUI.DisabledScope         EnabledIf(bool  enabled) => new EditorGUI.DisabledScope(enabled == false);
@@ -63,10 +72,22 @@ public static class GraffitiGUI {
 		private static void BeginGroup() => GUILayout.BeginVertical(EditorStyles.helpBox);
 		private static void EndGroup()   => GUILayout.EndVertical();
 		public GroupScope(string label, GUIStyle stl = null) {
-			using (IndentLevel(1))
-				BeginGroup();
-			if (label != null)
-				GUILayout.Label(label, stl ?? EditorStyles.boldLabel);
+			BeginGroup();
+			GUILayout.Label(label, stl ?? EditorStyles.boldLabel);
+		}
+		public void Dispose() => EndGroup();
+	}
+
+	public static CollapsableScope CollapsableGroup(ref bool isExpanded, string label = null) => new CollapsableScope(ref isExpanded, label);
+	public struct CollapsableScope : IDisposable {
+		private static void BeginGroup() => GUILayout.BeginVertical(EditorStyles.helpBox);
+		private static void EndGroup()   => GUILayout.EndVertical();
+		public CollapsableScope(ref bool isExpanded, string label) {
+			BeginGroup();
+			if (Button($"{(isExpanded ? "▲" : "▼")} {label}",
+			           new GUIStyle("Button") { alignment = TextAnchor.MiddleLeft, },
+			           CreateOptions().ExpandWidth(true)))
+				isExpanded = !isExpanded;
 		}
 		public void Dispose() => EndGroup();
 	}
@@ -93,7 +114,9 @@ public static class GraffitiGUI {
 	}
 
 
-	// GUI Objects ===============================================================================================================================================
+	// -------------------------------------------------------------------------------
+	// GUI Objects
+	// -------------------------------------------------------------------------------
 
 	public static void DrawGraffitiVersion() {
 		string version = "Version: "           +
@@ -103,35 +126,26 @@ public static class GraffitiGUI {
 		using (Group(version, EditorStyles.miniLabel)) {}
 	}
 
-	public static bool CenteredButton(string label, Action action, int width = -1, int height = -1) {
-		bool pressed = CenteredButton(label, width, height);
-		if (pressed)
-			action?.Invoke();
-		return pressed;
-	}
-
-	public static bool CenteredButton(string label, int width = -1, int height = -1) {
+	public static bool CenteredButton(string label, GUIStyle style = null, List<GUILayoutOption> options = null) {
 		bool pressed;
 		using (Horizontal) {
 			GUILayout.FlexibleSpace();
-			pressed = Button(label, width, height);
+			pressed = Button(label, style, options);
 			GUILayout.FlexibleSpace();
 		}
 		return pressed;
 	}
 
+	public static bool Button(string label, List<GUILayoutOption> options = null)
+		=> options == null ? GUILayout.Button(label) : GUILayout.Button(label, options.ToArray());
 
-	public static bool Button(string label, int width = -1, int height = -1) {
-		return GUILayout.Button(label, CreateOptions(false, width, height));
+	public static bool Button(string label, GUIStyle style, List<GUILayoutOption> options = null)
+		=> options == null
+			   ? style == null ? GUILayout.Button(label) : GUILayout.Button(label, style)
+			   : style == null
+				   ? GUILayout.Button(label, options.ToArray())
+				   : GUILayout.Button(label, style, options.ToArray());
 
-		static GUILayoutOption[] CreateOptions(bool expandWidth, int width, int height) {
-			var options = new GUILayoutOption[3];
-			options[0] = GUILayout.ExpandWidth(expandWidth);
-			options[1] = width  > -1 ? GUILayout.Width(width) : options[0];
-			options[2] = height > -1 ? GUILayout.Height(height) : options[0];
-			return options;
-		}
-	}
 
 
 
@@ -145,7 +159,10 @@ public static class GraffitiGUI {
 
 
 	/// <remarks> Idea: https://gist.github.com/tomkail/ba4136e6aa990f4dc94e0d39ec6a058c </remarks>
-	public static void DrawScriptableObject([NotNull] ScriptableObject obj, bool drawScriptName = false) {
+	public static void DrawScriptableObject([CanBeNull] ScriptableObject obj, bool drawScriptName = false) {
+		if (obj == null)
+			return;
+
 		var serializedObject = new SerializedObject(obj);
 		var iterator         = serializedObject.GetIterator();
 
@@ -167,5 +184,61 @@ public static class GraffitiGUI {
 			EditorGUILayout.PropertyField(iterator, showChildrenRecursive);
 		}
 	}
+
+
+
+	// -------------------------------------------------------------------------------
+	// Extensions (GUILayoutOptions)
+	// -------------------------------------------------------------------------------
+
+	private static List<GUILayoutOption> Add_Return(this List<GUILayoutOption> self, GUILayoutOption item) {
+		self.Add(item);
+		return self;
+	}
+
+	public static List<GUILayoutOption> CreateOptions() => new List<GUILayoutOption>();
+
+	public static List<GUILayoutOption> Width(this        List<GUILayoutOption> self, float width)     => self.Add_Return(GUILayout.Width(width));
+	public static List<GUILayoutOption> MinWidth(this     List<GUILayoutOption> self, float minWidth)  => self.Add_Return(GUILayout.MinWidth(minWidth));
+	public static List<GUILayoutOption> MaxWidth(this     List<GUILayoutOption> self, float maxWidth)  => self.Add_Return(GUILayout.MaxWidth(maxWidth));
+	public static List<GUILayoutOption> Height(this       List<GUILayoutOption> self, float height)    => self.Add_Return(GUILayout.Height(height));
+	public static List<GUILayoutOption> MinHeight(this    List<GUILayoutOption> self, float minHeight) => self.Add_Return(GUILayout.MinHeight(minHeight));
+	public static List<GUILayoutOption> MaxHeight(this    List<GUILayoutOption> self, float maxHeight) => self.Add_Return(GUILayout.MaxHeight(maxHeight));
+	public static List<GUILayoutOption> ExpandWidth(this  List<GUILayoutOption> self, bool  expand)    => self.Add_Return(GUILayout.ExpandWidth(expand));
+	public static List<GUILayoutOption> ExpandHeight(this List<GUILayoutOption> self, bool  expand)    => self.Add_Return(GUILayout.ExpandHeight(expand));
+
+
+	// -------------------------------------------------------------------------------
+	// Extensions (Rect)
+	// -------------------------------------------------------------------------------
+
+	public class ChainableRect {
+		public  float X      => Rect.x;
+		public  float Y      => Rect.y;
+		public  float Width  => Rect.width;
+		public  float Height => Rect.height;
+		public  Rect  Rect;
+		private float startY;
+		public  float AccumulatedHeight => Rect.y - startY + Rect.height;
+		public void Initialize(Rect rect, float height) {
+			startY      = rect.y;
+			Rect.x      = rect.x;
+			Rect.y      = rect.y;
+			Rect.width  = rect.width;
+			Rect.height = height;
+		}
+		public static implicit operator Rect(ChainableRect rect) => rect.Rect;
+	}
+
+	public static ChainableRect SetX(this         ChainableRect self, float value) { self.Rect.x = value; return self; }
+	public static ChainableRect SetY(this         ChainableRect self, float value) { self.Rect.y = value; return self; }
+	public static ChainableRect SetWidth(this     ChainableRect self, float value) { self.Rect.width = value; return self; }
+	public static ChainableRect SetHeight(this    ChainableRect self, float value) { self.Rect.height = value; return self; }
+
+	public static ChainableRect OffsetX(this      ChainableRect self, float value) { self.Rect.x += value; return self; }
+	public static ChainableRect OffsetY(this      ChainableRect self, float value) { self.Rect.y += value; return self; }
+
+	public static ChainableRect OffsetXByWidth(this  ChainableRect self, float additionalOffset = 0) { self.Rect.x += self.Rect.width + additionalOffset; return self; }
+	public static ChainableRect OffsetYByHeight(this ChainableRect self, float additionalOffset = 0) { self.Rect.y += self.Rect.height + additionalOffset; return self; }
 }
 }
