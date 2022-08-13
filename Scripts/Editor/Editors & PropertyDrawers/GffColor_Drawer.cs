@@ -10,14 +10,12 @@ namespace GraffitiEditor {
 [CustomPropertyDrawer(typeof(GffColor))]
 public class GffColor_Drawer : PropertyDrawer {
 
-	private const float HeightUnit = 18;
-	private const int SPACE                    = 5;
 	private const int FirstRowElementWidth     = 140;
 	private const int ButtonWidth              = 120;
 	private const int BrightnessSelectionWidth = 360;
 	private const int WarningLabelWidth        = 460;
 
-	private readonly GraffitiGUI.ChainableRect _rect = new GraffitiGUI.ChainableRect();
+	private readonly GraffitiGUI.FluentRect _rect = new GraffitiGUI.FluentRect();
 
 
 	private bool _isExpanded_showMore;
@@ -27,11 +25,13 @@ public class GffColor_Drawer : PropertyDrawer {
 	private int _colorModifier_exampleText = 0;
 
 	public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
-		return _rect.AccumulatedHeight + SPACE;
+		return _rect.AccumulatedHeight + GraffitiGUI.Padding;
 	}
 
 
 	public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
+
+		_rect.Initialize(position);
 
 		SerializedProperty field_UnityColor = property.FindPropertyRelative_BackingField(GffColor.__nameof_UnityColor);
 		SerializedProperty field_ShortHex   = property.FindPropertyRelative_BackingField(GffColor.__nameof_ShortHex);
@@ -39,11 +39,9 @@ public class GffColor_Drawer : PropertyDrawer {
 		var copy_GffColor = new GffColor(field_UnityColor.colorValue, field_ShortHex.stringValue);
 
 
-		_rect.Initialize(position, HeightUnit);
-
 
 		// Color Name (Colored Label)
-		EditorGUI.TextField(_rect.SetWidth(FirstRowElementWidth),
+		GUI.TextField(_rect.SetWidth(FirstRowElementWidth),
 		                    GraffitiStylist.AddTag.Color(label.text, field_ShortHex.stringValue),
 		                    new GUIStyle("TextField") {
 			                    alignment = TextAnchor.MiddleCenter,
@@ -53,20 +51,21 @@ public class GffColor_Drawer : PropertyDrawer {
 
 
 		// Color Selector
-		UpdateColors(EditorGUI.ColorField(_rect.OffsetXByWidth(), field_UnityColor.colorValue));
+		UpdateColors(EditorGUI.ColorField(_rect.OffsetXByWidth(GraffitiGUI.Padding), field_UnityColor.colorValue));
+
 
 
 		// Show More/Less Button
-		_rect.OffsetXByWidth(SPACE).SetWidth(FirstRowElementWidth + Mathf.Max(position.width - _rect.X - 130, 0));
-		if (GUI.Button(_rect, _isExpanded_showMore ? "Show Less" : "Show More"))
-			_isExpanded_showMore = !_isExpanded_showMore;
+		_rect.OffsetXByWidth(GraffitiGUI.Padding).SetWidth(Mathf.Max(position.width - _rect.AccumulatedWidth, FirstRowElementWidth));
+		 if (GUI.Button(_rect, _isExpanded_showMore ? "Show Less" : "Show More"))
+		 	_isExpanded_showMore = !_isExpanded_showMore;
 
 		if (!_isExpanded_showMore)
 			return;
 
 
 		// Brightness Selection
-		_rect.SetX(position.x).OffsetYByHeight(SPACE).SetWidth(BrightnessSelectionWidth);
+		_rect.SetX(position.x).OffsetYByHeight(GraffitiGUI.Padding).SetWidth(BrightnessSelectionWidth);
 		_colorModifier_exampleText = GUI.SelectionGrid(_rect, _colorModifier_exampleText, new[] { "Normal", "Lighter", "Darker" }, 3);
 
 		string currentShortHexColorValue = _colorModifier_exampleText switch {
@@ -78,15 +77,15 @@ public class GffColor_Drawer : PropertyDrawer {
 
 
 		// Short Hex Value Text
-		_rect.SetX(position.x).OffsetYByHeight(SPACE).SetWidth(ButtonWidth);
-		EditorGUI.LabelField(_rect, "Current Short Hex:");
-		EditorGUI.TextField(_rect.OffsetXByWidth(SPACE), currentShortHexColorValue);
+		_rect.SetX(position.x).OffsetYByHeight(GraffitiGUI.Padding).SetWidth(ButtonWidth);
+		GUI.Label(_rect, "Current Short Hex:");
+		GUI.TextField(_rect.OffsetXByWidth(GraffitiGUI.Padding), currentShortHexColorValue);
 
 
 		// Warning
 		if (_colorModifier_exampleText != 0 && copy_GffColor.ShortHex == currentShortHexColorValue) {
 			_rect.SetX(position.x).SetWidth(WarningLabelWidth).OffsetYByHeight();
-			EditorGUI.LabelField(_rect, "Can't change color's luminosity, color is already too bright/dim !");
+			GUI.Label(_rect, "Can't change color's luminosity, color is already too bright/dim !");
 		}
 
 
@@ -96,7 +95,7 @@ public class GffColor_Drawer : PropertyDrawer {
 
 
 		// Example Text
-		_rect.SetX(position.x).OffsetYByHeight(SPACE).SetWidth(position.width).SetHeight(HeightUnit * 6);
+		_rect.SetX(position.x).OffsetYByHeight(GraffitiGUI.Padding).SetWidth(position.width).SetHeight(GraffitiGUI.DefaultPropertyHeight * 6);
 		_string_exampleText = GraffitiStylist.ReplaceTag.Color(_string_exampleText, currentShortHexColorValue);
 		_string_exampleText = EditorGUI.TextArea(_rect, _string_exampleText,
 		                                  new GUIStyle("TextArea") {

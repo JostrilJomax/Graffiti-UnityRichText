@@ -166,7 +166,7 @@ public class Tests {
 	public static void Run_TestAddColor() {
 		var a  = new[] { 'H', 'e', 'l', 'l', 'o', ' ', 't', 'h', 'e', 'r', 'e', };
 		var sb = new StringBuilder();
-		//sb.Append(Color(a, UnityConsoleColors.GetColor(UnityConsoleColors.UnityColorType.Cyan)));
+		//sb.Append(Color(a, UnityColors.GetColor(UnityColors.UnityColorType.Cyan)));
 		Debug.Log(sb);
 	}
 

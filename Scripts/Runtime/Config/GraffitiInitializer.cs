@@ -1,10 +1,14 @@
 ﻿#if UNITY_EDITOR
 using UnityEditor;
 #endif
+using System;
+using System.Diagnostics;
+using System.IO;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
-namespace Graffiti {
-public static class GraffitiInitializer {
+namespace Graffiti.Internal {
+internal static class GraffitiInitializer {
 
 	private static bool _isInitialized;
 
@@ -19,6 +23,7 @@ public static class GraffitiInitializer {
 	private static void Initialize() {
 		if (_isInitialized) return;
 		_isInitialized = true;
+
 		GraffitiConfigSo.Initialize();
 	}
 }

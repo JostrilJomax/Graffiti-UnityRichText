@@ -22,7 +22,7 @@ internal static class ColorConvertor {
 				case 8: return default;
 				case 9: return ToUnityColorFromHexColor(color);
 			}
-		} else if (UnityConsoleColors.TryGetColor(color, out var res))
+		} else if (UnityColors.TryGetColor(color, out var res))
 			return ToUnityColorFromShortHexColor(res.ShortHex);
 		return default;
 	}

@@ -8,7 +8,7 @@ namespace Graffiti.Internal {
 /// <br/>https://docs.unity3d.com/Packages/com.unity.ugui@1.0/manual/StyledText.html
 /// <br/>For additional info read comments inside the class.
 /// </remarks>
-internal static class UnityConsoleColors {
+internal static class UnityColors {
 
 	// In Unity documentation they use #RRGGBBAA format,
 	// where R - red, G - green, B - blue, a - alpha (transparency),
@@ -20,7 +20,7 @@ internal static class UnityConsoleColors {
 	// 4. #RGB
 	// 5. default color name (22 names, 20 uniq colors)
 
-	internal enum UnityColorType {
+	public enum UnityColorType {
 		White     = 0,
 		Silver    = 1,
 		Grey      = 2,
@@ -45,10 +45,42 @@ internal static class UnityConsoleColors {
 		Purple    = 21,
 	}
 
-	/// <summary>Default color of text (when light theme)</summary>
-	internal static readonly GffColor DefaultLight = new GffColor(new Color(0.2f, 0.2f, 0.2f),    /*"#020202",*/ "#000");
-	/// <summary>Default color of text (when dark theme)</summary>
-	internal static readonly GffColor DefaultDark  = new GffColor(new Color(0.82f, 0.82f, 0.82f), /*"#d2d2d2",*/ "#ddd");
+	public static readonly GffColor DefaultLightSkinText = new GffColor(new Color(0.2f, 0.2f, 0.2f),    /*"#020202",*/"#000");
+	public static readonly GffColor DefaultDarkSkinText = new GffColor(new Color(0.82f, 0.82f, 0.82f), /*"#d2d2d2",*/"#ddd");
+
+	public struct ColorScheme {
+		public static readonly ColorScheme LightSkin =
+			new ColorScheme() {
+				Text = new GffColor(new Color(0.2f, 0.2f, 0.2f), /*"#020202",*/"#000"),
+			};
+
+		public static readonly ColorScheme DarkSkin =
+			new ColorScheme() {
+				Text         = new GffColor(new Color(0.82f, 0.82f, 0.82f), /*"#d2d2d2",*/"#ddd"),
+				Border       = new GffColor(new Color(0.1f,  0.1f,  0.1f), /*"#191919",*/ "#111"),
+				ButtonBg     = new GffColor(new Color(0.4f,  0.4f,  0.4f), /*"#676767",*/ "#666"),
+				ValueFieldBg = new GffColor(new Color(0.16f, 0.16f, 0.16f), /*"#2a2a2a",*/"#333"),
+				_backgrounds = new GffColor[5] {
+					new GffColor(new Color(0.22f, 0.22f, 0.22f), /*"#383838",*/"#444"),
+					new GffColor(new Color(0.25f, 0.25f, 0.25f), /*"#404040",*/"#444"),
+					new GffColor(new Color(0.28f, 0.28f, 0.28f), /*"#474747",*/"#444"),
+					new GffColor(new Color(0.3f,  0.3f,  0.3f), /*"#4c4c4c",*/ "#555"),
+					new GffColor(new Color(0.31f, 0.31f, 0.31f), /*"#505050",*/"#555"),
+				},
+			};
+		public GffColor Text         { get; private set; }
+		public GffColor Border       { get; private set; }
+		public GffColor ButtonBg     { get; private set; }
+		public GffColor ValueFieldBg { get; private set; }
+		public GffColor Bg           => _backgrounds[0];
+
+		private GffColor[] _backgrounds;
+
+		public GffColor GetBgIndentLevel(int indentLevel) {
+			indentLevel = Mathf.Max(indentLevel, 0);
+			return indentLevel >= _backgrounds.Length ? _backgrounds[^1] : _backgrounds[indentLevel];
+		}
+	}
 
 	internal static readonly NamedHexColor White     = new NamedHexColor(name: "white"    , hex: "#ffffff", shortHex: "#fff");
 	internal static readonly NamedHexColor Silver    = new NamedHexColor(name: "silver"   , hex: "#c0c0c0", shortHex: "#ccc");

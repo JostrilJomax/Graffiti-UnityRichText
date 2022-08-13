@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Graffiti {
 [Serializable]
-public class GraffitiConfig {
+internal class GraffitiConfig {
 
 	internal static readonly GraffitiConfig DefaultInstance = new GraffitiConfig();
 

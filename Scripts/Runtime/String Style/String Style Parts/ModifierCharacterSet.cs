@@ -28,8 +28,11 @@ internal class ModifierCharacterSet {
 		HasAnyModifierCharacter = true;
 	}
 
-	public void SetStyleToLastAddedModifierCharacter(StringStyleCore style) =>
+	public void SetStyleToLastAddedModifierCharacter(StringStyleCore style) {
+		if (ModifierCharacters.Count == 0)
+			return;
 		ModifierCharacters[^1].Style = style;
+	}
 
 	public (char[], Gradient)[] Unpack() {
 		var pairs = new (char[], Gradient)[ModifierCharacters.Count];

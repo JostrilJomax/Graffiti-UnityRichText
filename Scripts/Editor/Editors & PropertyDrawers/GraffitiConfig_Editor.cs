@@ -22,14 +22,10 @@ public class GraffitiConfig_Editor : Editor {
 	[CanBeNull] private SerializedProperty _SP_palette;
 	[CanBeNull] private ColorPaletteSo     _SO_palette;
 
-	private bool _isExpanded_ColorPaletteSelection;
-	private bool _isExpanded_Settings;
-	private bool _isExpanded_ExampleText;
+	private bool _isExpanded_ColorPaletteSelection = true;
+	private bool _isExpanded_Settings = true;
+	private bool _isExpanded_ExampleText = true;
 
-
-	private void OnEnable() {
-		UpdateVariables();
-	}
 
 	private void UpdateVariables() {
 		_target     = target as GraffitiConfigSo;
@@ -37,7 +33,6 @@ public class GraffitiConfig_Editor : Editor {
 		_SP_palette = serializedObject.FindProperty(GraffitiConfigSo.__nameof_colorPalette);
 		_SO_palette = _SP_palette?.CastTo<ColorPaletteSo>();
 	}
-
 
 	public override void OnInspectorGUI() {
 

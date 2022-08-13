@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Codice.Client.Commands;
 using Graffiti;
 using JetBrains.Annotations;
 using UnityEditor;
@@ -11,8 +9,9 @@ namespace GraffitiEditor {
 /// <summary> Editor GUI helper class. </summary>
 public static class GraffitiGUI {
 
+
 	// -------------------------------------------------------------------------------
-	// Other
+	#region Unsorted (Small methods without defined group)
 	// -------------------------------------------------------------------------------
 
 	public static void Space(int size = 10) => GUILayout.Space(size);
@@ -23,41 +22,10 @@ public static class GraffitiGUI {
 	public static SerializedProperty FindPropertyRelative_BackingField(this SerializedProperty self, string fieldName)
 		=> self.FindPropertyRelative($"<{fieldName}>k__BackingField");
 
-	// -------------------------------------------------------------------------------
-	// Draw Texture
-	// -------------------------------------------------------------------------------
-
-
-	public static Color guiBgColor;
-	public static void  SaveGuiBgColor()   => guiBgColor = GUI.backgroundColor;
-	public static void  RevertGuiBgColor() => GUI.backgroundColor = guiBgColor;
-
-	public static void SetGuiBgColor(Color color) {
-		SaveGuiBgColor();
-		GUI.backgroundColor = color;
-	}
-
-	private static readonly Texture2D backgroundTexture = Texture2D.whiteTexture;
-	private static readonly GUIStyle textureStyle =
-		new GUIStyle {normal = new GUIStyleState {background = backgroundTexture}};
-
-	public static void DrawRect(Rect position, Color color, GUIContent content = null) {
-		var backgroundColor = GUI.backgroundColor;
-		GUI.backgroundColor = color;
-		GUI.Box(position, content ?? GUIContent.none, textureStyle);
-		GUI.backgroundColor = backgroundColor;
-	}
-
-	public static void LayoutBox(Color color, GUIContent content = null) {
-		var backgroundColor = GUI.backgroundColor;
-		GUI.backgroundColor = color;
-		GUILayout.Box(content ?? GUIContent.none, textureStyle);
-		GUI.backgroundColor = backgroundColor;
-	}
-
 
 	// -------------------------------------------------------------------------------
-	// Scopes
+	#endregion
+	#region Scopes
 	// -------------------------------------------------------------------------------
 
 	public static EditorGUI.IndentLevelScope      IndentLevel(int value)   => new EditorGUI.IndentLevelScope(value);
@@ -115,7 +83,8 @@ public static class GraffitiGUI {
 
 
 	// -------------------------------------------------------------------------------
-	// GUI Objects
+	#endregion
+	#region Draw GUILayout
 	// -------------------------------------------------------------------------------
 
 	public static void DrawGraffitiVersion() {
@@ -186,9 +155,9 @@ public static class GraffitiGUI {
 	}
 
 
-
 	// -------------------------------------------------------------------------------
-	// Extensions (GUILayoutOptions)
+	#endregion
+	#region Extensions (Fluid API for creating GUILayoutOptions)
 	// -------------------------------------------------------------------------------
 
 	private static List<GUILayoutOption> Add_Return(this List<GUILayoutOption> self, GUILayoutOption item) {
@@ -209,36 +178,81 @@ public static class GraffitiGUI {
 
 
 	// -------------------------------------------------------------------------------
-	// Extensions (Rect)
+	#endregion
+	#region Extensions / Helpers / Constants (Rect)
 	// -------------------------------------------------------------------------------
 
-	public class ChainableRect {
-		public  float X      => Rect.x;
-		public  float Y      => Rect.y;
-		public  float Width  => Rect.width;
-		public  float Height => Rect.height;
-		public  Rect  Rect;
-		private float startY;
-		public  float AccumulatedHeight => Rect.y - startY + Rect.height;
-		public void Initialize(Rect rect, float height) {
-			startY      = rect.y;
-			Rect.x      = rect.x;
-			Rect.y      = rect.y;
-			Rect.width  = rect.width;
-			Rect.height = height;
+	public const float Padding = 5;
+	public const float IndentStepWidth = 14;
+	public const float DefaultPropertyHeight = 18;
+
+	/// <summary> • Wrapper class for Rect struct. Contains helper functions for fluent use. </summary>
+	public class FluentRect {
+		public float x      => _rect.x;
+		public float y      => _rect.y;
+		public float width  => _rect.width;
+		public float height => _rect.height;
+
+		private Rect  _rect;
+		private float _startX;
+		private float _startY;
+
+		public float AccumulatedHeight => _rect.y - _startY + _rect.height;
+		public float AccumulatedWidth => _rect.x - _startX;
+
+		public FluentRect SetX(float value) { _rect.x = value; return this; }
+		public FluentRect SetY(float value) { _rect.y = value; return this; }
+		public FluentRect SetWidth(float value) { _rect.width = value; return this; }
+		public FluentRect SetHeight(float value) { _rect.height = value; return this; }
+		public FluentRect OffsetX(float value) { _rect.x += value; return this; }
+		public FluentRect OffsetY(float value) { _rect.y += value; return this; }
+		public FluentRect OffsetXByWidth(float additionalOffset = 0) { _rect.x += _rect.width + additionalOffset; return this; }
+		public FluentRect OffsetYByHeight(float additionalOffset = 0) { _rect.y += _rect.height + additionalOffset; return this; }
+
+		public void Initialize(Rect propertyRect, float indentXDelta = 0, float heightUnit = DefaultPropertyHeight) {
+			_startX      = _rect.x = propertyRect.x;
+			_startY      = _rect.y = propertyRect.y;
+			_rect.width  = propertyRect.width;
+			_rect.height = heightUnit;
+			_rect.x     += indentXDelta;
+			_rect.width -= indentXDelta;
 		}
-		public static implicit operator Rect(ChainableRect rect) => rect.Rect;
+		public static implicit operator Rect(FluentRect rect) => rect._rect;
 	}
 
-	public static ChainableRect SetX(this         ChainableRect self, float value) { self.Rect.x = value; return self; }
-	public static ChainableRect SetY(this         ChainableRect self, float value) { self.Rect.y = value; return self; }
-	public static ChainableRect SetWidth(this     ChainableRect self, float value) { self.Rect.width = value; return self; }
-	public static ChainableRect SetHeight(this    ChainableRect self, float value) { self.Rect.height = value; return self; }
 
-	public static ChainableRect OffsetX(this      ChainableRect self, float value) { self.Rect.x += value; return self; }
-	public static ChainableRect OffsetY(this      ChainableRect self, float value) { self.Rect.y += value; return self; }
+	// -------------------------------------------------------------------------------
+	#endregion
+	#region IndentationFixer for GUI
+	// -------------------------------------------------------------------------------
 
-	public static ChainableRect OffsetXByWidth(this  ChainableRect self, float additionalOffset = 0) { self.Rect.x += self.Rect.width + additionalOffset; return self; }
-	public static ChainableRect OffsetYByHeight(this ChainableRect self, float additionalOffset = 0) { self.Rect.y += self.Rect.height + additionalOffset; return self; }
+	/// <inheritdoc cref="IndentationFixerScope"/>
+	public static IndentationFixerScope IndentationFixer(out float indentDelta) => new IndentationFixerScope(out indentDelta);
+	/// <summary>
+	/// • This IDisposable struct fixes problems with indentation in GUI / EditorGUI by
+	/// temporary setting indentLevel to 0 and returning distance by which objects should
+	/// be shifted <br/><br/>
+	/// • EditorGUI does respond to indentLevel, but GUI does not, so adjusting
+	/// their positions becomes a mess. And I need both, because some components are
+	/// only available in EditorGUI (ColorPicker) and some only in GUI (Button, for
+	/// some reason there is no EditorGUI.Button (•ิ_•ิ)? ).<br/><br/>
+	/// • The reason for not using built-in EditorGUI.IndentLevelScope:
+	/// I assume that it is made only for GUILayout / EditorGUILayout, because
+	/// it just does nothing.
+	/// </summary>
+	public struct IndentationFixerScope : IDisposable {
+		private readonly int _previousIndentLevel;
+		public IndentationFixerScope(out float indentXDelta) {
+			indentXDelta = IndentStepWidth * EditorGUI.indentLevel;
+			_previousIndentLevel  = EditorGUI.indentLevel;
+			EditorGUI.indentLevel = 0;
+		}
+		public void Dispose() => EditorGUI.indentLevel = _previousIndentLevel;
+	}
+
+
+	// -------------------------------------------------------------------------------
+	#endregion
+	// -------------------------------------------------------------------------------
 }
 }

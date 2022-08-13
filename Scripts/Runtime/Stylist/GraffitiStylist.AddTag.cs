@@ -48,7 +48,7 @@ internal static partial class GraffitiStylist {
 			=> $"<size={value}>{self}</size>";
 
 		/// <summary> Adds color to your text </summary>
-		/// <param name="color"> Must starts with "#" (if hexadecimal) or be a built-in color name <see cref="UnityConsoleColors"/> </param>
+		/// <param name="color"> Must starts with "#" (if hexadecimal) or be a built-in color name <see cref="UnityColors"/> </param>
 		[Pure] public static string Color(string self, string color)
 			=> $"<color={color}>{self}</color>";
 
@@ -87,7 +87,7 @@ internal static partial class GraffitiStylist {
 			       .Append(CLOSE_SIZE);
 
 		/// <summary> Adds color to your text </summary>
-		/// <param name="color"> Must starts with "#" (if hexadecimal) or be a built-in color name see <see cref="UnityConsoleColors"/> for built-in colors </param>
+		/// <param name="color"> Must starts with "#" (if hexadecimal) or be a built-in color name see <see cref="UnityColors"/> for built-in colors </param>
 		public static void Color([NotNull] StringBuilder self, string color)
 			=> self.Insert(0, $"<color={color}>")
 			       .Append(CLOSE_COLOR);
@@ -119,7 +119,7 @@ internal static partial class GraffitiStylist {
 
 
 		/// <summary> Adds color to your text </summary>
-		/// <param name="color"> Must starts with "#" (if hexadecimal) or be a built-in color name see <see cref="UnityConsoleColors"/> for built-in colors </param>
+		/// <param name="color"> Must starts with "#" (if hexadecimal) or be a built-in color name see <see cref="UnityColors"/> for built-in colors </param>
 		public static void Color([NotNull] StringBuilder self, string color, int startIndex, int endIndex)
 			=> self.Insert(endIndex+1, CLOSE_COLOR)
 			       .Insert(startIndex, $"<color={color}>");
@@ -146,7 +146,7 @@ internal static partial class GraffitiStylist {
 			=> Size(new[] {self}, value);
 
 		/// <summary> Adds color to your text </summary>
-		/// <param name="color"> Must starts with "#" (if hexadecimal) or be a built-in color name <see cref="UnityConsoleColors"/> </param>
+		/// <param name="color"> Must starts with "#" (if hexadecimal) or be a built-in color name <see cref="UnityColors"/> </param>
 		[Pure] public static char[] Color(char self, string color)
 			=> Color(new[] {self}, color);
 
@@ -172,7 +172,7 @@ internal static partial class GraffitiStylist {
 			=> FillSelfWith(self, OPEN_SIZE_INCOMPLETE, value.ToString(), CLOSE_SIZE);
 
 		/// <summary> Adds color to your text </summary>
-		/// <param name="color"> Must starts with "#" (if hexadecimal) or be a built-in color name <see cref="UnityConsoleColors"/> </param>
+		/// <param name="color"> Must starts with "#" (if hexadecimal) or be a built-in color name <see cref="UnityColors"/> </param>
 		[Pure] public static char[] Color([NotNull] char[] self, string color)
 			=> FillSelfWith(self, OPEN_COLOR_INCOMPLETE, color, CLOSE_COLOR);
 
