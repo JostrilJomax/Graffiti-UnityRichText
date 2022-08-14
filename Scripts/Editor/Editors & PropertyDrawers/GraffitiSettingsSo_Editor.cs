@@ -8,7 +8,7 @@ using GUI = GraffitiEditor.GraffitiGUI;
 
 namespace GraffitiEditor {
 [CustomEditor(typeof(GraffitiSettingsSo))]
-public class GraffitiConfig_Editor : Editor {
+public class GraffitiSettingsSo_Editor : Editor {
 
 	public const string LONG_LOREM_IPSUM_TEXT =
 		"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer tellus lorem, commodo eu mauris eu, " +
@@ -21,9 +21,13 @@ public class GraffitiConfig_Editor : Editor {
 	[CanBeNull] private SerializedProperty _SP_palette;
 	[CanBeNull] private ColorPaletteSo     _SO_palette;
 
-	private bool _isExpanded_ColorPaletteSelection = true;
-	private bool _isExpanded_Settings = true;
+	private bool _isExpanded_ColorPaletteSelection = false;
+	private bool _isExpanded_Settings = false;
 	private bool _isExpanded_ExampleText = true;
+
+	private static GUIStyle RichTextGuiStyle => new GUIStyle("TextArea") { richText = true, };
+	private static GUIStyle ExampleDescriptionGuiStyle => new GUIStyle("Box") { richText = true, stretchWidth = true};
+	private static GUIStyle WritingStyleExampleGuiStyle => new GUIStyle("Box") { richText = true, stretchWidth = true, alignment = TextAnchor.MiddleLeft};
 
 
 	private void UpdateVariables() {
@@ -59,13 +63,30 @@ public class GraffitiConfig_Editor : Editor {
 
 		using (GUI.CollapsableGroup(ref _isExpanded_ExampleText, "Example text")) {
 			if (_isExpanded_ExampleText) {
-				EditorGUILayout.TextArea(LONG_LOREM_IPSUM_TEXT
-				                        .Stylize(..).Green.Blue.Red.Purple
-				                        .And(..1).Size(18)
-				                        .And(2, 15).Italic.Bold
-				                        .And(-.5f).Underline[Style.Purple.Yellow]
-				                        .And(24..30).Strikethrough[Style.DefaultColor],
-				                         new GUIStyle("TextArea") { richText = true, });
+
+
+				string text  = "You can type here...";
+
+				DrawExampleText(text.Stylize().Bold,      "text.Stylize().Bold"     , "Bold text");
+				DrawExampleText(text.Stylize().Size(24),  "text.Stylize().Size(24)" , "Text with size of 24 (double than default)");
+				DrawExampleText(text.Stylize().Underline, "text.Stylize().Underline", "Underlined text");
+				DrawExampleText(text.Stylize().Red,       "text.Stylize().Red"      , "Colored text");
+
+				DrawExampleText(text.Stylize().Red.Green, "text.Stylize().Red.Green", "Gradient (Red.Green) text");
+				DrawExampleText(text.Stylize().Red.Yellow.Size(24).Green.Blue.Purple.Orange,
+						"text.Stylize().Red.Yellow.Size(24).Green.Blue.Purple.Orange",
+				 		"Gradient (Red.Yellow.Green.Blue.Purple.Orange) text with size 24. You can have up to 8 colors");
+
+
+
+				GUILayout.TextArea(
+						LONG_LOREM_IPSUM_TEXT
+							   .Stylize(..).Green.Blue.Red.Purple
+							   .And(..1).Size(18)
+							   .And(2, 15).Italic.Bold
+							   .And(-.5f).Underline[Style.Purple.Yellow]
+							   .And(24..30).Strikethrough[Style.DefaultColor],
+						RichTextGuiStyle);
 			}
 		}
 
@@ -86,6 +107,13 @@ public class GraffitiConfig_Editor : Editor {
 		}
 
 		serializedObject.ApplyModifiedProperties();
+	}
+
+	private void DrawExampleText(string exampleText, string writingStyle, string description) {
+		GUILayout.Space(10);
+		GUILayout.Box(description, ExampleDescriptionGuiStyle);
+		GUILayout.Box(writingStyle, WritingStyleExampleGuiStyle);
+		GUILayout.TextArea(exampleText, RichTextGuiStyle);
 	}
 }
 }

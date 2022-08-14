@@ -52,8 +52,9 @@ public static class GraffitiGUI {
 		private static void EndGroup()   => GUILayout.EndVertical();
 		public CollapsableScope(ref bool isExpanded, string label) {
 			BeginGroup();
-			if (Button($"{(isExpanded ? "▲" : "▼")} {label}",
-			           new GUIStyle("Button") { alignment = TextAnchor.MiddleLeft, },
+			label = $"<b>{label}</b>";
+			if (Button(isExpanded ? $"▲ {label}" : $"▼ {label} ...",
+			           new GUIStyle("Button") { alignment = TextAnchor.MiddleLeft, richText = true},
 			           CreateOptions().ExpandWidth(true)))
 				isExpanded = !isExpanded;
 		}
@@ -199,6 +200,9 @@ public static class GraffitiGUI {
 
 		public float AccumulatedHeight => _rect.y - _startY + _rect.height;
 		public float AccumulatedWidth => _rect.x - _startX;
+
+		/// <summary> The correct height is applied only after the first GUI render, so you can pass here a predetermined value to avoid any single-frame artifacts </summary>
+		public FluentRect(float startingHeight = 0) => _rect.height = startingHeight;
 
 		public FluentRect SetX(float value) { _rect.x = value; return this; }
 		public FluentRect SetY(float value) { _rect.y = value; return this; }

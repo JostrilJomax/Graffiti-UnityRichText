@@ -1,6 +1,7 @@
 ﻿// TODO: This script is obviously bad and needs refactoring.
 // But it does it's work so I will leave it as it is for now.
 
+using System;
 using Graffiti;
 using Graffiti.Internal;
 using UnityEditor;
@@ -21,7 +22,7 @@ public class GffColor_Drawer : PropertyDrawer {
 	private bool _isExpanded_showMore;
 
 	private bool _show_exampleText = true;
-	private string _string_exampleText = GraffitiConfig_Editor.LONG_LOREM_IPSUM_TEXT;
+	private string _string_exampleText = GraffitiSettingsSo_Editor.LONG_LOREM_IPSUM_TEXT;
 	private int _colorModifier_exampleText = 0;
 
 	public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
@@ -35,9 +36,6 @@ public class GffColor_Drawer : PropertyDrawer {
 
 		SerializedProperty field_UnityColor = property.FindPropertyRelative_BackingField(GffColor.__nameof_UnityColor);
 		SerializedProperty field_ShortHex   = property.FindPropertyRelative_BackingField(GffColor.__nameof_ShortHex);
-
-		var copy_GffColor = new GffColor(field_UnityColor.colorValue, field_ShortHex.stringValue);
-
 
 
 		// Color Name (Colored Label)
@@ -69,10 +67,10 @@ public class GffColor_Drawer : PropertyDrawer {
 		_colorModifier_exampleText = GUI.SelectionGrid(_rect, _colorModifier_exampleText, new[] { "Normal", "Lighter", "Darker" }, 3);
 
 		string currentShortHexColorValue = _colorModifier_exampleText switch {
-			0 => copy_GffColor.ShortHex,
-			1 => copy_GffColor.Clone().MakeLighter().ShortHex,
-			2 => copy_GffColor.Clone().MakeDarker().ShortHex,
-			_                       => copy_GffColor.ShortHex,
+			0 => field_ShortHex.stringValue,
+			1 => new GffColor(field_UnityColor.colorValue, field_ShortHex.stringValue).Clone().MakeLighter().ShortHex,
+			2 => new GffColor(field_UnityColor.colorValue, field_ShortHex.stringValue).Clone().MakeDarker().ShortHex,
+			_ => throw new ArgumentOutOfRangeException(),
 		};
 
 
@@ -83,7 +81,7 @@ public class GffColor_Drawer : PropertyDrawer {
 
 
 		// Warning
-		if (_colorModifier_exampleText != 0 && copy_GffColor.ShortHex == currentShortHexColorValue) {
+		if (_colorModifier_exampleText != 0 && field_ShortHex.stringValue == currentShortHexColorValue) {
 			_rect.SetX(position.x).SetWidth(WarningLabelWidth).OffsetYByHeight();
 			GUI.Label(_rect, "Can't change color's luminosity, color is already too bright/dim !");
 		}

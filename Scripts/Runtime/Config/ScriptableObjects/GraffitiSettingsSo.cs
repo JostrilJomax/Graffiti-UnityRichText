@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Graffiti {
-[CreateAssetMenu(fileName = ScriptableObjectName, menuName = GraffitiInfo.ScriptableObjectMenuPrefix + ScriptableObjectName)]
+[CreateAssetMenu(fileName = ScriptableObjectName, menuName = GraffitiInfo.AssetMenu.Prefix + ScriptableObjectName)]
 public class GraffitiSettingsSo : ScriptableObject {
 
 	public static readonly string __nameof_colorPalette = nameof(_colorPaletteSo);
@@ -54,7 +54,7 @@ public class GraffitiSettingsSo : ScriptableObject {
 		if (GraffitiInfo.AssetCreation.IsAllowedInRelativeToClassFileFolder)
 			GraffitiAssetDatabase.CreateAsset(
 					assetInstance: assetInstance,
-					nameofClass: nameof(GraffitiSettingsSo),
+					nameofClass: GraffitiInfo.AssetCreation.ClassNameThatIsSearched,
 					rootFolder: GraffitiInfo.Directory.RootFolderName,
 					relativePath: GraffitiInfo.Directory.ResourcesFolder,
 					assetName: ScriptableObjectName);
