@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Graffiti.Internal;
 
 namespace Graffiti {
@@ -8,6 +9,7 @@ namespace Graffiti {
 public partial class ColorPalette {
 
 	/// <summary> Default color palette. Is used when no custom palette is defined in config. </summary>
+ 	[NotNull]
 	internal static readonly ColorPalette DefaultInstance = new ColorPalette();
 
 	/// <summary> Color of text in Unity Console, depends on current Unity Editor skin (Dark/Light) </summary>

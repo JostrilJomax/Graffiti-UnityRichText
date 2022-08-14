@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using JetBrains.Annotations;
-using Unity.VisualScripting.IonicZip;
 using UnityEngine;
 
 namespace Graffiti.Internal {
@@ -21,7 +19,7 @@ internal class ModifierCharacterSet {
 	public void SetModifierCharacter(ModifierCharacterType type) {
 		if (type == ModifierCharacterType.None)
 			return;
-		if (!GraffitiConfigSo.Config.AllowMultipleModifierCharacters && HasAnyModifierCharacter)
+		if (!GraffitiProperties.Config.AllowMultipleModifierCharacters && HasAnyModifierCharacter)
 			return;
 
 		ModifierCharacters.Add(new ModifierCharacter { Type = type });

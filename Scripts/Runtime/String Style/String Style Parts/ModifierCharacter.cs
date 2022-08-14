@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 
 namespace Graffiti.Internal {
@@ -27,7 +26,7 @@ internal class ModifierCharacter {
 
 		if (style.HasOnlyOneColor)
 			sb = GraffitiStylist.AddTag.Color(sb, style.Color.GetColorHexValue());
-		else if (style.HasNoColor && GraffitiConfigSo.Config.AddDefaultColorToModifierCharacter)
+		else if (style.HasNoColor && GraffitiProperties.Config.AddDefaultColorToModifierCharacter)
 			sb = GraffitiStylist.AddTag.Color(sb, ColorPalette.DefaultConsoleColors.GetHexValue());
 
 		if (style.HasSize)

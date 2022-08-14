@@ -1,10 +1,12 @@
 ﻿using System;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Graffiti {
 [Serializable]
-internal class GraffitiConfig {
+public class GraffitiConfig {
 
+	[NotNull]
 	internal static readonly GraffitiConfig DefaultInstance = new GraffitiConfig();
 
 	public bool Disabled => disabled || (disabledInBuild && !Application.isEditor);

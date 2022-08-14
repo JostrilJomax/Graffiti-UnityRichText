@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ca093054c8648169a6b7935e83e85db, type: 3}
-  m_Name: Graffiti Config
+  m_Script: {fileID: 11500000, guid: d16758907acc43929ec32bcbf7a406cd, type: 3}
+  m_Name: Graffiti Settings
   m_EditorClassIdentifier: 
   _colorPaletteSo: {fileID: 0}
-  _config:
+  graffitiConfig:
     disabled: 0
     disabledInBuild: 1
     ApplySize: 1

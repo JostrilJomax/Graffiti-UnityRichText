@@ -25,7 +25,7 @@ public partial class StyledString {
 
 	public override string ToString() {
 
-		if (GraffitiConfigSo.Config.Disabled || string.IsNullOrEmpty(String) || GraffitiStylist.IsOnlySeparators(String) || Styles[0] == null || Styles[0].IsEmpty)
+		if (GraffitiProperties.Config.Disabled || string.IsNullOrEmpty(String) || GraffitiStylist.IsOnlySeparators(String) || Styles[0] == null || Styles[0].IsEmpty)
 			return String;
 
 		return Styles.Count == 1

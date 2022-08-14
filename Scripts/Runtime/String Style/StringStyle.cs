@@ -1,7 +1,6 @@
 ﻿using System;
 using Graffiti.Internal;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Graffiti {
 /// <summary>
@@ -33,34 +32,34 @@ public partial class StringStyle : StringStyleCore {
 	[SerializeField] private ModifierCharacterSet _modifierCharSet;
 
 	internal override void PrepareSize(int size) {
-		if (!GraffitiConfigSo.Config.ApplySize) return;
+		if (!GraffitiProperties.Config.ApplySize) return;
 		base.PrepareSize(size);
 	}
 
 	internal override void PrepareFontStyle(UnityBuildInFontStyleType fontStyle) {
-		if (!GraffitiConfigSo.Config.ApplyFontStyle) return;
+		if (!GraffitiProperties.Config.ApplyFontStyle) return;
 		base.PrepareFontStyle(fontStyle);
 	}
 
 	internal override void __PrepareColor(ColorType gffColor, string strColor) {
-		if (!GraffitiConfigSo.Config.ApplyColor) return;
+		if (!GraffitiProperties.Config.ApplyColor) return;
 		base.__PrepareColor(gffColor, strColor);
 	}
 
 	internal override void PrepareColorAdditionally(ColorType gffColor, string strColor) {
-		if (!GraffitiConfigSo.Config.ApplyGradient) return;
+		if (!GraffitiProperties.Config.ApplyGradient) return;
 		base.PrepareColorAdditionally(gffColor, strColor);
 	}
 
 	internal override void PrepareGradient(Gradient gradient) {
-		if (!GraffitiConfigSo.Config.ApplyGradient) return;
+		if (!GraffitiProperties.Config.ApplyGradient) return;
 		base.PrepareGradient(gradient);
 	}
 
 	internal void PrepareModifierCharacter(ModifierCharacterType type) {
 		ModifierCharacterExists = type != ModifierCharacterType.None;
 		if (!ModifierCharacterExists) return;
-		if (!GraffitiConfigSo.Config.AllowModifierCharacters) return;
+		if (!GraffitiProperties.Config.AllowModifierCharacters) return;
 		ModifierCharacterSet.SetModifierCharacter(type);
 	}
 

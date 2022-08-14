@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using JetBrains.Annotations;
-using UnityEngine;
 
 namespace Graffiti.Internal {
 internal static class StyledStringRenderer {

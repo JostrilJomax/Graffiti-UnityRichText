@@ -1,5 +1,4 @@
 ﻿using Graffiti.Internal;
-using UnityEngine;
 
 namespace Graffiti {
 internal static class StringStyleExtensions {
@@ -62,7 +61,7 @@ internal static class StringStyleExtensions {
 	}
 
 	internal static void MergeWith(this ModifierCharacterSet self, ModifierCharacterSet other) {
-		if (!GraffitiConfigSo.Config.AllowMultipleModifierCharacters && self.HasAnyModifierCharacter)
+		if (!GraffitiProperties.Config.AllowMultipleModifierCharacters && self.HasAnyModifierCharacter)
 			return;
 
 		foreach (var otherChar in other.ModifierCharacters)

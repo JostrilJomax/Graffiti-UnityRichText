@@ -4,7 +4,6 @@
 // Until I understand how to use T4 with unity, I will manually update this file.
 // The only reason to make this file generated is to have an easy way to add/remove colors and font styles.
 
-using Graffiti.Internal;
 using JetBrains.Annotations;
 using UnityEngine;
 

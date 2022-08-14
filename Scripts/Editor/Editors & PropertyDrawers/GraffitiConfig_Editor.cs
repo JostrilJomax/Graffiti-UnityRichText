@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using Graffiti;
+﻿using Graffiti;
 using Graffiti.Tests;
 using JetBrains.Annotations;
 using UnityEditor;
@@ -8,7 +7,7 @@ using GUI = GraffitiEditor.GraffitiGUI;
 
 
 namespace GraffitiEditor {
-[CustomEditor(typeof(GraffitiConfigSo))]
+[CustomEditor(typeof(GraffitiSettingsSo))]
 public class GraffitiConfig_Editor : Editor {
 
 	public const string LONG_LOREM_IPSUM_TEXT =
@@ -17,7 +16,7 @@ public class GraffitiConfig_Editor : Editor {
 		"ac dapibus sem rhoncus. In quis interdum urna. Sed ac mattis sapien. In fringilla condimentum rutrum. " +
 		"Duis auctor ipsum nec urna tincidunt, non tincidunt quam facilisis.";
 
-	private GraffitiConfigSo   _target;
+	private GraffitiSettingsSo _target;
 	private SerializedProperty _SP_config;
 	[CanBeNull] private SerializedProperty _SP_palette;
 	[CanBeNull] private ColorPaletteSo     _SO_palette;
@@ -28,9 +27,9 @@ public class GraffitiConfig_Editor : Editor {
 
 
 	private void UpdateVariables() {
-		_target     = target as GraffitiConfigSo;
-		_SP_config  = serializedObject.FindProperty(GraffitiConfigSo.__nameof_config);
-		_SP_palette = serializedObject.FindProperty(GraffitiConfigSo.__nameof_colorPalette);
+		_target     = target as GraffitiSettingsSo;
+		_SP_config  = serializedObject.FindProperty(GraffitiSettingsSo.__nameof_config);
+		_SP_palette = serializedObject.FindProperty(GraffitiSettingsSo.__nameof_colorPalette);
 		_SO_palette = _SP_palette?.CastTo<ColorPaletteSo>();
 	}
 
