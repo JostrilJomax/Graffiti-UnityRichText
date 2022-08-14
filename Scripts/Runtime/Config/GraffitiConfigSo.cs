@@ -10,19 +10,15 @@ using Debug = UnityEngine.Debug;
 
 namespace Graffiti {
 
-[CreateAssetMenu(fileName = ScriptableObjectAssetName, menuName = "ScriptableObjects/" + ScriptableObjectAssetName)]
+[CreateAssetMenu(fileName = ScriptableObjectName, menuName = "ScriptableObjects/" + ScriptableObjectName)]
 public class GraffitiConfigSo : ScriptableObject {
 
-	public static string __nameof_config       = nameof(_config);
-	public static string __nameof_colorPalette = nameof(_colorPaletteSo);
+	public static readonly string __nameof_config       = nameof(_config);
+	public static readonly string __nameof_colorPalette = nameof(_colorPaletteSo);
 
-	public const bool AllowToCreateInstanceInResourcesFolder = true;
-	public const bool AllowDeepSearchByClassName = true;
+	private const string ScriptableObjectName = "Graffiti Config";
 
-	private const string ScriptableObjectAssetName = "Graffiti Config";
-	private const string ScriptableObjectAssetFullName = ScriptableObjectAssetName + ".asset";
-	private static readonly string DefaultPathToGraffitiResourcesFolder =
-			$"Assets/Plugins/{nameof(Graffiti)}/Resources/{ScriptableObjectAssetFullName}";
+	private static readonly string ResourcesAssetDefaultPath = $"{GraffitiInfo.ResourcesFolderPath}/{ScriptableObjectName}.asset";
 
 
 	internal static ColorPalette   Palette => _instance == null ? ColorPalette.DefaultInstance : _instance.GetPalette;
@@ -43,88 +39,34 @@ public class GraffitiConfigSo : ScriptableObject {
 
 
 	internal static void Initialize() {
-
-		LoadInstanceFromResourcesFolder();
-
-		if (_instance != null)
+		if (LoadAsset())
 			return;
 
-		GraffitiDebug.LogWarning($"Can't load settings from Resources folder (.../Resource/{ScriptableObjectAssetName}).");
-
-		if (AllowToCreateInstanceInResourcesFolder && Application.isEditor) {
-			Editor_CreateInstanceInResourcesFolder();
-			LoadInstanceFromResourcesFolder();
-			if (_instance != null) return;
-			GraffitiDebug.LogError("Failed to Create config in Resources folder.");
+		if (GraffitiInfo.AllowAssetCreation) {
+			CreateAsset();
+			LoadAsset();
 		}
-
-
-
 	}
 
-	private static void LoadInstanceFromResourcesFolder() {
-		_instance = Resources.Load<GraffitiConfigSo>(ScriptableObjectAssetName);
-	}
-
+	private static bool LoadAsset() =>
+		(_instance = Resources.Load<GraffitiConfigSo>(ScriptableObjectName)) != null;
 
 	[Conditional("UNITY_EDITOR")]
-	private static void Editor_CreateInstanceInResourcesFolder() {
+	private static void CreateAsset() {
 
-		var assetInstance = ScriptableObject.CreateInstance<GraffitiConfigSo>();
+		var assetInstance = CreateInstance<GraffitiConfigSo>();
 
-		string assetPath = GetDefaultAssetPath();
+		if (GraffitiInfo.AllowAssetCreationInDefaultFolder)
+			if (GraffitiAssetDatabase.CreateAsset(assetInstance, ResourcesAssetDefaultPath))
+				return;
 
-		if (string.IsNullOrEmpty(assetPath) && AllowDeepSearchByClassName)
-			assetPath = GetAssetPath_SearchByClassName();
-
-		if (string.IsNullOrEmpty(assetPath))
-			return;
-
-		AssetDatabase.CreateAsset(assetInstance, assetPath);
-		AssetDatabase.SaveAssets();
-
-		static string GetAssetPath_SearchByClassName() {
-
-			// • The following code tries to get path (3) from path (1):
-			// (1) .../Graffiti/Scripts/.../ClassName.cs
-			// (2) .../Graffiti
-			// (3) .../Graffiti/Resources/AssetName.asset\
-
-			// • How exactly it works:
-			//  We receive path (1), then remove everything up to the root folder,
-			// as in path (2), and then make path (3)
-
-			// • Why can't we just find folder as in path (2) ?
-			//  We can, but I think that it is a less secure approach, as for classes
-			// there is at least some restriction in naming (there can be no classes with same name
-			// in one namespace).
-
-			// • What happens if I have a class with the same name somewhere else?
-			//  Then both classes will be ignored and asset path will be empty
-
-			// • What happens if I put plugin's folder in folder with the same name?
-			//  It won't matter. Search for root folder is made from the end,
-			// so it does not matter what folders there are before the root folder.
-
-			const string classNameToSearchBy = nameof(GraffitiConfigSo) + ".cs";
-
-			string   assetPath          = string.Empty;
-			string[] possibleClassPaths = GraffitiAssetDatabase.FindPathToFile(classNameToSearchBy, addCsExtensionToFileName: false);
-
-			if (possibleClassPaths.Length != 1)
-				return assetPath;
-
-
-			int    rootFolderIndex     = possibleClassPaths[0].LastIndexOf(GraffitiInfo.RootFolderName, StringComparison.Ordinal);
-			Range  rootFolderPathRange = ..(rootFolderIndex + GraffitiInfo.RootFolderName.Length);
-			string resourcesPath       = possibleClassPaths[0][rootFolderPathRange] + "/Resources";
-			assetPath = AssetDatabase.GenerateUniqueAssetPath(resourcesPath + "/" + ScriptableObjectAssetFullName);
-
-			return assetPath;
-		}
-
-		static string GetDefaultAssetPath() =>
-			AssetDatabase.GenerateUniqueAssetPath(DefaultPathToGraffitiResourcesFolder);
+		if (GraffitiInfo.AllowAssetCreationInRelativeToClassFileFolder)
+			GraffitiAssetDatabase.CreateAsset(
+					assetInstance: assetInstance,
+					nameofClass: nameof(GraffitiConfigSo),
+					rootFolder: GraffitiInfo.RootFolderName,
+					relativePath: "/Resources",
+					assetName: ScriptableObjectName);
 	}
 }
 }
