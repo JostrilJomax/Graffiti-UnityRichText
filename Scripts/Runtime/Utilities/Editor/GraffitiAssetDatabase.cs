@@ -131,8 +131,7 @@ internal static class GraffitiAssetDatabase {
 		}
 
 		for (int i = 0; i < foundedFiles.Length; i++) {
-			int indexOfSlashPrecedingFileName = foundedFiles[i].LastIndexOf(fileName, StringComparison.Ordinal) - 1;
-			foundedFiles[i] = foundedFiles[i][..indexOfSlashPrecedingFileName].Replace("\\", "/");
+			foundedFiles[i] = foundedFiles[i].Replace("\\", "/");
 		}
 
 		return foundedFiles;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Graffiti;
+using Graffiti.Internal;
 using Graffiti.Tests;
 using JetBrains.Annotations;
 using UnityEditor;
@@ -33,22 +34,22 @@ public class GraffitiSettingsSo_Editor : Editor {
 	private static GUIStyle _guis_exampleScript => new GUIStyle("HelpBox") { richText = true, stretchWidth = true, fontSize = 12 };
 	private static GUIStyle _guis_exampleButton => new GUIStyle("Button") { richText = true, fixedWidth = 28, fixedHeight = GUI.DefaultPropertyHeight*2 };
 
-	private static GraffitiGUI.Dispenser<bool[]> _dispenser_example = new GraffitiGUI.Dispenser<bool[]>(new []{ false, false});
-
 	private struct UsageExample {
 		public Func<string, string> Method;
 		public string MethodScript;
 		public string Description;
 	}
 
-#line 10000
+	private const int OpenFileDefaultLineNumber = 49;
+	private const int LineNumberStep = 5;
+	private const int OpenFileColumnNumber = 37;
+
 	private static UsageExample[] _usageExamples = {
 			new UsageExample {
 					Method = txt => txt.Stylize().Bold,
 					MethodScript = "txt.Stylize().Bold",
 					Description = "Bold text",
 			},
-
 			new UsageExample {
 					Method = txt => txt.Stylize().Size(24),
 					MethodScript = "text.Stylize().Size(24)",
@@ -115,7 +116,9 @@ public class GraffitiSettingsSo_Editor : Editor {
 					Description = "Last 30% of the words are Colored and has size 24",
 			},
 	};
-#line default
+
+	private static bool[] _isDescriptionExpanded = new bool[_usageExamples.Length];
+	private static bool[] _isScriptExpanded      = new bool[_usageExamples.Length];
 
 
 	private void UpdateVariables() {
@@ -155,11 +158,30 @@ public class GraffitiSettingsSo_Editor : Editor {
 
 				string Txt  = "You can type here...";
 
-				using (GUI.DispenserGroup(_dispenser_example)) {
+				for (int i = 0; i < _usageExamples.Length ; i++) {
+					GUI.Space();
 
-					foreach (UsageExample example in _usageExamples) {
-						_dispenser_example.Set(DrawExampleText(_dispenser_example.Get[0], _dispenser_example.RepeatGet[1], example.Method(Txt), example.MethodScript, example.Description));
+					using (GUI.Horizontal()) {
+						GUILayout.TextArea(_usageExamples[i].Method(Txt), _guis_exampleHeader);
+						if (GUILayout.Button("<b>C#</b>", _guis_exampleButton))
+							_isScriptExpanded[i] = !_isScriptExpanded[i];
+						if (GUI.Button("<b>?</b>", _guis_exampleButton))
+							_isDescriptionExpanded[i] = !_isDescriptionExpanded[i];
 					}
+
+					if (_isDescriptionExpanded[i])
+						GUILayout.Label($"<b>?:</b> {_usageExamples[i].Description}", _guis_exampleDescription);
+
+					if (_isScriptExpanded[i])
+						if (GUILayout.Button($"<b>C#:</b> <i>{_usageExamples[i].MethodScript}</i>", _guis_exampleScript)) {
+							Debug.Log(GraffitiAssetDatabase.FindPathToFile(nameof(GraffitiSettingsSo_Editor), true)[0]);
+							AssetDatabase.OpenAsset(
+									target: AssetDatabase.LoadAssetAtPath<TextAsset>(
+											GraffitiAssetDatabase.FindPathToFile(nameof(GraffitiSettingsSo_Editor), true)[0]),
+									lineNumber: OpenFileDefaultLineNumber + LineNumberStep * i,
+									columnNumber: OpenFileColumnNumber
+							);
+						}
 				}
 
 
@@ -175,43 +197,20 @@ public class GraffitiSettingsSo_Editor : Editor {
 		}
 
 		using (GUI.Group("Debug.Log examples")) {
+			ExampleCenteredButton("Log Cool Test",          AdditionalTests.Run_OnlyInteresting);
+			ExampleCenteredButton("Log Boring Test",        AdditionalTests.Run_All);
+			ExampleCenteredButton("Tests With Description", SimpleTests.RunAllTests);
+			ExampleCenteredButton("Old Tests",              Tests.RunAllTests);
 			GUI.Space();
-			if (GUI.CenteredButton("Log Cool Test", options: GUI.CreateOptions().Width(250).Height(26)))
-				AdditionalTests.Run_OnlyInteresting();
-			GUI.Space();
-			if (GUI.CenteredButton("Log Boring Test", options: GUI.CreateOptions().Width(250).Height(26)))
-				AdditionalTests.Run_All();
-			GUI.Space();
-			if (GUI.CenteredButton("Tests With Description", options: GUI.CreateOptions().Width(250).Height(26)))
-				SimpleTests.RunAllTests();
-			GUI.Space();
-			if (GUI.CenteredButton("Old Tests", options: GUI.CreateOptions().Width(250).Height(26)))
-				Tests.RunAllTests();
-			GUI.Space();
+
+			void ExampleCenteredButton(string buttonName, Action action) {
+				if (GUI.CenteredButton(buttonName, options: GUI.CreateOptions().Width(250).Height(26)))
+					action();
+				GUI.Space();
+			}
 		}
 
 		serializedObject.ApplyModifiedProperties();
 	}
-
-	private bool[] DrawExampleText(bool isDescriptionExpanded, bool isScriptExpanded, string exampleText, string writingStyle, string description) {
-		GUILayout.Space(10);
-
-		using (GUI.Horizontal) {
-			GUILayout.TextArea(exampleText, _guis_exampleHeader);
-			if (GUILayout.Button("<b>C#</b>", _guis_exampleButton))
-				isScriptExpanded = !isScriptExpanded;
-			if (GUI.Button("<b>?</b>", _guis_exampleButton))
-				isDescriptionExpanded = !isDescriptionExpanded;
-		}
-
-		if (isDescriptionExpanded)
-			GUILayout.Label($"<b>?:</b> {description}", _guis_exampleDescription);
-
-		if (isScriptExpanded)
-			GUILayout.Label($"<b>C#:</b> <i>{writingStyle}</i>", _guis_exampleScript);
-
-		return new []{isDescriptionExpanded, isScriptExpanded};
-	}
-
 }
 }

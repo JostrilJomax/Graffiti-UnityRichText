@@ -30,8 +30,8 @@ public static class GraffitiGUI {
 
 	public static EditorGUI.IndentLevelScope      IndentLevel(int value)   => new EditorGUI.IndentLevelScope(value);
 	public static EditorGUI.DisabledScope         EnabledIf(bool  enabled) => new EditorGUI.DisabledScope(enabled == false);
-	public static EditorGUILayout.HorizontalScope Horizontal               => new EditorGUILayout.HorizontalScope();
-	public static EditorGUILayout.VerticalScope   Vertical                 => new EditorGUILayout.VerticalScope();
+	public static EditorGUILayout.HorizontalScope Horizontal()             => new EditorGUILayout.HorizontalScope();
+	public static EditorGUILayout.VerticalScope   Vertical()               => new EditorGUILayout.VerticalScope();
 
 	public static GroupScope Group(string label = null, GUIStyle stl = null) => new GroupScope(label, stl);
 	public struct GroupScope : IDisposable {
@@ -59,18 +59,6 @@ public static class GraffitiGUI {
 		public void Dispose() => End();
 	}
 
-	public static HorizontalGroupScope HorizontalGroup() => new HorizontalGroupScope(true);
-	public struct HorizontalGroupScope : IDisposable {
-		public HorizontalGroupScope(bool empty) => GUILayout.BeginHorizontal();
-		public void Dispose() => GUILayout.EndHorizontal();
-	}
-
-	public static VerticalGroupScope VerticalGroup() => new VerticalGroupScope(true);
-	public struct VerticalGroupScope : IDisposable {
-		public VerticalGroupScope(bool empty) => GUILayout.BeginVertical();
-		public void Dispose() => GUILayout.EndVertical();
-	}
-
 	public static LabelWidthScope LabelWidth(float width) => new LabelWidthScope(width);
 	public struct LabelWidthScope : IDisposable {
 		private static readonly Stack<float> _temporaryWidths = new Stack<float>();
@@ -92,13 +80,11 @@ public static class GraffitiGUI {
 	}
 
 
-	public static DispenserGroupScope<T> DispenserGroup<T>(Dispenser<T> dispenser) => new DispenserGroupScope<T>(dispenser);
+	public static DispenserGroupScope<T> DispenserGroup<T>(params Dispenser<T>[] dispensers) => new DispenserGroupScope<T>(dispensers);
 	public struct DispenserGroupScope<T> : IDisposable {
-		private readonly Dispenser<T> _dispenser;
-		public DispenserGroupScope(Dispenser<T> dispenser) {
-			_dispenser = dispenser;
-		}
-		public void Dispose() => _dispenser.Reset();
+		private readonly Dispenser<T>[] _dispenser;
+		public DispenserGroupScope(Dispenser<T>[] dispensers) => _dispenser = dispensers;
+		public void Dispose() { foreach (var disp in _dispenser) disp.Reset(); }
 	}
 
 	public class Dispenser<T> {
@@ -141,7 +127,7 @@ public static class GraffitiGUI {
 
 	public static bool CenteredButton(string label, GUIStyle style = null, List<GUILayoutOption> options = null) {
 		bool pressed;
-		using (Horizontal) {
+		using (Horizontal()) {
 			GUILayout.FlexibleSpace();
 			pressed = Button(label, style, options);
 			GUILayout.FlexibleSpace();
