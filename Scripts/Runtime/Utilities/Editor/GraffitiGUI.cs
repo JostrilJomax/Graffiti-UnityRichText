@@ -33,34 +33,43 @@ public static class GraffitiGUI {
 	public static EditorGUILayout.HorizontalScope Horizontal               => new EditorGUILayout.HorizontalScope();
 	public static EditorGUILayout.VerticalScope   Vertical                 => new EditorGUILayout.VerticalScope();
 
-
-
 	public static GroupScope Group(string label = null, GUIStyle stl = null) => new GroupScope(label, stl);
 	public struct GroupScope : IDisposable {
-		private static void BeginGroup() => GUILayout.BeginVertical(EditorStyles.helpBox);
-		private static void EndGroup()   => GUILayout.EndVertical();
+		private static void Begin() => GUILayout.BeginVertical(EditorStyles.helpBox);
+		private static void End()   => GUILayout.EndVertical();
 		public GroupScope(string label, GUIStyle stl = null) {
-			BeginGroup();
+			Begin();
 			GUILayout.Label(label, stl ?? EditorStyles.boldLabel);
 		}
-		public void Dispose() => EndGroup();
+		public void Dispose() => End();
 	}
 
 	public static CollapsableScope CollapsableGroup(ref bool isExpanded, string label = null) => new CollapsableScope(ref isExpanded, label);
 	public struct CollapsableScope : IDisposable {
-		private static void BeginGroup() => GUILayout.BeginVertical(EditorStyles.helpBox);
-		private static void EndGroup()   => GUILayout.EndVertical();
+		private static void Begin() => GUILayout.BeginVertical(EditorStyles.helpBox);
+		private static void End()   => GUILayout.EndVertical();
 		public CollapsableScope(ref bool isExpanded, string label) {
-			BeginGroup();
+			Begin();
 			label = $"<b>{label}</b>";
 			if (Button(isExpanded ? $"▲ {label}" : $"▼ {label} ...",
 			           new GUIStyle("Button") { alignment = TextAnchor.MiddleLeft, richText = true},
 			           CreateOptions().ExpandWidth(true)))
 				isExpanded = !isExpanded;
 		}
-		public void Dispose() => EndGroup();
+		public void Dispose() => End();
 	}
 
+	public static HorizontalGroupScope HorizontalGroup() => new HorizontalGroupScope(true);
+	public struct HorizontalGroupScope : IDisposable {
+		public HorizontalGroupScope(bool empty) => GUILayout.BeginHorizontal();
+		public void Dispose() => GUILayout.EndHorizontal();
+	}
+
+	public static VerticalGroupScope VerticalGroup() => new VerticalGroupScope(true);
+	public struct VerticalGroupScope : IDisposable {
+		public VerticalGroupScope(bool empty) => GUILayout.BeginVertical();
+		public void Dispose() => GUILayout.EndVertical();
+	}
 
 	public static LabelWidthScope LabelWidth(float width) => new LabelWidthScope(width);
 	public struct LabelWidthScope : IDisposable {
@@ -80,6 +89,40 @@ public static class GraffitiGUI {
 			EditorGUIUtility.fieldWidth = width;
 		}
 		public void Dispose() => EditorGUIUtility.fieldWidth = _temporaryWidths.Pop();
+	}
+
+
+	public static DispenserGroupScope<T> DispenserGroup<T>(Dispenser<T> dispenser) => new DispenserGroupScope<T>(dispenser);
+	public struct DispenserGroupScope<T> : IDisposable {
+		private readonly Dispenser<T> _dispenser;
+		public DispenserGroupScope(Dispenser<T> dispenser) {
+			_dispenser = dispenser;
+		}
+		public void Dispose() => _dispenser.Reset();
+	}
+
+	public class Dispenser<T> {
+		private readonly List<T> _list = new List<T>();
+		private readonly T       _default;
+		private          int     _i = -1;
+
+		public Dispenser(T defaultValue) {
+			_default = defaultValue;
+		}
+
+		public T RepeatGet => _list[_i];
+
+		public T Get {
+			get {
+				if (_i >= _list.Count - 1)
+					_list.Add(_default);
+				return _list[++_i];
+			}
+		}
+
+		public void Set(T value) => _list[_i] = value;
+
+		public void Reset() => _i = 0;
 	}
 
 

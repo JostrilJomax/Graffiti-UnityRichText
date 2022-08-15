@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16758907acc43929ec32bcbf7a406cd, type: 3}
   m_Name: Graffiti Settings
   m_EditorClassIdentifier: 
-  _colorPaletteSo: {fileID: 0}
+  _colorPaletteSo: {fileID: 11400000, guid: b833c0bd15c5df64f82e392bfd872861, type: 2}
   graffitiConfig:
     disabled: 0
     disabledInBuild: 1

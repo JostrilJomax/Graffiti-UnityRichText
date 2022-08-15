@@ -19,9 +19,8 @@ public class GffColor_Drawer : PropertyDrawer {
 	private readonly GraffitiGUI.FluentRect _rect = new GraffitiGUI.FluentRect();
 
 
-	private bool _isExpanded_showMore;
+	private static bool _isExpanded_showMore;
 
-	private bool _show_exampleText = true;
 	private string _string_exampleText = GraffitiSettingsSo_Editor.LONG_LOREM_IPSUM_TEXT;
 	private int _colorModifier_exampleText = 0;
 
@@ -85,11 +84,6 @@ public class GffColor_Drawer : PropertyDrawer {
 			_rect.SetX(position.x).SetWidth(WarningLabelWidth).OffsetYByHeight();
 			GUI.Label(_rect, "Can't change color's luminosity, color is already too bright/dim !");
 		}
-
-
-
-		if (!_show_exampleText)
-			return;
 
 
 		// Example Text

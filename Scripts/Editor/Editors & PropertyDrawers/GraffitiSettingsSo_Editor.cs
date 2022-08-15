@@ -1,4 +1,6 @@
-﻿using Graffiti;
+﻿using System;
+using System.Collections.Generic;
+using Graffiti;
 using Graffiti.Tests;
 using JetBrains.Annotations;
 using UnityEditor;
@@ -21,13 +23,99 @@ public class GraffitiSettingsSo_Editor : Editor {
 	[CanBeNull] private SerializedProperty _SP_palette;
 	[CanBeNull] private ColorPaletteSo     _SO_palette;
 
-	private bool _isExpanded_ColorPaletteSelection = false;
-	private bool _isExpanded_Settings = false;
-	private bool _isExpanded_ExampleText = true;
+	private static bool _isExpanded_ColorPaletteSelection = false;
+	private static bool _isExpanded_Settings = false;
+	private static bool _isExpanded_ExampleText = true;
 
-	private static GUIStyle RichTextGuiStyle => new GUIStyle("TextArea") { richText = true, };
-	private static GUIStyle ExampleDescriptionGuiStyle => new GUIStyle("Box") { richText = true, stretchWidth = true};
-	private static GUIStyle WritingStyleExampleGuiStyle => new GUIStyle("Box") { richText = true, stretchWidth = true, alignment = TextAnchor.MiddleLeft};
+	private static GUIStyle _guis_richText => new GUIStyle("TextArea") { richText = true };
+	private static GUIStyle _guis_exampleHeader => new GUIStyle("TextArea") { richText = true, fixedHeight = GUI.DefaultPropertyHeight*2, alignment = TextAnchor.MiddleLeft};
+	private static GUIStyle _guis_exampleDescription  => new GUIStyle("HelpBox") { richText = true, stretchWidth = true, fontSize = 12 };
+	private static GUIStyle _guis_exampleScript => new GUIStyle("HelpBox") { richText = true, stretchWidth = true, fontSize = 12 };
+	private static GUIStyle _guis_exampleButton => new GUIStyle("Button") { richText = true, fixedWidth = 28, fixedHeight = GUI.DefaultPropertyHeight*2 };
+
+	private static GraffitiGUI.Dispenser<bool[]> _dispenser_example = new GraffitiGUI.Dispenser<bool[]>(new []{ false, false});
+
+	private struct UsageExample {
+		public Func<string, string> Method;
+		public string MethodScript;
+		public string Description;
+	}
+
+#line 10000
+	private static UsageExample[] _usageExamples = {
+			new UsageExample {
+					Method = txt => txt.Stylize().Bold,
+					MethodScript = "txt.Stylize().Bold",
+					Description = "Bold text",
+			},
+
+			new UsageExample {
+					Method = txt => txt.Stylize().Size(24),
+					MethodScript = "text.Stylize().Size(24)",
+					Description = "Text with size of 24 (double than default)",
+			},
+			new UsageExample {
+					Method = txt => txt.Stylize().Underline,
+					MethodScript = "text.Stylize().Underline",
+					Description = "Underlined text",
+			},
+			new UsageExample {
+					Method = txt => txt.Stylize().Red,
+					MethodScript = "text.Stylize().Red",
+					Description = "Colored text",
+			},
+			new UsageExample {
+					Method = txt => txt.Stylize().Red.Green,
+					MethodScript = "text.Stylize().Red.Green",
+					Description = "Gradient (Red.Green) text",
+			},
+			new UsageExample {
+					Method = txt => txt.Stylize().Red.Yellow.Green.Blue.Purple.Orange.Size(24),
+					MethodScript = "text.Stylize().Red.Yellow.Green.Blue.Purple.Orange.Size(24)",
+					Description = "Gradient text with size 24",
+			},
+			new UsageExample {
+					Method = txt => txt.Stylize(1).Blue,
+					MethodScript = "text.Stylize(1).Blue",
+					Description = "The second word is Colored",
+			},
+			new UsageExample {
+					Method = txt => txt.Stylize(^1).Purple,
+					MethodScript = "text.Stylize(^1).Purple",
+					Description = "The Second word from the end is Colored",
+			},
+			new UsageExample {
+					Method = txt => txt.Stylize(1, true).Purple,
+					MethodScript = "text.Stylize(1, true).Purple",
+					Description = "(Same, but different writing style)",
+			},
+			new UsageExample {
+					Method = txt => txt.Stylize(..1).Violet.Bold,
+					MethodScript = "text.Stylize(..1).Violet.Bold",
+					Description = "First 2 words are Colored and Bold",
+			},
+			new UsageExample {
+					Method = txt => txt.Stylize(0, 1).Violet.Bold,
+					MethodScript = "text.Stylize(0, 1).Violet.Bold",
+					Description = "(Same, but different writing style)",
+			},
+			new UsageExample {
+					Method = txt => txt.Stylize(^1..).Red.Bold,
+					MethodScript = "text.Stylize(^1..).Red.Bold",
+					Description = "Last 2 words are Colored and Bold",
+			},
+			new UsageExample {
+					Method = txt => txt.Stylize(1, 0, true).Red.Bold,
+					MethodScript = "text.Stylize(1, 0, true).Red.Bold",
+					Description = "(Same, but different writing style)",
+			},
+			new UsageExample {
+					Method = txt => txt.Stylize(-.3f).Orange.Size(24),
+					MethodScript = "text.Stylize(-.3f).Orange.Size(24)",
+					Description = "Last 30% of the words are Colored and has size 24",
+			},
+	};
+#line default
 
 
 	private void UpdateVariables() {
@@ -65,18 +153,14 @@ public class GraffitiSettingsSo_Editor : Editor {
 			if (_isExpanded_ExampleText) {
 
 
-				string text  = "You can type here...";
+				string Txt  = "You can type here...";
 
-				DrawExampleText(text.Stylize().Bold,      "text.Stylize().Bold"     , "Bold text");
-				DrawExampleText(text.Stylize().Size(24),  "text.Stylize().Size(24)" , "Text with size of 24 (double than default)");
-				DrawExampleText(text.Stylize().Underline, "text.Stylize().Underline", "Underlined text");
-				DrawExampleText(text.Stylize().Red,       "text.Stylize().Red"      , "Colored text");
+				using (GUI.DispenserGroup(_dispenser_example)) {
 
-				DrawExampleText(text.Stylize().Red.Green, "text.Stylize().Red.Green", "Gradient (Red.Green) text");
-				DrawExampleText(text.Stylize().Red.Yellow.Size(24).Green.Blue.Purple.Orange,
-						"text.Stylize().Red.Yellow.Size(24).Green.Blue.Purple.Orange",
-				 		"Gradient (Red.Yellow.Green.Blue.Purple.Orange) text with size 24. You can have up to 8 colors");
-
+					foreach (UsageExample example in _usageExamples) {
+						_dispenser_example.Set(DrawExampleText(_dispenser_example.Get[0], _dispenser_example.RepeatGet[1], example.Method(Txt), example.MethodScript, example.Description));
+					}
+				}
 
 
 				GUILayout.TextArea(
@@ -86,7 +170,7 @@ public class GraffitiSettingsSo_Editor : Editor {
 							   .And(2, 15).Italic.Bold
 							   .And(-.5f).Underline[Style.Purple.Yellow]
 							   .And(24..30).Strikethrough[Style.DefaultColor],
-						RichTextGuiStyle);
+						_guis_richText);
 			}
 		}
 
@@ -109,11 +193,25 @@ public class GraffitiSettingsSo_Editor : Editor {
 		serializedObject.ApplyModifiedProperties();
 	}
 
-	private void DrawExampleText(string exampleText, string writingStyle, string description) {
+	private bool[] DrawExampleText(bool isDescriptionExpanded, bool isScriptExpanded, string exampleText, string writingStyle, string description) {
 		GUILayout.Space(10);
-		GUILayout.Box(description, ExampleDescriptionGuiStyle);
-		GUILayout.Box(writingStyle, WritingStyleExampleGuiStyle);
-		GUILayout.TextArea(exampleText, RichTextGuiStyle);
+
+		using (GUI.Horizontal) {
+			GUILayout.TextArea(exampleText, _guis_exampleHeader);
+			if (GUILayout.Button("<b>C#</b>", _guis_exampleButton))
+				isScriptExpanded = !isScriptExpanded;
+			if (GUI.Button("<b>?</b>", _guis_exampleButton))
+				isDescriptionExpanded = !isDescriptionExpanded;
+		}
+
+		if (isDescriptionExpanded)
+			GUILayout.Label($"<b>?:</b> {description}", _guis_exampleDescription);
+
+		if (isScriptExpanded)
+			GUILayout.Label($"<b>C#:</b> <i>{writingStyle}</i>", _guis_exampleScript);
+
+		return new []{isDescriptionExpanded, isScriptExpanded};
 	}
+
 }
 }

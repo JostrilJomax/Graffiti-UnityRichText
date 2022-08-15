@@ -8,7 +8,7 @@ public class ColorPalette_Drawer : PropertyDrawer {
 
 	private readonly GraffitiGUI.FluentRect _rect = new GraffitiGUI.FluentRect();
 
-	private bool _isExpanded_palette = true;
+	private static bool _isExpanded_palette = true;
 
 
 	public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
