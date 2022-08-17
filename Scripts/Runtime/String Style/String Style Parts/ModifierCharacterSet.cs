@@ -9,11 +9,8 @@ namespace Graffiti.Internal {
 [Serializable]
 internal class ModifierCharacterSet {
 
-	[field: SerializeField]
-	public bool HasAnyModifierCharacter { get; private set; }
-
-	[field: SerializeField]
-	public List<ModifierCharacter> ModifierCharacters { get; private set; } = new List<ModifierCharacter>();
+	[field: SerializeField] public bool HasAnyModifierCharacter { get; private set; }
+	[field: SerializeField] public List<ModifierCharacter> ModifierCharacters { get; private set; } = new List<ModifierCharacter>();
 
 
 	public void SetModifierCharacter(ModifierCharacterType type) {
@@ -36,9 +33,8 @@ internal class ModifierCharacterSet {
 		var pairs = new (char[], Gradient)[ModifierCharacters.Count];
 
 		for (int i = 0; i < ModifierCharacters.Count; i++) {
-			char charModifier = GraffitiStylist.ModifierCharacter.GetModifierCharacter(ModifierCharacters[i].Type);
 			pairs[i] =
-				(ModifierCharacter.Render(charModifier, ModifierCharacters[i].Style),
+				(ModifierCharacters[i].Render(),
 				ModifierCharacters[i].Style?.Gradient);
 		}
 		return pairs;

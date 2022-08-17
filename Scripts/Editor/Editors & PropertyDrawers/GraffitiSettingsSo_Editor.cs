@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Graffiti;
 using Graffiti.Internal;
 using Graffiti.Tests;
@@ -13,38 +12,7 @@ namespace GraffitiEditor {
 [CustomEditor(typeof(GraffitiSettingsSo))]
 public class GraffitiSettingsSo_Editor : Editor {
 
-	public const string LONG_LOREM_IPSUM_TEXT =
-		"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer tellus lorem, commodo eu mauris eu, " +
-		"sodales auctor eros. Suspendisse sit amet quam diam. Vestibulum sagittis magna eu lacus semper, " +
-		"ac dapibus sem rhoncus. In quis interdum urna. Sed ac mattis sapien. In fringilla condimentum rutrum. " +
-		"Duis auctor ipsum nec urna tincidunt, non tincidunt quam facilisis.";
-
-	private GraffitiSettingsSo _target;
-	private SerializedProperty _SP_config;
-	[CanBeNull] private SerializedProperty _SP_palette;
-	[CanBeNull] private ColorPaletteSo     _SO_palette;
-
-	private static bool _isExpanded_ColorPaletteSelection = false;
-	private static bool _isExpanded_Settings = false;
-	private static bool _isExpanded_ExampleText = true;
-
-	private static GUIStyle _guis_richText => new GUIStyle("TextArea") { richText = true };
-	private static GUIStyle _guis_exampleHeader => new GUIStyle("TextArea") { richText = true, fixedHeight = GUI.DefaultPropertyHeight*2, alignment = TextAnchor.MiddleLeft};
-	private static GUIStyle _guis_exampleDescription  => new GUIStyle("HelpBox") { richText = true, stretchWidth = true, fontSize = 12 };
-	private static GUIStyle _guis_exampleScript => new GUIStyle("HelpBox") { richText = true, stretchWidth = true, fontSize = 12 };
-	private static GUIStyle _guis_exampleButton => new GUIStyle("Button") { richText = true, fixedWidth = 28, fixedHeight = GUI.DefaultPropertyHeight*2 };
-
-	private struct UsageExample {
-		public Func<string, string> Method;
-		public string MethodScript;
-		public string Description;
-	}
-
-	private const int OpenFileDefaultLineNumber = 49;
-	private const int LineNumberStep = 5;
-	private const int OpenFileColumnNumber = 37;
-
-	private static UsageExample[] _usageExamples = {
+	private static readonly UsageExample[] _usageExamples = {
 			new UsageExample {
 					Method = txt => txt.Stylize().Bold,
 					MethodScript = "txt.Stylize().Bold",
@@ -117,6 +85,39 @@ public class GraffitiSettingsSo_Editor : Editor {
 			},
 	};
 
+	private struct UsageExample {
+		public Func<string, string> Method;
+		public string               MethodScript;
+		public string               Description;
+	}
+
+	private const int    OpenFileDefaultLineNumber = 18;
+	private const int    LineNumberStep            = 5;
+	private const int    OpenFileColumnNumber      = 37;
+	private const string ExamplesFileName          = nameof(GraffitiSettingsSo_Editor);
+
+	public const string LONG_LOREM_IPSUM_TEXT =
+		"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer tellus lorem, commodo eu mauris eu, " +
+		"sodales auctor eros. Suspendisse sit amet quam diam. Vestibulum sagittis magna eu lacus semper, " +
+		"ac dapibus sem rhoncus. In quis interdum urna. Sed ac mattis sapien. In fringilla condimentum rutrum. " +
+		"Duis auctor ipsum nec urna tincidunt, non tincidunt quam facilisis.";
+
+	private GraffitiSettingsSo _target;
+	private SerializedProperty _SP_config;
+	[CanBeNull] private SerializedProperty _SP_palette;
+	[CanBeNull] private ColorPaletteSo     _SO_palette;
+
+	private static bool _isExpanded_ColorPaletteSelection = false;
+	private static bool _isExpanded_Settings = false;
+	private static bool _isExpanded_ExampleText = true;
+
+	private static GUIStyle _guis_richText => new GUIStyle("TextArea") { richText = true };
+	private static GUIStyle _guis_exampleHeader => new GUIStyle("TextArea") { richText = true, fixedHeight = GUI.DefaultPropertyHeight*2, alignment = TextAnchor.MiddleLeft};
+	private static GUIStyle _guis_exampleDescription  => new GUIStyle("HelpBox") { richText = true, stretchWidth = true, fontSize = 12 };
+	private static GUIStyle _guis_exampleScript => new GUIStyle("HelpBox") { richText = true, stretchWidth = true, fontSize = 12 };
+	private static GUIStyle _guis_exampleButton => new GUIStyle("Button") { richText = true, fixedWidth = 28, fixedHeight = GUI.DefaultPropertyHeight*2 };
+
+
 	private static bool[] _isDescriptionExpanded = new bool[_usageExamples.Length];
 	private static bool[] _isScriptExpanded      = new bool[_usageExamples.Length];
 
@@ -177,7 +178,7 @@ public class GraffitiSettingsSo_Editor : Editor {
 							Debug.Log(GraffitiAssetDatabase.FindPathToFile(nameof(GraffitiSettingsSo_Editor), true)[0]);
 							AssetDatabase.OpenAsset(
 									target: AssetDatabase.LoadAssetAtPath<TextAsset>(
-											GraffitiAssetDatabase.FindPathToFile(nameof(GraffitiSettingsSo_Editor), true)[0]),
+											GraffitiAssetDatabase.FindPathToFile(ExamplesFileName, true)[0]),
 									lineNumber: OpenFileDefaultLineNumber + LineNumberStep * i,
 									columnNumber: OpenFileColumnNumber
 							);

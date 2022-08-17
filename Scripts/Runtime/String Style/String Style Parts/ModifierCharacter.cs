@@ -18,19 +18,20 @@ internal class ModifierCharacter {
 	/// <para/>
 	/// • Note that gradient is not applied in this method.
 	/// </remarks>
-	internal static char[] Render(char self, [CanBeNull] StringStyleCore style) {
-		char[] sb = {self};
+	internal char[] Render() {
 
-		if (style == null)
+		char[] sb = { GraffitiStylist.ModifierCharacter.GetModifierCharacter(Type) };
+
+		if (Style == null)
 			return sb;
 
-		if (style.HasOnlyOneColor)
-			sb = GraffitiStylist.AddTag.Color(sb, style.Color.GetColorHexValue());
-		else if (style.HasNoColor && GraffitiProperties.Config.AddDefaultColorToModifierCharacter)
-			sb = GraffitiStylist.AddTag.Color(sb, ColorPalette.DefaultConsoleColors.GetHexValue());
+		if (Style.HasOnlyOneColor)
+			sb = GraffitiStylist.AddTag.Color(sb, Style.Color.GetColorHexValue());
+		else if (Style.HasNoColor && GraffitiProperties.Config.AddDefaultColorToModifierCharacter)
+			sb = GraffitiStylist.AddTag.Color(sb, ColorPalette.DefaultConsoleColor.GetHexValue());
 
-		if (style.HasSize)
-			sb = GraffitiStylist.AddTag.Size(sb, style.SizeValue);
+		if (Style.HasSize)
+			sb = GraffitiStylist.AddTag.Size(sb, Style.SizeValue);
 
 		return sb;
 	}

@@ -6,11 +6,10 @@
 
 using JetBrains.Annotations;
 using UnityEngine;
+using Graffiti.Internal;
 
 namespace Graffiti {
 internal enum ColorType {
-	Undefined,
-
 	Default,
 
 	White,
@@ -24,74 +23,6 @@ internal enum ColorType {
 	Blue,
 	Purple,
 	Violet,
-}
-}
-
-internal enum UnityBuildInFontStyleType {
-	None,
-	Bold,
-	Italic,
-	BoldItalic,
-}
-
-namespace Graffiti {
-internal enum ModifierCharacterType {
-	None,
-	SmokingHot, // Top
-	Strikethrough, // Middle
-	WavyStrikethrough,
-	Slash,
-	HighSlash,
-	Underline, // Bottom
-	DoubleUnderline,
-	Dotted,
-	Wheel,
-}
-}
-
-namespace Graffiti {
-public partial class StyledString : StyledString.IOnlyColor {
-
-	public interface IOnlyColor {
-		public StyledString White  { get; }
-		public StyledString Grey   { get; }
-		public StyledString Black  { get; }
-		public StyledString Red    { get; }
-		public StyledString Orange { get; }
-		public StyledString Yellow { get; }
-		public StyledString Green  { get; }
-		public StyledString Blue   { get; }
-		public StyledString Purple { get; }
-		public StyledString Violet { get; }
-	}
-
-	[PublicAPI] public StyledString White  { get { LastStyle.PrepareColor(ColorType.White ); return this; } }
-	[PublicAPI] public StyledString Grey   { get { LastStyle.PrepareColor(ColorType.Grey  ); return this; } }
-	[PublicAPI] public StyledString Black  { get { LastStyle.PrepareColor(ColorType.Black ); return this; } }
-	[PublicAPI] public StyledString Red    { get { LastStyle.PrepareColor(ColorType.Red   ); return this; } }
-	[PublicAPI] public StyledString Orange { get { LastStyle.PrepareColor(ColorType.Orange); return this; } }
-	[PublicAPI] public StyledString Yellow { get { LastStyle.PrepareColor(ColorType.Yellow); return this; } }
-	[PublicAPI] public StyledString Green  { get { LastStyle.PrepareColor(ColorType.Green ); return this; } }
-	[PublicAPI] public StyledString Blue   { get { LastStyle.PrepareColor(ColorType.Blue  ); return this; } }
-	[PublicAPI] public StyledString Purple { get { LastStyle.PrepareColor(ColorType.Purple); return this; } }
-	[PublicAPI] public StyledString Violet { get { LastStyle.PrepareColor(ColorType.Violet); return this; } }
-
-	[PublicAPI] public StyledString SmokingHot        { get { LastStyle.PrepareModifierCharacter(ModifierCharacterType.SmokingHot       ); return this; } }
-	[PublicAPI] public StyledString Strikethrough     { get { LastStyle.PrepareModifierCharacter(ModifierCharacterType.Strikethrough    ); return this; } }
-	[PublicAPI] public StyledString WavyStrikethrough { get { LastStyle.PrepareModifierCharacter(ModifierCharacterType.WavyStrikethrough); return this; } }
-	[PublicAPI] public StyledString Slash             { get { LastStyle.PrepareModifierCharacter(ModifierCharacterType.Slash            ); return this; } }
-	[PublicAPI] public StyledString HighSlash         { get { LastStyle.PrepareModifierCharacter(ModifierCharacterType.HighSlash        ); return this; } }
-	[PublicAPI] public StyledString Underline         { get { LastStyle.PrepareModifierCharacter(ModifierCharacterType.Underline        ); return this; } }
-	[PublicAPI] public StyledString DoubleUnderline   { get { LastStyle.PrepareModifierCharacter(ModifierCharacterType.DoubleUnderline  ); return this; } }
-	[PublicAPI] public StyledString Dotted            { get { LastStyle.PrepareModifierCharacter(ModifierCharacterType.Dotted           ); return this; } }
-	[PublicAPI] public StyledString Wheel             { get { LastStyle.PrepareModifierCharacter(ModifierCharacterType.Wheel            ); return this; } }
-
-	[PublicAPI] public IOnlyColor   Dark  { get { LastStyle.PrepareColorModification(GffColor.Modifier.Dark);  return this; } }
-	[PublicAPI] public IOnlyColor   Light { get { LastStyle.PrepareColorModification(GffColor.Modifier.Light); return this; } }
-	[PublicAPI] public StyledString Bold   { get { LastStyle.PrepareFontStyle(UnityBuildInFontStyleType.Bold  ); return this; } }
-	[PublicAPI] public StyledString Italic { get { LastStyle.PrepareFontStyle(UnityBuildInFontStyleType.Italic); return this; } }
-	[PublicAPI] public StyledString DefaultColor { get { LastStyle.PrepareColor(ColorType.Default ); return this; } }
-	[PublicAPI] public StyledString Size(int size) { LastStyle.PrepareSize(size); return this; }
 }
 }
 
@@ -109,10 +40,10 @@ public partial class ColorPalette {
 	[field: SerializeField] public GffColor Purple { get; private set; } = new GffColor(new Color(0.89f, 0.27f, 0.69f) /*"#E245B0"*/, "#E4B");
 	[field: SerializeField] public GffColor Violet { get; private set; } = new GffColor(new Color(0.49f, 0.38f, 0.76f) /*"#7d60c3"*/, "#86D");
 
-	internal GffColor FindColors(ColorType color) {
+	internal GffColor FindColor(ColorType color) {
 		switch (color) {
 			default:
-			case ColorType.Default: return DefaultConsoleColors;
+			case ColorType.Default: return DefaultConsoleColor;
 			case ColorType.White:   return White ;
 			case ColorType.Grey:    return Grey  ;
 			case ColorType.Black:   return Black ;
@@ -125,39 +56,6 @@ public partial class ColorPalette {
 			case ColorType.Violet:  return Violet;
 		}
 	}
-}
-}
-
-namespace Graffiti {
-public static partial class Style {
-
-	[PublicAPI] public static StringStyle White  { get { var stl = new StringStyle(); stl.PrepareColor(ColorType.White ); return stl; } }
-	[PublicAPI] public static StringStyle Grey   { get { var stl = new StringStyle(); stl.PrepareColor(ColorType.Grey  ); return stl; } }
-	[PublicAPI] public static StringStyle Black  { get { var stl = new StringStyle(); stl.PrepareColor(ColorType.Black ); return stl; } }
-	[PublicAPI] public static StringStyle Red    { get { var stl = new StringStyle(); stl.PrepareColor(ColorType.Red   ); return stl; } }
-	[PublicAPI] public static StringStyle Orange { get { var stl = new StringStyle(); stl.PrepareColor(ColorType.Orange); return stl; } }
-	[PublicAPI] public static StringStyle Yellow { get { var stl = new StringStyle(); stl.PrepareColor(ColorType.Yellow); return stl; } }
-	[PublicAPI] public static StringStyle Green  { get { var stl = new StringStyle(); stl.PrepareColor(ColorType.Green ); return stl; } }
-	[PublicAPI] public static StringStyle Blue   { get { var stl = new StringStyle(); stl.PrepareColor(ColorType.Blue  ); return stl; } }
-	[PublicAPI] public static StringStyle Purple { get { var stl = new StringStyle(); stl.PrepareColor(ColorType.Purple); return stl; } }
-	[PublicAPI] public static StringStyle Violet { get { var stl = new StringStyle(); stl.PrepareColor(ColorType.Violet); return stl; } }
-
-	[PublicAPI] public static StringStyle SmokingHot        { get { var stl = new StringStyle(); stl.PrepareModifierCharacter(ModifierCharacterType.SmokingHot        ); return stl; } }
-	[PublicAPI] public static StringStyle Strikethrough     { get { var stl = new StringStyle(); stl.PrepareModifierCharacter(ModifierCharacterType.Strikethrough     ); return stl; } }
-	[PublicAPI] public static StringStyle WavyStrikethrough { get { var stl = new StringStyle(); stl.PrepareModifierCharacter(ModifierCharacterType.WavyStrikethrough ); return stl; } }
-	[PublicAPI] public static StringStyle Slash             { get { var stl = new StringStyle(); stl.PrepareModifierCharacter(ModifierCharacterType.Slash             ); return stl; } }
-	[PublicAPI] public static StringStyle HighSlash         { get { var stl = new StringStyle(); stl.PrepareModifierCharacter(ModifierCharacterType.HighSlash         ); return stl; } }
-	[PublicAPI] public static StringStyle Underline         { get { var stl = new StringStyle(); stl.PrepareModifierCharacter(ModifierCharacterType.Underline         ); return stl; } }
-	[PublicAPI] public static StringStyle DoubleUnderline   { get { var stl = new StringStyle(); stl.PrepareModifierCharacter(ModifierCharacterType.DoubleUnderline   ); return stl; } }
-	[PublicAPI] public static StringStyle Dotted            { get { var stl = new StringStyle(); stl.PrepareModifierCharacter(ModifierCharacterType.Dotted            ); return stl; } }
-	[PublicAPI] public static StringStyle Wheel             { get { var stl = new StringStyle(); stl.PrepareModifierCharacter(ModifierCharacterType.Wheel             ); return stl; } }
-
-	[PublicAPI] public static StringStyle.IOnlyColor Dark  { get { var stl = new StringStyle(); stl.PrepareColorModification(GffColor.Modifier.Dark);  return stl; } }
-	[PublicAPI] public static StringStyle.IOnlyColor Light { get { var stl = new StringStyle(); stl.PrepareColorModification(GffColor.Modifier.Light); return stl; } }
-	// public StringStyle Bold   { get { PrepareFontStyle(UnityBuildInFontStyleType.Bold  ); return this; } }
-	// public StringStyle Italic { get { PrepareFontStyle(UnityBuildInFontStyleType.Italic); return this; } }
-	[PublicAPI] public static StringStyle DefaultColor   { get { var stl = new StringStyle(); stl.PrepareColor(ColorType.Default ); return stl; } }
-	[PublicAPI] public static StringStyle Size(int size) { var stl = new StringStyle(); stl.PrepareSize(size); return stl; }
 }
 }
 
@@ -177,32 +75,111 @@ public partial class StringStyle : StringStyle.IOnlyColor {
 		public StringStyle Violet { get; }
 	}
 
-	public StringStyle White  { get { PrepareColor(ColorType.White ); return this; } }
-	public StringStyle Grey   { get { PrepareColor(ColorType.Grey  ); return this; } }
-	public StringStyle Black  { get { PrepareColor(ColorType.Black ); return this; } }
-	public StringStyle Red    { get { PrepareColor(ColorType.Red   ); return this; } }
-	public StringStyle Orange { get { PrepareColor(ColorType.Orange); return this; } }
-	public StringStyle Yellow { get { PrepareColor(ColorType.Yellow); return this; } }
-	public StringStyle Green  { get { PrepareColor(ColorType.Green ); return this; } }
-	public StringStyle Blue   { get { PrepareColor(ColorType.Blue  ); return this; } }
-	public StringStyle Purple { get { PrepareColor(ColorType.Purple); return this; } }
-	public StringStyle Violet { get { PrepareColor(ColorType.Violet); return this; } }
+	[PublicAPI] public StringStyle White  => PrepareColor(ColorType.White );
+	[PublicAPI] public StringStyle Grey   => PrepareColor(ColorType.Grey  );
+	[PublicAPI] public StringStyle Black  => PrepareColor(ColorType.Black );
+	[PublicAPI] public StringStyle Red    => PrepareColor(ColorType.Red   );
+	[PublicAPI] public StringStyle Orange => PrepareColor(ColorType.Orange);
+	[PublicAPI] public StringStyle Yellow => PrepareColor(ColorType.Yellow);
+	[PublicAPI] public StringStyle Green  => PrepareColor(ColorType.Green );
+	[PublicAPI] public StringStyle Blue   => PrepareColor(ColorType.Blue  );
+	[PublicAPI] public StringStyle Purple => PrepareColor(ColorType.Purple);
+	[PublicAPI] public StringStyle Violet => PrepareColor(ColorType.Violet);
 
-	public StringStyle SmokingHot        { get { PrepareModifierCharacter(ModifierCharacterType.SmokingHot        ); return this; } }
-	public StringStyle Strikethrough     { get { PrepareModifierCharacter(ModifierCharacterType.Strikethrough     ); return this; } }
-	public StringStyle WavyStrikethrough { get { PrepareModifierCharacter(ModifierCharacterType.WavyStrikethrough ); return this; } }
-	public StringStyle Slash             { get { PrepareModifierCharacter(ModifierCharacterType.Slash             ); return this; } }
-	public StringStyle HighSlash         { get { PrepareModifierCharacter(ModifierCharacterType.HighSlash         ); return this; } }
-	public StringStyle Underline         { get { PrepareModifierCharacter(ModifierCharacterType.Underline         ); return this; } }
-	public StringStyle DoubleUnderline   { get { PrepareModifierCharacter(ModifierCharacterType.DoubleUnderline   ); return this; } }
-	public StringStyle Dotted            { get { PrepareModifierCharacter(ModifierCharacterType.Dotted            ); return this; } }
-	public StringStyle Wheel             { get { PrepareModifierCharacter(ModifierCharacterType.Wheel             ); return this; } }
+	[PublicAPI] public StringStyle SmokingHot        => PrepareModifierCharacter(ModifierCharacterType.SmokingHot       );
+	[PublicAPI] public StringStyle Strikethrough     => PrepareModifierCharacter(ModifierCharacterType.Strikethrough    );
+	[PublicAPI] public StringStyle WavyStrikethrough => PrepareModifierCharacter(ModifierCharacterType.WavyStrikethrough);
+	[PublicAPI] public StringStyle Slash             => PrepareModifierCharacter(ModifierCharacterType.Slash            );
+	[PublicAPI] public StringStyle HighSlash         => PrepareModifierCharacter(ModifierCharacterType.HighSlash        );
+	[PublicAPI] public StringStyle Underline         => PrepareModifierCharacter(ModifierCharacterType.Underline        );
+	[PublicAPI] public StringStyle DoubleUnderline   => PrepareModifierCharacter(ModifierCharacterType.DoubleUnderline  );
+	[PublicAPI] public StringStyle Dotted            => PrepareModifierCharacter(ModifierCharacterType.Dotted           );
+	[PublicAPI] public StringStyle Wheel             => PrepareModifierCharacter(ModifierCharacterType.Wheel            );
 
-	public IOnlyColor   Dark  { get { PrepareColorModification(GffColor.Modifier.Dark);  return this; } }
-	public IOnlyColor   Light { get { PrepareColorModification(GffColor.Modifier.Light); return this; } }
-	// public StringStyle Bold   { get { PrepareFontStyle(UnityBuildInFontStyleType.Bold  ); return this; } }
-	// public StringStyle Italic { get { PrepareFontStyle(UnityBuildInFontStyleType.Italic); return this; } }
-	public StringStyle DefaultColor { get { PrepareColor(ColorType.Default ); return this; } }
-	public StringStyle Size(int size) { PrepareSize(size); return this; }
+	public IOnlyColor  Dark              => PrepareColorModification(GffColor.Modifier.Dark);
+	public IOnlyColor  Light             => PrepareColorModification(GffColor.Modifier.Light);
+	// public StringStyle Bold              => PrepareFontStyle(UnityBuildInFontStyleType.Bold  );
+	// public StringStyle Italic            => PrepareFontStyle(UnityBuildInFontStyleType.Italic);
+	public StringStyle DefaultColor      => PrepareColor(ColorType.Default );
+	public StringStyle Size(int size)    => PrepareSize(size);
+}
+}
+
+namespace Graffiti {
+public partial class StyledString : StyledString.IOnlyColor {
+
+	public interface IOnlyColor {
+		public StyledString White  { get; }
+		public StyledString Grey   { get; }
+		public StyledString Black  { get; }
+		public StyledString Red    { get; }
+		public StyledString Orange { get; }
+		public StyledString Yellow { get; }
+		public StyledString Green  { get; }
+		public StyledString Blue   { get; }
+		public StyledString Purple { get; }
+		public StyledString Violet { get; }
+	}
+
+	[PublicAPI] public StyledString White             { get { LastStyle.PrepareColor(ColorType.White ); return this; } }
+	[PublicAPI] public StyledString Grey              { get { LastStyle.PrepareColor(ColorType.Grey  ); return this; } }
+	[PublicAPI] public StyledString Black             { get { LastStyle.PrepareColor(ColorType.Black ); return this; } }
+	[PublicAPI] public StyledString Red               { get { LastStyle.PrepareColor(ColorType.Red   ); return this; } }
+	[PublicAPI] public StyledString Orange            { get { LastStyle.PrepareColor(ColorType.Orange); return this; } }
+	[PublicAPI] public StyledString Yellow            { get { LastStyle.PrepareColor(ColorType.Yellow); return this; } }
+	[PublicAPI] public StyledString Green             { get { LastStyle.PrepareColor(ColorType.Green ); return this; } }
+	[PublicAPI] public StyledString Blue              { get { LastStyle.PrepareColor(ColorType.Blue  ); return this; } }
+	[PublicAPI] public StyledString Purple            { get { LastStyle.PrepareColor(ColorType.Purple); return this; } }
+	[PublicAPI] public StyledString Violet            { get { LastStyle.PrepareColor(ColorType.Violet); return this; } }
+
+	[PublicAPI] public StyledString SmokingHot        { get { LastStyle.PrepareModifierCharacter(ModifierCharacterType.SmokingHot       ); return this; } }
+	[PublicAPI] public StyledString Strikethrough     { get { LastStyle.PrepareModifierCharacter(ModifierCharacterType.Strikethrough    ); return this; } }
+	[PublicAPI] public StyledString WavyStrikethrough { get { LastStyle.PrepareModifierCharacter(ModifierCharacterType.WavyStrikethrough); return this; } }
+	[PublicAPI] public StyledString Slash             { get { LastStyle.PrepareModifierCharacter(ModifierCharacterType.Slash            ); return this; } }
+	[PublicAPI] public StyledString HighSlash         { get { LastStyle.PrepareModifierCharacter(ModifierCharacterType.HighSlash        ); return this; } }
+	[PublicAPI] public StyledString Underline         { get { LastStyle.PrepareModifierCharacter(ModifierCharacterType.Underline        ); return this; } }
+	[PublicAPI] public StyledString DoubleUnderline   { get { LastStyle.PrepareModifierCharacter(ModifierCharacterType.DoubleUnderline  ); return this; } }
+	[PublicAPI] public StyledString Dotted            { get { LastStyle.PrepareModifierCharacter(ModifierCharacterType.Dotted           ); return this; } }
+	[PublicAPI] public StyledString Wheel             { get { LastStyle.PrepareModifierCharacter(ModifierCharacterType.Wheel            ); return this; } }
+
+	[PublicAPI] public IOnlyColor   Dark              { get { LastStyle.PrepareColorModification(GffColor.Modifier.Dark);  return this; } }
+	[PublicAPI] public IOnlyColor   Light             { get { LastStyle.PrepareColorModification(GffColor.Modifier.Light); return this; } }
+	[PublicAPI] public StyledString Bold              { get { LastStyle.PrepareFontStyle(UnityBuildInFontStyleType.Bold  ); return this; } }
+	[PublicAPI] public StyledString Italic            { get { LastStyle.PrepareFontStyle(UnityBuildInFontStyleType.Italic); return this; } }
+	[PublicAPI] public StyledString DefaultColor      { get { LastStyle.PrepareColor(ColorType.Default ); return this; } }
+	[PublicAPI] public StyledString Size(int size)          { LastStyle.PrepareSize(size); return this; }
+}
+}
+
+namespace Graffiti {
+public static partial class Style {
+
+	[PublicAPI] public static StringStyle White             => StringStyle.Create().PrepareColor(ColorType.White );
+	[PublicAPI] public static StringStyle Grey              => StringStyle.Create().PrepareColor(ColorType.Grey  );
+	[PublicAPI] public static StringStyle Black             => StringStyle.Create().PrepareColor(ColorType.Black );
+	[PublicAPI] public static StringStyle Red               => StringStyle.Create().PrepareColor(ColorType.Red   );
+	[PublicAPI] public static StringStyle Orange            => StringStyle.Create().PrepareColor(ColorType.Orange);
+	[PublicAPI] public static StringStyle Yellow            => StringStyle.Create().PrepareColor(ColorType.Yellow);
+	[PublicAPI] public static StringStyle Green             => StringStyle.Create().PrepareColor(ColorType.Green );
+	[PublicAPI] public static StringStyle Blue              => StringStyle.Create().PrepareColor(ColorType.Blue  );
+	[PublicAPI] public static StringStyle Purple            => StringStyle.Create().PrepareColor(ColorType.Purple);
+	[PublicAPI] public static StringStyle Violet            => StringStyle.Create().PrepareColor(ColorType.Violet);
+
+	[PublicAPI] public static StringStyle SmokingHot        => StringStyle.Create().PrepareModifierCharacter(ModifierCharacterType.SmokingHot        );
+	[PublicAPI] public static StringStyle Strikethrough     => StringStyle.Create().PrepareModifierCharacter(ModifierCharacterType.Strikethrough     );
+	[PublicAPI] public static StringStyle WavyStrikethrough => StringStyle.Create().PrepareModifierCharacter(ModifierCharacterType.WavyStrikethrough );
+	[PublicAPI] public static StringStyle Slash             => StringStyle.Create().PrepareModifierCharacter(ModifierCharacterType.Slash             );
+	[PublicAPI] public static StringStyle HighSlash         => StringStyle.Create().PrepareModifierCharacter(ModifierCharacterType.HighSlash         );
+	[PublicAPI] public static StringStyle Underline         => StringStyle.Create().PrepareModifierCharacter(ModifierCharacterType.Underline         );
+	[PublicAPI] public static StringStyle DoubleUnderline   => StringStyle.Create().PrepareModifierCharacter(ModifierCharacterType.DoubleUnderline   );
+	[PublicAPI] public static StringStyle Dotted            => StringStyle.Create().PrepareModifierCharacter(ModifierCharacterType.Dotted            );
+	[PublicAPI] public static StringStyle Wheel             => StringStyle.Create().PrepareModifierCharacter(ModifierCharacterType.Wheel             );
+
+	[PublicAPI] public static StringStyle.IOnlyColor Dark  => StringStyle.Create().PrepareColorModification(GffColor.Modifier.Dark);
+	[PublicAPI] public static StringStyle.IOnlyColor Light => StringStyle.Create().PrepareColorModification(GffColor.Modifier.Light);
+	// [PublicAPI] public static StringStyle Bold             => StringStyle.Create().PrepareFontStyle(UnityBuildInFontStyleType.Bold  );
+	// [PublicAPI] public static StringStyle Italic           => StringStyle.Create().PrepareFontStyle(UnityBuildInFontStyleType.Italic);
+	[PublicAPI] public static StringStyle DefaultColor     => StringStyle.Create().PrepareColor(ColorType.Default );
+	[PublicAPI] public static StringStyle Size(int size)   => StringStyle.Create().PrepareSize(size);
 }
 }

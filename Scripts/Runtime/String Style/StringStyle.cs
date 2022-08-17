@@ -1,5 +1,6 @@
 ﻿using System;
 using Graffiti.Internal;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Graffiti {
@@ -29,38 +30,53 @@ public partial class StringStyle : StringStyleCore {
 	internal bool HasModifierCharacterSet => _modifierCharSet != null;
 	internal ModifierCharacterSet ModifierCharacterSet => _modifierCharSet ??= new ModifierCharacterSet();
 
-	[SerializeField] private ModifierCharacterSet _modifierCharSet;
+	[SerializeField] [CanBeNull] private ModifierCharacterSet _modifierCharSet;
 
-	internal override void PrepareSize(int size) {
-		if (!GraffitiProperties.Config.ApplySize) return;
+	internal static StringStyle Create() => new StringStyle();
+
+	internal new StringStyle PrepareSize(int size) {
+		if (!GraffitiProperties.Config.ApplySize) return this;
 		base.PrepareSize(size);
+		return this;
 	}
 
-	internal override void PrepareFontStyle(UnityBuildInFontStyleType fontStyle) {
-		if (!GraffitiProperties.Config.ApplyFontStyle) return;
+	internal new StringStyle PrepareFontStyle(UnityBuildInFontStyleType fontStyle) {
+		if (!GraffitiProperties.Config.ApplyFontStyle) return this;
 		base.PrepareFontStyle(fontStyle);
+		return this;
 	}
 
-	internal override void __PrepareColor(ColorType gffColor, string strColor) {
-		if (!GraffitiProperties.Config.ApplyColor) return;
+	internal new StringStyle PrepareColor(ColorType gffColor) => __PrepareColor(gffColor, null);
+	internal new StringStyle PrepareColor(string    strColor) => __PrepareColor(null,     strColor);
+	internal new StringStyle __PrepareColor(ColorType? gffColor, string strColor) {
+		if (!GraffitiProperties.Config.ApplyColor) return this;
 		base.__PrepareColor(gffColor, strColor);
+		return this;
 	}
 
-	internal override void PrepareColorAdditionally(ColorType gffColor, string strColor) {
-		if (!GraffitiProperties.Config.ApplyGradient) return;
+	internal new StringStyle PrepareColorAdditionally(ColorType? gffColor, string strColor) {
+		if (!GraffitiProperties.Config.ApplyGradient) return this;
 		base.PrepareColorAdditionally(gffColor, strColor);
+		return this;
 	}
 
-	internal override void PrepareGradient(Gradient gradient) {
-		if (!GraffitiProperties.Config.ApplyGradient) return;
+	internal new StringStyle PrepareColorModification(GffColor.Modifier modifier) {
+		base.PrepareColorModification(modifier);
+		return this;
+	}
+
+	internal new StringStyle PrepareGradient(Gradient gradient) {
+		if (!GraffitiProperties.Config.ApplyGradient) return this;
 		base.PrepareGradient(gradient);
+		return this;
 	}
 
-	internal void PrepareModifierCharacter(ModifierCharacterType type) {
+	internal StringStyle PrepareModifierCharacter(ModifierCharacterType type) {
 		ModifierCharacterExists = type != ModifierCharacterType.None;
-		if (!ModifierCharacterExists) return;
-		if (!GraffitiProperties.Config.AllowModifierCharacters) return;
+		if (!ModifierCharacterExists) return this;
+		if (!GraffitiProperties.Config.AllowModifierCharacters) return this;
 		ModifierCharacterSet.SetModifierCharacter(type);
+		return this;
 	}
 
 	internal void SetStyleTodModifierCharacter(StringStyleCore style) =>

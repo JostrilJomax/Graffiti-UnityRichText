@@ -14,7 +14,7 @@ namespace Graffiti.Internal {
 public class StringStyleCore {
 
 	public virtual bool IsEmpty => IsScopeEmpty || IsEmpty_WithoutScope;
-	protected bool IsEmpty_WithoutScope =>
+	internal bool IsEmpty_WithoutScope =>
 		!HasColor &&
 		!HasGradient &&
 		!HasSize &&
@@ -22,12 +22,12 @@ public class StringStyleCore {
 
 	internal bool IsScopeEmpty      => _scope.IsEmpty;
 	internal bool HasNoColor        => !HasColor && !HasGradient;
-	internal bool HasOnlyOneColor   => _color.HasColor() && !HasGradient;
-	internal bool HasColor          => _color.HasColor();
+	internal bool HasOnlyOneColor   => _color.HasColor && !HasGradient;
+	internal bool HasColor          => _color.HasColor;
 	internal bool HasGradient       => _collectedColors != null || _cachedGradient != null;
 	internal bool HasCachedGradient => _cachedGradient != null;
 	internal bool HasSize           => _size.HasValue;
-	internal bool HasFont      => fontStyle != UnityBuildInFontStyleType.None;
+	internal bool HasFont           => fontStyle != UnityBuildInFontStyleType.None;
 
 	internal StringStyleColor       Color           => _color;
 	internal List<StringStyleColor> CollectedColors => _collectedColors;
@@ -54,15 +54,15 @@ public class StringStyleCore {
 	private GffColor.Modifier _currentColorModifier;
 
 	internal virtual void PrepareColor(ColorType gffColor) => __PrepareColor(gffColor, null);
-	internal virtual void PrepareColor(string strColor)    => __PrepareColor(ColorType.Undefined, strColor);
-	internal virtual void __PrepareColor(ColorType gffColor, string strColor) {
+	internal virtual void PrepareColor(string strColor)    => __PrepareColor(null, strColor);
+	internal virtual void __PrepareColor(ColorType? gffColor, string strColor) {
 		if (!StartedCollectingColorsForGradient && !HasColor)
 			_color.__SetColor(gffColor, strColor, GetColorModificator());
 		else
 			PrepareColorAdditionally(gffColor, strColor);
 	}
 
-	internal virtual void PrepareColorAdditionally(ColorType gffColor, string strColor) {
+	internal virtual void PrepareColorAdditionally(ColorType? gffColor, string strColor) {
 		_collectedColors ??= new List<StringStyleColor> {_color};
 		if (_collectedColors.Count >= 8)
 			return;

@@ -10,42 +10,37 @@ internal struct StringStyleColor {
 
 	[SerializeField] private GffColor.Modifier _modifier;
 
-	internal bool HasColor() => (_graffitiColorType != ColorType.Undefined) || (_strColor != null);
+	internal bool HasColor { get; private set; }
 
 
 	/// <remarks> Only one color parameter will be applied (+modificator) </remarks>
-	internal StringStyleColor __SetColor(ColorType          colorType,
+	internal StringStyleColor __SetColor(ColorType?         colorType,
 	                                     string             strColor,
-	                                     GffColor.Modifier modifier) {
+	                                     GffColor.Modifier modifier)
+	{
 		_modifier = modifier;
-		if (colorType != ColorType.Undefined) _graffitiColorType = colorType;
-		else if (strColor != null) _strColor = strColor;
-		else _graffitiColorType = ColorType.Undefined;
+		if (colorType != null || strColor != null) {
+			_graffitiColorType = colorType ?? _graffitiColorType;
+			_strColor          = strColor;
+			HasColor           = true;
+		}
 		return this;
 	}
 
-	internal string GetColorHexValue() {
-		if (_graffitiColorType != ColorType.Undefined)
-			return GetColorVariant(_graffitiColorType).GetHexValue();
-		if (_strColor != null)
-			return _strColor;
-		return GetColorVariant(ColorType.Default).GetHexValue();
-	}
+	internal string GetColorHexValue() => _strColor ?? ModifyColor(_graffitiColorType).GetHexValue();
 
 	internal Color GetUnityColor() {
-		if (_graffitiColorType != ColorType.Undefined)
-			return ColorConvertor.ToUnityColorFromShortHexColor(GetColorVariant(_graffitiColorType).ShortHex);
 		if (_strColor != null)
 			return ColorConvertor.ToUnityColor(_strColor);
-		return default;
+		return ColorConvertor.ToUnityColorFromShortHexColor(ModifyColor(_graffitiColorType).ShortHex);
 	}
 
-	private GffColor GetColorVariant(ColorType color) {
+	private GffColor ModifyColor(ColorType color) {
 		switch (_modifier) {
 			default:
-			case GffColor.Modifier.None:  return GraffitiProperties.Palette.FindColors(color);
-			case GffColor.Modifier.Dark:  return GraffitiProperties.Palette.FindColors(color).Clone().MakeDarker();
-			case GffColor.Modifier.Light: return GraffitiProperties.Palette.FindColors(color).Clone().MakeLighter();
+			case GffColor.Modifier.None:  return GraffitiProperties.Palette.FindColor(color);
+			case GffColor.Modifier.Dark:  return GraffitiProperties.Palette.FindColor(color).Clone().MakeDarker();
+			case GffColor.Modifier.Light: return GraffitiProperties.Palette.FindColor(color).Clone().MakeLighter();
 		}
 	}
 }
