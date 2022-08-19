@@ -1,5 +1,4 @@
-﻿// TODO: The name of this file is confusing.
-// TODO: There is a little bit of a mess with summaries.
+﻿// This file is NOT generated.
 
 using Graffiti.Internal;
 
