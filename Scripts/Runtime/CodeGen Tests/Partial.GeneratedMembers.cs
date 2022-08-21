@@ -1,6 +1,6 @@
 //--------------------------------------------------------------------------------------
 // This file is generated. Modifications to this file won't be saved.
-// Last generated: 2022-08-19 23:20:43
+// Last generated: 2022-08-20 16:33:04
 // If you want to make any permanent changes to this file, go to the class T4CompilerTest
 // At: C:/Home/Projects/Unity/General Purpose Unity Project/Assets/Plugins/Graffiti v0.6/Scripts/Runtime/CodeGen Tests/T4CompilerTest.cs
 //--------------------------------------------------------------------------------------
