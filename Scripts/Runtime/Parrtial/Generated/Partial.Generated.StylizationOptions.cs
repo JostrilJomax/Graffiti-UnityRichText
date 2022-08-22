@@ -11,22 +11,22 @@ using Graffiti.Internal;
 
 namespace Graffiti.Internal {
 internal enum ColorType {
-	Default, 
-	White, 
-	Grey, 
-	Black, 
-	Red, 
-	Orange, 
-	Yellow, 
-	Green, 
-	Blue, 
-	Purple, 
-	Violet, 
+	Default,
+	White,
+	Grey,
+	Black,
+	Red,
+	Orange,
+	Yellow,
+	Green,
+	Blue,
+	Purple,
+	Violet,
 }
 }
 
 namespace Graffiti {
-[PublicAPI] 
+[PublicAPI]
 public partial class ColorPalette {
 
 	[field: SerializeField] public GffColor White  { get; private set; } = new GffColor(new Color(0.93f, 0.93f, 0.93f), "#eee");
@@ -60,10 +60,10 @@ public partial class ColorPalette {
 }
 
 namespace Graffiti {
-[PublicAPI] 
+[PublicAPI]
 public partial class StringStyle : StringStyle.IOnlyColor {
 
-	[PublicAPI] 
+	[PublicAPI]
 	public interface IOnlyColor {
 		public StringStyle White  { get; }
 		public StringStyle Grey   { get; }
@@ -103,10 +103,10 @@ public partial class StringStyle : StringStyle.IOnlyColor {
 }
 
 namespace Graffiti {
-[PublicAPI] 
+[PublicAPI]
 public partial class StyledString : StyledString.IOnlyColor {
 
-	[PublicAPI] 
+	[PublicAPI]
 	public interface IOnlyColor {
 		public StyledString White  { get; }
 		public StyledString Grey   { get; }
@@ -146,7 +146,7 @@ public partial class StyledString : StyledString.IOnlyColor {
 }
 
 namespace Graffiti {
-[PublicAPI] 
+[PublicAPI]
 public static partial class Style {
 
 	public static StringStyle DefaultColor => StringStyle.Create().PrepareColor(ColorType.Default);
@@ -173,4 +173,3 @@ public static partial class Style {
 	public static StringStyle Wheel             => StringStyle.Create().PrepareModifierCharacter(ModifierCharacterType.Wheel            );
 }
 }
-

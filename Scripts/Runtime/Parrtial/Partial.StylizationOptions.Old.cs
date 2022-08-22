@@ -1,9 +1,3 @@
-// // TODO: The name of this file is confusing.
-//
-// // TODO: This file should be generated, but I had a lot of problems with Microsoft T4 Text Templates.
-// // Until I understand how to use T4 with unity, I will manually update this file.
-// // The only reason to make this file generated is to have an easy way to add/remove colors and font styles.
-//
 // using JetBrains.Annotations;
 // using UnityEngine;
 // using Graffiti.Internal;
