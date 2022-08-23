@@ -16,6 +16,7 @@ namespace Graffiti.Internal {
 ///     <see cref="ModifierCharacter"/><br/>
 /// </remarks>
 internal static partial class GraffitiStylist {
+
     public static void AddGradient(
         StringBuilder self,
         [NotNull] Gradient gradient,
@@ -128,5 +129,6 @@ internal static partial class GraffitiStylist {
         return array;
     }
     #endregion ''.'''''''''''''''''''''''''''''.'' Shared Methods Between Stylists ''.'''''''''''''''''''''''''''.''
+
 }
 }

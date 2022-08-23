@@ -9,6 +9,7 @@ namespace Graffiti.Internal {
 ///     inside the class.
 /// </remarks>
 internal static class UnityColors {
+
     // In Unity documentation they use #RRGGBBAA format,
     // where R - red, G - green, B - blue, a - alpha (transparency),
     // but during my tests I found that <color=value> works when
@@ -20,6 +21,7 @@ internal static class UnityColors {
     // 5. default color name (22 names, 20 uniq colors)
 
     public enum UnityColorType {
+
         White     = 0,
         Silver    = 1,
         Grey      = 2,
@@ -42,6 +44,7 @@ internal static class UnityColors {
         Magenta   = 19 /*Same as Fuchsia*/,
         Fuchsia   = 20 /*Same as Magenta*/,
         Purple    = 21,
+
     }
 
     public static readonly GffColor DefaultLightSkinText = new GffColor(new Color(0.2f, 0.2f, 0.2f), /*"#020202",*/"#000");
@@ -176,6 +179,7 @@ internal static class UnityColors {
     }
 
     public struct ColorScheme {
+
         public static readonly ColorScheme LightSkin =
                 new ColorScheme { Text = new GffColor(new Color(0.2f, 0.2f, 0.2f), /*"#020202",*/"#000") };
 
@@ -207,9 +211,11 @@ internal static class UnityColors {
             indentLevel = Mathf.Max(indentLevel, 0);
             return indentLevel >= _backgrounds.Length ? _backgrounds[^1] : _backgrounds[indentLevel];
         }
+
     }
 
     internal readonly struct NamedHexColor {
+
         internal readonly string Name;
         internal readonly string Hex;
         internal readonly string ShortHex;
@@ -232,10 +238,14 @@ internal static class UnityColors {
         }
 
         internal enum Format {
+
             Name,
             HexColor,
             ShortHexColor,
+
         }
+
     }
+
 }
 }

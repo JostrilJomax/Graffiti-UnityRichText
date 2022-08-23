@@ -4,6 +4,7 @@ using UnityEngine;
 namespace Graffiti.Internal {
 [Serializable]
 internal struct StringStyleColor {
+
     [SerializeField] private string    _strColor;
     [SerializeField] private ColorType _graffitiColorType;
 
@@ -48,5 +49,6 @@ internal struct StringStyleColor {
             case GffColor.Modifier.Light: return GraffitiProperties.Palette.FindColor(color).Clone().MakeLighter();
         }
     }
+
 }
 }

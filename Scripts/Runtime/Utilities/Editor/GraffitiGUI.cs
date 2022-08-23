@@ -8,6 +8,7 @@ using UnityEngine;
 namespace GraffitiEditor {
 /// <summary> Editor GUI helper class. </summary>
 public static class GraffitiGUI {
+
     // -------------------------------------------------------------------------------
     #region Unsorted (Small methods without defined group)
     // -------------------------------------------------------------------------------
@@ -33,6 +34,7 @@ public static class GraffitiGUI {
     public static GroupScope Group(string label = null, GUIStyle stl = null) => new GroupScope(label, stl);
 
     public struct GroupScope : IDisposable {
+
         private static void Begin() => GUILayout.BeginVertical(EditorStyles.helpBox);
         private static void End()   => GUILayout.EndVertical();
 
@@ -43,12 +45,14 @@ public static class GraffitiGUI {
         }
 
         public void Dispose() => End();
+
     }
 
     public static CollapsableScope CollapsableGroup(ref bool isExpanded, string label = null)
         => new CollapsableScope(ref isExpanded, label);
 
     public struct CollapsableScope : IDisposable {
+
         private static void Begin() => GUILayout.BeginVertical(EditorStyles.helpBox);
         private static void End()   => GUILayout.EndVertical();
 
@@ -65,11 +69,13 @@ public static class GraffitiGUI {
         }
 
         public void Dispose() => End();
+
     }
 
     public static LabelWidthScope LabelWidth(float width) => new LabelWidthScope(width);
 
     public struct LabelWidthScope : IDisposable {
+
         private static readonly Stack<float> _temporaryWidths = new Stack<float>();
 
         public LabelWidthScope(float width)
@@ -79,11 +85,13 @@ public static class GraffitiGUI {
         }
 
         public void Dispose() => EditorGUIUtility.labelWidth = _temporaryWidths.Pop();
+
     }
 
     public static FieldWidthScope FieldWidth(float width) => new FieldWidthScope(width);
 
     public struct FieldWidthScope : IDisposable {
+
         private static readonly Stack<float> _temporaryWidths = new Stack<float>();
 
         public FieldWidthScope(float width)
@@ -93,12 +101,14 @@ public static class GraffitiGUI {
         }
 
         public void Dispose() => EditorGUIUtility.fieldWidth = _temporaryWidths.Pop();
+
     }
 
 
     public static DispenserGroupScope<T> DispenserGroup<T>(params Dispenser<T>[] dispensers) => new DispenserGroupScope<T>(dispensers);
 
     public struct DispenserGroupScope<T> : IDisposable {
+
         private readonly Dispenser<T>[] _dispenser;
 
         public DispenserGroupScope(Dispenser<T>[] dispensers)
@@ -110,9 +120,11 @@ public static class GraffitiGUI {
         {
             foreach (Dispenser<T> disp in _dispenser) disp.Reset();
         }
+
     }
 
     public class Dispenser<T> {
+
         private readonly T       _default;
         private readonly List<T> _list = new List<T>();
         private          int     _i    = -1;
@@ -137,6 +149,7 @@ public static class GraffitiGUI {
         public void Set(T value) => _list[_i] = value;
 
         public void Reset() => _i = 0;
+
     }
 
 
@@ -268,6 +281,7 @@ public static class GraffitiGUI {
 
     /// <summary> • Wrapper class for Rect struct. Contains helper functions for fluent use. </summary>
     public class FluentRect {
+
         private Rect  _rect;
         private float _startX;
         private float _startY;
@@ -348,6 +362,7 @@ public static class GraffitiGUI {
         }
 
         public static implicit operator Rect(FluentRect rect) => rect._rect;
+
     }
 
 
@@ -368,6 +383,7 @@ public static class GraffitiGUI {
     ///     for GUILayout / EditorGUILayout, because it just does nothing.
     /// </summary>
     public struct IndentationFixerScope : IDisposable {
+
         private readonly int _previousIndentLevel;
 
         public IndentationFixerScope(out float indentXDelta)
@@ -378,11 +394,13 @@ public static class GraffitiGUI {
         }
 
         public void Dispose() => EditorGUI.indentLevel = _previousIndentLevel;
+
     }
 
 
     // -------------------------------------------------------------------------------
     #endregion
     // -------------------------------------------------------------------------------
+
 }
 }

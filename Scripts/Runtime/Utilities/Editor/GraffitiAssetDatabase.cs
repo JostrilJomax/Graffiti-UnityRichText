@@ -9,6 +9,7 @@ using Object = UnityEngine.Object;
 
 namespace Graffiti.Internal {
 internal static class GraffitiAssetDatabase {
+
     /// <summary> Creates a asset in a folder, using provided asset instance and asset path. </summary>
     /// <returns> Success or failure. </returns>
     public static bool CreateAsset<T>(
@@ -145,6 +146,7 @@ internal static class GraffitiAssetDatabase {
 
         return foundedFiles;
     }
+
 }
 }
 

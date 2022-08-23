@@ -11,6 +11,7 @@ using GUI = GraffitiEditor.GraffitiGUI;
 namespace GraffitiEditor {
 [CustomEditor(typeof(GraffitiSettingsSo))]
 public class GraffitiSettingsSo_Editor : Editor {
+
     private const int    OpenFileDefaultLineNumber = 18;
     private const int    LineNumberStep            = 5;
     private const int    OpenFileColumnNumber      = 37;
@@ -208,9 +209,12 @@ public class GraffitiSettingsSo_Editor : Editor {
     }
 
     private struct UsageExample {
+
         public Func<string, string> Method;
         public string               MethodScript;
         public string               Description;
+
     }
+
 }
 }

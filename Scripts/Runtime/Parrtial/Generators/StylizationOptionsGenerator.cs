@@ -3,6 +3,7 @@ using Graffiti.CodeGeneration;
 
 namespace Graffiti {
 public static class StylizationOptionsGenerator {
+
     public static string GenerateCode()
     {
         var db = CodeBuilder.CreateDefaultBuilder();
@@ -120,6 +121,7 @@ public static class StylizationOptionsGenerator {
 
     // Constants
     private static class NameOf {
+
         public const string Graffiti              = "Graffiti";
         public const string Graffiti_Internal     = "Graffiti.Internal";
         public const string ColorType             = "ColorType";
@@ -131,10 +133,12 @@ public static class StylizationOptionsGenerator {
         public const string Style                 = nameof(global::Graffiti.Style);
         public const string IOnlyColor            = "IOnlyColor";
         public const string FindColor             = "FindColor";
+
     }
 
     // Constants
     private static class MethodBodyOf {
+
         public static string StringStyle_Create() => $"{NameOf.StringStyle}.{nameof(StringStyle.Create)}()";
 
         public static string PrepareColor(string itemType) => $"{nameof(StringStyle.PrepareColor)}({NameOf.ColorType}.{itemType})";
@@ -143,9 +147,13 @@ public static class StylizationOptionsGenerator {
             => $"{nameof(StringStyle.PrepareModifierCharacter)}({NameOf.ModifierCharacterType}.{itemType})";
 
         public static class New {
+
             public static string GffColor(string unityColor, string shortHexColor)
                 => $"new {NameOf.GffColor}({unityColor}, \"{shortHexColor}\")";
+
         }
+
     }
+
 }
 }

@@ -10,6 +10,7 @@ using UnityEngine;
 namespace GraffitiEditor {
 [CustomPropertyDrawer(typeof(GffColor))]
 public class GffColor_Drawer : PropertyDrawer {
+
     private const int FirstRowElementWidth     = 140;
     private const int ButtonWidth              = 120;
     private const int BrightnessSelectionWidth = 360;
@@ -100,5 +101,6 @@ public class GffColor_Drawer : PropertyDrawer {
             field_ShortHex.stringValue = ColorConvertor.ToShortHexColor(color);
         }
     }
+
 }
 }

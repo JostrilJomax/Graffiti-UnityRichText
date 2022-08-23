@@ -3,8 +3,9 @@ using System.Text;
 
 namespace Graffiti.CodeGeneration {
 public class CodeBuilderInfo {
-    public readonly  StringBuilder        Sb;
+
     private readonly Stack<CodeBlockInfo> CodeBlockDataStack = new Stack<CodeBlockInfo>();
+    public readonly  StringBuilder        Sb;
 
     public MemberModifiers          CollectedBlockData = new MemberModifiers();
     public CodeBuilderConfiguration Config;
@@ -22,5 +23,6 @@ public class CodeBuilderInfo {
     internal void PushNewCodeBlockToStack(CodeBlockInfo newCodeBlockInfo) => CodeBlockDataStack.Push(newCodeBlockInfo);
     internal void PopCurrentCodeBlockFromStack()                          => CodeBlockDataStack.Pop();
     internal void ClearCollectedBlockData()                               => CollectedBlockData = new MemberModifiers();
+
 }
 }

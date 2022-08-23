@@ -5,6 +5,7 @@ using UnityEngine;
 namespace Graffiti.Internal {
 /// <summary> Helper class to create Unity's Gradient class. </summary>
 internal static class GradientBuilder {
+
     internal static Gradient CreateGradient([NotNull] IList<StringStyleColor> list)
     {
         var colors = new Color[list.Count];
@@ -29,5 +30,6 @@ internal static class GradientBuilder {
         gr.SetKeys(grCK, grAK);
         return gr;
     }
+
 }
 }

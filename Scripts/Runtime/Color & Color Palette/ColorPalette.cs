@@ -7,6 +7,7 @@ namespace Graffiti {
 /// <remarks> This class is partial because one part of it (colors) should be generated. </remarks>
 [Serializable]
 public partial class ColorPalette {
+
     /// <summary> Default color palette. Is used when no custom palette is defined in config. </summary>
     [NotNull]
     internal static readonly ColorPalette DefaultInstance = new ColorPalette();
@@ -19,5 +20,6 @@ public partial class ColorPalette {
 
 
     internal string GetColorHexValue(ColorType color) => FindColor(color).GetHexValue();
+
 }
 }

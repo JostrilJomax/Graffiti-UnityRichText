@@ -6,6 +6,7 @@ namespace Graffiti.Internal {
 /// <summary> This class allows you to add a <b> red underline </b> to your text, for example. </summary>
 [Serializable]
 internal class ModifierCharacterSet {
+
     [field: SerializeField] public bool                    HasAnyModifierCharacter { get; private set; }
     [field: SerializeField] public List<ModifierCharacter> ModifierCharacters      { get; private set; } = new List<ModifierCharacter>();
 
@@ -43,5 +44,6 @@ internal class ModifierCharacterSet {
                         ModifierCharacters[i].Style?.Gradient);
         return pairs;
     }
+
 }
 }

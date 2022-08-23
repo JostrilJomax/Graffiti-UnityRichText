@@ -6,6 +6,7 @@ using Graffiti.Internal;
 namespace Graffiti {
 [Serializable]
 public partial class StyledString {
+
     public StyledString([NotNull] string str, [NotNull] StringStyle stl)
     {
         String = str;
@@ -40,5 +41,6 @@ public partial class StyledString {
     }
 
     public static implicit operator string(StyledString styledString) => styledString.ToString();
+
 }
 }

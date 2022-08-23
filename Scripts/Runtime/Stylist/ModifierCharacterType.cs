@@ -1,5 +1,6 @@
 ﻿namespace Graffiti.Internal {
 internal enum ModifierCharacterType {
+
     None,
     SmokingHot,    // Top
     Strikethrough, // Middle
@@ -10,5 +11,6 @@ internal enum ModifierCharacterType {
     DoubleUnderline,
     Dotted,
     Wheel,
+
 }
 }

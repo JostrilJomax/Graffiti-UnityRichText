@@ -6,10 +6,13 @@ namespace Graffiti {
 /// <summary> Contains one color in different formats. </summary>
 [Serializable]
 public struct GffColor {
+
     public enum Modifier {
+
         None,
         Dark,
         Light,
+
     }
 
     public static readonly string _nameof_UnityColor = nameof(UnityColor);
@@ -48,5 +51,6 @@ public struct GffColor {
         ShortHex = ColorConvertor.ToShortHexColor(UnityColor);
         return this;
     }
+
 }
 }

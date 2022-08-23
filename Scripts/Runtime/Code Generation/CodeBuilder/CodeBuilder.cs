@@ -3,6 +3,7 @@ using System.Text;
 
 namespace Graffiti.CodeGeneration {
 public class CodeBuilder : CodeBuilderBase<CodeBuilder> {
+
     private CodeBuilder(CodeBuilderInfo root) : base(root) { }
 
 
@@ -97,5 +98,6 @@ public class CodeBuilder : CodeBuilderBase<CodeBuilder> {
         using var block = new SwitchBlock(Root, name);
         body.Invoke(block);
     }
+
 }
 }

@@ -5,6 +5,7 @@ using UnityEditor;
 
 namespace Graffiti.Internal {
 internal static class GraffitiInitializer {
+
     private static bool _isInitialized;
 
 #if UNITY_EDITOR
@@ -21,5 +22,6 @@ internal static class GraffitiInitializer {
 
         GraffitiSettingsSo.Initialize();
     }
+
 }
 }

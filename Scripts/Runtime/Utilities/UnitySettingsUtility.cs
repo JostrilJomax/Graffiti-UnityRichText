@@ -2,6 +2,7 @@
 
 namespace Graffiti.Internal {
 internal static class UnitySettingsUtility {
+
     internal static bool IsDarkSkin
         =>
 #if UNITY_EDITOR
@@ -9,5 +10,6 @@ internal static class UnitySettingsUtility {
 #else
 		true;
 #endif
+
 }
 }

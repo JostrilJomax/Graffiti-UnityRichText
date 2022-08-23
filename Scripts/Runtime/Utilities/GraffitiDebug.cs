@@ -10,6 +10,7 @@ namespace Graffiti.Internal {
 ///     Settings/Player/Other Settings/Script Compilation
 /// </remarks>
 internal static class GraffitiDebug {
+
     private const string ENABLE_LOGGING = "GRAFFITI_ENABLE_LOGGING";
     private const string LOG_PREFIX = "<size=10><b><color=#3ab>Graffiti:</color></b></size> "; //.Stylize().Size(10).Bold.Blue
     [Conditional(ENABLE_LOGGING)] internal static void Log(string message) => Debug.Log(FormatLog(message));
@@ -26,5 +27,6 @@ internal static class GraffitiDebug {
     internal static void LogInEditor(string message) => Log(message);
 
     private static string FormatLog(string message) => string.Concat(LOG_PREFIX, message);
+
 }
 }

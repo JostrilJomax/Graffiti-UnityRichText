@@ -3,8 +3,10 @@ using JetBrains.Annotations;
 
 namespace Graffiti.Internal {
 internal static partial class GraffitiStylist {
+
     /// <summary> Class that contains methods that add a certain tag to a char/char[]/string/StringBuilder </summary>
     internal static class AddTag {
+
         private static readonly char[] START_BOLD       = { '<', 'b', '>' };
         private static readonly char[] CLOSE_BOLD       = { '<', '/', 'b', '>' };
         private static readonly char[] START_ITALIC     = { '<', 'i', '>' };
@@ -256,6 +258,8 @@ internal static partial class GraffitiStylist {
                 }
             }
         }
+
     }
+
 }
 }

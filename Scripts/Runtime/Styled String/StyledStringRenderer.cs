@@ -4,6 +4,7 @@ using JetBrains.Annotations;
 
 namespace Graffiti.Internal {
 internal static class StyledStringRenderer {
+
     private static readonly char[] SeparatorChars = { ' ', '\n' };
 
     internal static StringBuilder Render([NotNull] StringStyle style, [NotNull] string str)
@@ -170,6 +171,7 @@ internal static class StyledStringRenderer {
     }
 
     private struct Scope {
+
         public int Start;
         public int End;
 
@@ -184,6 +186,8 @@ internal static class StyledStringRenderer {
             Start = item1;
             End = item2;
         }
+
     }
+
 }
 }

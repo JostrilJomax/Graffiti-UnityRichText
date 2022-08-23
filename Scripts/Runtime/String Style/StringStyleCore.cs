@@ -11,6 +11,7 @@ namespace Graffiti.Internal {
 /// </summary>
 [Serializable]
 public class StringStyleCore {
+
     [SerializeField] private StringStyleColor          _color;
     [SerializeField] private StringStyleSize           _size;
     [SerializeField] private UnityBuildInFontStyleType _fontStyle;
@@ -108,5 +109,6 @@ public class StringStyleCore {
         _currentColorModifier = GffColor.Modifier.None;
         return usedModificator;
     }
+
 }
 }

@@ -2,6 +2,7 @@
 
 namespace Graffiti {
 internal static class StringStyleExtensions {
+
     /// <inheritdoc cref="StringStyleExtensions.MergeStyleCores"/>
     internal static void MergeStyles(this StringStyle self, StringStyle other)
     {
@@ -91,5 +92,6 @@ internal static class StringStyleExtensions {
             return false;
         }
     }
+
 }
 }

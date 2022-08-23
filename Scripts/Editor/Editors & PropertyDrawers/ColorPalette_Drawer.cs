@@ -5,6 +5,7 @@ using UnityEngine;
 namespace GraffitiEditor {
 [CustomPropertyDrawer(typeof(ColorPalette))]
 public class ColorPalette_Drawer : PropertyDrawer {
+
     private static bool _isExpanded_palette = true;
 
     private readonly GraffitiGUI.FluentRect _rect = new GraffitiGUI.FluentRect();
@@ -35,5 +36,6 @@ public class ColorPalette_Drawer : PropertyDrawer {
             } while (property.NextVisible(false));
         }
     }
+
 }
 }

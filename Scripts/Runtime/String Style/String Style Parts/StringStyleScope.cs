@@ -4,6 +4,7 @@ using UnityEngine;
 namespace Graffiti.Internal {
 [Serializable]
 internal struct StringStyleScope {
+
     [SerializeField] private bool _useIndex;
     [SerializeField] private bool _useRange;
     [SerializeField] private bool _usePercentage;
@@ -111,5 +112,6 @@ internal struct StringStyleScope {
         _usePercentage = true;
         _percentage = percentage;
     }
+
 }
 }

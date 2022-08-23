@@ -4,6 +4,7 @@ using JetBrains.Annotations;
 namespace Graffiti.Internal {
 [Serializable]
 internal class ModifierCharacter {
+
     public             ModifierCharacterType Type;
     [CanBeNull] public StringStyleCore       Style;
 
@@ -37,5 +38,6 @@ internal class ModifierCharacter {
 
         return sb;
     }
+
 }
 }

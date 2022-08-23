@@ -4,6 +4,7 @@ using Graffiti.Internal;
 
 namespace Graffiti {
 public partial class StyledString {
+
     /// <summary>
     ///     • This indexer allows you to <b> add style directly to modifier character </b> (see
     ///     <see cref="ModifierCharacterSet"/>). <br/>It means you can add <i> Color/Gradient/etc. </i> to
@@ -40,9 +41,11 @@ public partial class StyledString {
 
     /// <inheritdoc cref="StyledString.this[StringStyleCore]"/>
     public StyledString this[StringStyle style] => this[(StringStyleCore) style];
+
 }
 
 public partial class StringStyle {
+
     /// <inheritdoc cref="StyledString.this[StringStyleCore]"/>
     /// <remarks> • Example of indexer usage (Yellow Underline style): <br/>var myStyle = Style.Underline[Style.Yellow]; </remarks>
     public StringStyle this[StringStyleCore style] {
@@ -60,5 +63,6 @@ public partial class StringStyle {
 
     /// <inheritdoc cref="StringStyle.this[StringStyleCore]"/>
     public StringStyle this[StringStyle style] => this[(StringStyleCore) style];
+
 }
 }

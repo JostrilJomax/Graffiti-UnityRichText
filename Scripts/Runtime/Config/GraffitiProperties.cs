@@ -2,6 +2,7 @@
 
 namespace Graffiti {
 public static class GraffitiProperties {
+
     // What can be returned:
     // (1) Default Instance
     // (2) ScriptableObject Instance
@@ -12,5 +13,6 @@ public static class GraffitiProperties {
 
     [NotNull] public static GraffitiConfig Config
         => GraffitiSettingsSo.Instance == null ? GraffitiConfig.DefaultInstance : GraffitiSettingsSo.Instance.Config;
+
 }
 }

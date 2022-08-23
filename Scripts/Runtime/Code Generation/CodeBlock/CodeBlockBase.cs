@@ -6,6 +6,7 @@ namespace Graffiti.CodeGeneration {
 /// </summary>
 public class CodeBlockBase<T> : CodeBuilderBase<T>, IDisposable
         where T : CodeBlockBase<T> {
+
     private readonly string _afterBlock;
     private readonly bool   _doIndentContent;
 
@@ -58,5 +59,6 @@ public class CodeBlockBase<T> : CodeBuilderBase<T>, IDisposable
 
         EnableIndent();
     }
+
 }
 }

@@ -3,6 +3,7 @@
 namespace Graffiti.CodeGeneration {
 /// <summary> This class contains all non-generic shared methods. See <see cref="CodeBuilderBase{T}"/> for more info. </summary>
 public class CodeBuilderBase {
+
     protected CodeBuilderBase(CodeBuilderInfo root)
     {
         Root = root;
@@ -15,6 +16,7 @@ public class CodeBuilderBase {
     protected       void   EnableIndent()   => Root.IsIndentNeeded = true;
     protected       void   DisableIndent()  => Root.IsIndentNeeded = false;
     public override string ToString()       => Root.Sb.ToString();
+
 }
 
 /// <summary>
@@ -24,6 +26,7 @@ public class CodeBuilderBase {
 ///     this class to be able to use the FluentAPI without the need of constant cast to their type.
 /// </summary>
 public class CodeBuilderBase<T> : CodeBuilderBase where T : CodeBuilderBase<T> {
+
     protected CodeBuilderBase(CodeBuilderInfo root) : base(root) { }
 
     public T Private {
@@ -108,5 +111,6 @@ public class CodeBuilderBase<T> : CodeBuilderBase where T : CodeBuilderBase<T> {
             Root.Sb.Append("	");
         return this as T;
     }
+
 }
 }

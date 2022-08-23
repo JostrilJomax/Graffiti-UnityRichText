@@ -5,6 +5,7 @@ using UnityEngine;
 namespace Graffiti.Internal {
 /// <summary> This class contains methods for converting colors to different formats. </summary>
 internal static class ColorConvertor {
+
     // To Unity Color //////////////////////////////////
 
     internal static Color ToUnityColor([NotNull] string color)
@@ -148,5 +149,6 @@ internal static class ColorConvertor {
         float addThis = (1 - decimalPart) * 16;
         return (byte) ((value + addThis) / 16);
     }
+
 }
 }

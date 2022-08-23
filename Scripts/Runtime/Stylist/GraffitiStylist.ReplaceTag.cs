@@ -4,7 +4,9 @@ using JetBrains.Annotations;
 
 namespace Graffiti.Internal {
 internal static partial class GraffitiStylist {
+
     internal static class ReplaceTag {
+
         [Pure]
         internal static string Color(string self, string color)
         {
@@ -30,6 +32,8 @@ internal static partial class GraffitiStylist {
             sb.Append(scope.after);
             return sb.ToString();
         }
+
     }
+
 }
 }

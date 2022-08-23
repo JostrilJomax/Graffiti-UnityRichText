@@ -6,6 +6,7 @@ using UnityEngine;
 namespace Graffiti {
 [CreateAssetMenu(fileName = ScriptableObjectName, menuName = GraffitiInfo.AssetMenu.Prefix + ScriptableObjectName)]
 public class GraffitiSettingsSo : ScriptableObject {
+
     private const string ScriptableObjectName = "Graffiti Settings";
 
     public static readonly string __nameof_colorPalette = nameof(_colorPaletteSo);
@@ -62,5 +63,6 @@ public class GraffitiSettingsSo : ScriptableObject {
                 ScriptableObjectName);
         }
     }
+
 }
 }

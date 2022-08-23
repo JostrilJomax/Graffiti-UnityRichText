@@ -4,12 +4,14 @@ using UnityEngine;
 
 namespace Graffiti.Internal {
 internal static partial class GraffitiStylist {
+
     /// <summary>
     ///     Class that contains methods to insert modifier character(s) to StringBuilder with/without additional
     ///     conditions (like gradient).
     /// </summary>
     // TODO: I am not sure that it is a good practice to name class like a method. But otherwise I would have to add this prefix to all methods.
     internal static class ModifierCharacter {
+
         private const char Brick             = '█';
         private const char SmokingHot        = '̾';
         private const char Strikethrough     = '̶';
@@ -96,6 +98,8 @@ internal static partial class GraffitiStylist {
                 }
             }
         }
+
     }
+
 }
 }

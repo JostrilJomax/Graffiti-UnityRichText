@@ -5,6 +5,7 @@ using UnityEngine;
 namespace Graffiti {
 [Serializable]
 public class GraffitiConfig {
+
     [NotNull]
     internal static readonly GraffitiConfig DefaultInstance = new GraffitiConfig();
 
@@ -51,5 +52,6 @@ public class GraffitiConfig {
     public bool AllowModifierCharacterStyle = true;
 
     public bool Disabled => disabled || disabledInBuild && !Application.isEditor;
+
 }
 }

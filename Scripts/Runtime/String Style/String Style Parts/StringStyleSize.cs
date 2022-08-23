@@ -4,6 +4,7 @@ using UnityEngine;
 namespace Graffiti.Internal {
 [Serializable]
 internal struct StringStyleSize {
+
     [SerializeField] private int value;
 
     internal bool HasValue { get; private set; }
@@ -24,5 +25,6 @@ internal struct StringStyleSize {
             HasValue = true;
         }
     }
+
 }
 }

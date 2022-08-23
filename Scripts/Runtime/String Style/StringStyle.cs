@@ -15,6 +15,7 @@ namespace Graffiti {
 /// </remarks>
 [Serializable]
 public partial class StringStyle : StringStyleCore {
+
     [SerializeField] [CanBeNull] private ModifierCharacterSet _modifierCharSet;
 
     public override bool IsEmpty
@@ -89,5 +90,6 @@ public partial class StringStyle : StringStyleCore {
     }
 
     internal void SetStyleTodModifierCharacter(StringStyleCore style) => ModifierCharacterSet.SetStyleToLastAddedModifierCharacter(style);
+
 }
 }

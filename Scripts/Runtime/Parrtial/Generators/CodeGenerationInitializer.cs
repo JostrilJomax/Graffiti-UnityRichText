@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 
 namespace Graffiti.Internal {
-public class CodeGenerationInitializer {
+public static class CodeGenerationInitializer {
     [InitializeOnLoadMethod]
     public static void Initialize() => GenerateFile_StylizationOptions();
 
