@@ -1,18 +1,18 @@
 {
-    "name": "Graffiti.Tests",
-    "rootNamespace": "",
-    "references": [
-        "GUID:4573e81e30174fa4fa9e1ee2584c58be"
-    ],
-    "includePlatforms": [
-        "Editor"
-    ],
-    "excludePlatforms": [],
-    "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": [],
-    "noEngineReferences": false
+  "name": "Graffiti.Tests",
+  "rootNamespace": "",
+  "references": [
+    "GUID:4573e81e30174fa4fa9e1ee2584c58be"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
 }

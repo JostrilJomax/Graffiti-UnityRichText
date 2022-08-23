@@ -1,22 +1,26 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using Graffiti.CodeGeneration;
 
 namespace Graffiti.CodeGeneration {
 public class CodeBuilderInfo {
+    public readonly  StringBuilder        Sb;
+    private readonly Stack<CodeBlockInfo> CodeBlockDataStack = new Stack<CodeBlockInfo>();
 
-	public readonly StringBuilder        Sb;
-	public          MemberModifiers      CollectedBlockData = new MemberModifiers();
-	private         Stack<CodeBlockInfo> CodeBlockDataStack = new Stack<CodeBlockInfo>();
+    public MemberModifiers          CollectedBlockData = new MemberModifiers();
+    public CodeBuilderConfiguration Config;
+    public int                      IndentLevel;
 
-	public bool IsIndentNeeded;
-	public int  IndentLevel;
+    public bool IsIndentNeeded;
 
-	public CodeBuilderInfo(StringBuilder sb) => Sb = sb;
+    public CodeBuilderInfo(StringBuilder sb)
+    {
+        Sb = sb;
+    }
 
-	internal void          PushNewCodeBlockToStack(CodeBlockInfo newCodeBlockInfo) => CodeBlockDataStack.Push(newCodeBlockInfo);
-	internal void          PopCurrentCodeBlockFromStack()                          => CodeBlockDataStack.Pop();
-	internal CodeBlockInfo CurrentCodeBlock                                        => CodeBlockDataStack.Peek();
-	internal void          ClearCollectedBlockData()                               => CollectedBlockData = new MemberModifiers();
+    internal CodeBlockInfo CurrentCodeBlock => CodeBlockDataStack.Peek();
+
+    internal void PushNewCodeBlockToStack(CodeBlockInfo newCodeBlockInfo) => CodeBlockDataStack.Push(newCodeBlockInfo);
+    internal void PopCurrentCodeBlockFromStack()                          => CodeBlockDataStack.Pop();
+    internal void ClearCollectedBlockData()                               => CollectedBlockData = new MemberModifiers();
 }
 }

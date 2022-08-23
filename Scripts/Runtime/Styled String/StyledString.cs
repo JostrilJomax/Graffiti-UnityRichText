@@ -6,33 +6,39 @@ using Graffiti.Internal;
 namespace Graffiti {
 [Serializable]
 public partial class StyledString {
+    public StyledString([NotNull] string str, [NotNull] StringStyle stl)
+    {
+        String = str;
+        Styles.Add(stl);
+    }
 
-	public string String { get; set; }
-	public List<StringStyle> Styles { get; private set; } = new List<StringStyle>(1);
+    public StyledString([NotNull] string str, [NotNull] IEnumerable<StringStyle> stls)
+    {
+        String = str;
+        foreach (StringStyle stl in stls)
+            Styles.Add(stl);
+    }
 
-	protected StringStyle LastStyle => Styles[^1];
+    public string            String { get; set; }
+    public List<StringStyle> Styles { get; private set; } = new List<StringStyle>(1);
 
-	public StyledString([NotNull] string str, [NotNull] StringStyle stl) {
-		String = str;
-		Styles.Add(stl);
-	}
+    protected StringStyle LastStyle => Styles[^1];
 
-	public StyledString([NotNull] string str, [NotNull] IEnumerable<StringStyle> stls) {
-		String = str;
-		foreach (var stl in stls)
-			Styles.Add(stl);
-	}
+    public override string ToString()
+    {
+        if (GraffitiProperties.Config.Disabled
+         || string.IsNullOrEmpty(String)
+         || GraffitiStylist.IsOnlySeparators(String)
+         || Styles[0] == null
+         || Styles[0].IsEmpty) {
+            return String;
+        }
 
-	public override string ToString() {
+        return Styles.Count == 1
+                ? StyledStringRenderer.Render(Styles[0], String).ToString()
+                : StyledStringRenderer.Render(Styles.ToArray(), String).ToString();
+    }
 
-		if (GraffitiProperties.Config.Disabled || string.IsNullOrEmpty(String) || GraffitiStylist.IsOnlySeparators(String) || Styles[0] == null || Styles[0].IsEmpty)
-			return String;
-
-		return Styles.Count == 1
-			? StyledStringRenderer.Render(Styles[0], String).ToString()
-			: StyledStringRenderer.Render(Styles.ToArray(), String).ToString();
-	}
-
-	public static implicit operator string(StyledString styledString) => styledString.ToString();
+    public static implicit operator string(StyledString styledString) => styledString.ToString();
 }
 }

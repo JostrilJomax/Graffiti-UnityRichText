@@ -2,10 +2,10 @@
 
 namespace Graffiti.Internal {
 internal static class UnitySettingsUtility {
-
-	internal static bool IsDarkSkin =>
+    internal static bool IsDarkSkin
+        =>
 #if UNITY_EDITOR
-		EditorGUIUtility.isProSkin;
+                EditorGUIUtility.isProSkin;
 #else
 		true;
 #endif

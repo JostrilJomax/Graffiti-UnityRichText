@@ -6,58 +6,61 @@ using UnityEngine;
 namespace Graffiti {
 [CreateAssetMenu(fileName = ScriptableObjectName, menuName = GraffitiInfo.AssetMenu.Prefix + ScriptableObjectName)]
 public class GraffitiSettingsSo : ScriptableObject {
+    private const string ScriptableObjectName = "Graffiti Settings";
 
-	public static readonly string __nameof_colorPalette = nameof(_colorPaletteSo);
-	public static readonly string __nameof_config       = nameof(graffitiConfig);
+    public static readonly string __nameof_colorPalette = nameof(_colorPaletteSo);
+    public static readonly string __nameof_config       = nameof(graffitiConfig);
 
-	private const string ScriptableObjectName = "Graffiti Settings";
+    private static readonly string ResourcesAssetDefaultPath
+            = $"{GraffitiInfo.Directory.Default.ResourcesFolderPath}/{ScriptableObjectName}.asset";
 
-	private static readonly string ResourcesAssetDefaultPath
-			= $"{GraffitiInfo.Directory.Default.ResourcesFolderPath}/{ScriptableObjectName}.asset";
+    [Tooltip("The palette that will be used to colorize text. If it's null, the default palette will be used.")]
+    [CanBeNull] [SerializeField]
+    private ColorPaletteSo _colorPaletteSo;
 
-	[NotNull] internal ColorPalette Palette => _colorPaletteSo == null ? ColorPalette.DefaultInstance : _colorPaletteSo.Palette;
-	[NotNull] internal GraffitiConfig Config  => graffitiConfig;
+    [NotNull] [SerializeField]
+    private GraffitiConfig graffitiConfig = new GraffitiConfig();
 
-	[Tooltip("The palette that will be used to colorize text. If it's null, the default palette will be used.")]
-	[CanBeNull] [SerializeField]
-	private ColorPaletteSo _colorPaletteSo;
-
-	[NotNull] [SerializeField]
-	private GraffitiConfig graffitiConfig = new GraffitiConfig();
-
-
-	[CanBeNull] public static GraffitiSettingsSo Instance { get; private set; }
+    [NotNull] internal ColorPalette   Palette => _colorPaletteSo == null ? ColorPalette.DefaultInstance : _colorPaletteSo.Palette;
+    [NotNull] internal GraffitiConfig Config  => graffitiConfig;
 
 
-	internal static void Initialize() {
-		if (LoadAsset())
-			return;
+    [CanBeNull] public static GraffitiSettingsSo Instance { get; private set; }
 
-		if (GraffitiInfo.AssetCreation.IsAllowed) {
-			CreateAsset();
-			LoadAsset();
-		}
-	}
 
-	private static bool LoadAsset() =>
-			(Instance = Resources.Load<GraffitiSettingsSo>(ScriptableObjectName)) != null;
+    internal static void Initialize()
+    {
+        if (LoadAsset()) {
+            return;
+        }
 
-	[Conditional("UNITY_EDITOR")]
-	private static void CreateAsset() {
+        if (GraffitiInfo.AssetCreation.IsAllowed) {
+            CreateAsset();
+            LoadAsset();
+        }
+    }
 
-		var assetInstance = CreateInstance<GraffitiSettingsSo>();
+    private static bool LoadAsset() => (Instance = Resources.Load<GraffitiSettingsSo>(ScriptableObjectName)) != null;
 
-		if (GraffitiInfo.AssetCreation.IsAllowedInDefaultFolder)
-			if (GraffitiAssetDatabase.CreateAsset(assetInstance, ResourcesAssetDefaultPath))
-				return;
+    [Conditional("UNITY_EDITOR")]
+    private static void CreateAsset()
+    {
+        var assetInstance = CreateInstance<GraffitiSettingsSo>();
 
-		if (GraffitiInfo.AssetCreation.IsAllowedInRelativeToClassFileFolder)
-			GraffitiAssetDatabase.CreateAsset(
-					assetInstance: assetInstance,
-					nameofClass: GraffitiInfo.AssetCreation.ClassNameThatIsSearched,
-					rootFolder: GraffitiInfo.Directory.RootFolderName,
-					relativePath: GraffitiInfo.Directory.ResourcesFolder,
-					assetName: ScriptableObjectName);
-	}
+        if (GraffitiInfo.AssetCreation.IsAllowedInDefaultFolder) {
+            if (GraffitiAssetDatabase.CreateAsset(assetInstance, ResourcesAssetDefaultPath)) {
+                return;
+            }
+        }
+
+        if (GraffitiInfo.AssetCreation.IsAllowedInRelativeToClassFileFolder) {
+            GraffitiAssetDatabase.CreateAsset(
+                assetInstance,
+                GraffitiInfo.AssetCreation.ClassNameThatIsSearched,
+                GraffitiInfo.Directory.RootFolderName,
+                GraffitiInfo.Directory.ResourcesFolder,
+                ScriptableObjectName);
+        }
+    }
 }
 }

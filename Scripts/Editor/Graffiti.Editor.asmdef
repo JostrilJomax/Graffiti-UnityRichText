@@ -1,19 +1,19 @@
 {
-    "name": "Graffiti.Editor",
-    "rootNamespace": "",
-    "references": [
-        "GUID:4573e81e30174fa4fa9e1ee2584c58be",
-        "GUID:eec206f4fcee81f43b5384a885a1b5ac"
-    ],
-    "includePlatforms": [
-        "Editor"
-    ],
-    "excludePlatforms": [],
-    "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": [],
-    "noEngineReferences": false
+  "name": "Graffiti.Editor",
+  "rootNamespace": "",
+  "references": [
+    "GUID:4573e81e30174fa4fa9e1ee2584c58be",
+    "GUID:eec206f4fcee81f43b5384a885a1b5ac"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
 }

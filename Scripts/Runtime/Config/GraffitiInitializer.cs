@@ -1,25 +1,25 @@
-﻿#if UNITY_EDITOR
+﻿using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
 #endif
-using UnityEngine;
 
 namespace Graffiti.Internal {
 internal static class GraffitiInitializer {
-
-	private static bool _isInitialized;
+    private static bool _isInitialized;
 
 #if UNITY_EDITOR
-	[InitializeOnLoadMethod]
-	private static void InitializeInEditor() => Initialize();
+    [InitializeOnLoadMethod]
+    private static void InitializeInEditor() => Initialize();
 #endif
-	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-	private static void InitializeInRuntime() => Initialize();
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void InitializeInRuntime() => Initialize();
 
-	private static void Initialize() {
-		if (_isInitialized) return;
-		_isInitialized = true;
+    private static void Initialize()
+    {
+        if (_isInitialized) return;
+        _isInitialized = true;
 
-		GraffitiSettingsSo.Initialize();
-	}
+        GraffitiSettingsSo.Initialize();
+    }
 }
 }

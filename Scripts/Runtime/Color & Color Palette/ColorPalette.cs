@@ -7,18 +7,17 @@ namespace Graffiti {
 /// <remarks> This class is partial because one part of it (colors) should be generated. </remarks>
 [Serializable]
 public partial class ColorPalette {
+    /// <summary> Default color palette. Is used when no custom palette is defined in config. </summary>
+    [NotNull]
+    internal static readonly ColorPalette DefaultInstance = new ColorPalette();
 
-	/// <summary> Default color palette. Is used when no custom palette is defined in config. </summary>
- 	[NotNull]
-	internal static readonly ColorPalette DefaultInstance = new ColorPalette();
+    private static readonly GffColor DefaultDark  = new GffColor(UnityColors.DefaultDarkSkinText);
+    private static readonly GffColor DefaultLight = new GffColor(UnityColors.DefaultLightSkinText);
 
-	/// <summary> Color of text in Unity Console, depends on current Unity Editor skin (Dark/Light) </summary>
-	internal static GffColor DefaultConsoleColor => UnitySettingsUtility.IsDarkSkin ? DefaultDark : DefaultLight;
-
-	private static readonly GffColor DefaultDark  = new GffColor(UnityColors.DefaultDarkSkinText);
-	private static readonly GffColor DefaultLight = new GffColor(UnityColors.DefaultLightSkinText);
+    /// <summary> Color of text in Unity Console, depends on current Unity Editor skin (Dark/Light) </summary>
+    internal static GffColor DefaultConsoleColor => UnitySettingsUtility.IsDarkSkin ? DefaultDark : DefaultLight;
 
 
-	internal string GetColorHexValue(ColorType color) => FindColor(color).GetHexValue();
+    internal string GetColorHexValue(ColorType color) => FindColor(color).GetHexValue();
 }
 }
