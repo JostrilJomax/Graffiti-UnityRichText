@@ -6,76 +6,72 @@ public static class StylizationOptionsGenerator {
 
     public static string GenerateCode()
     {
-        var db = CodeBuilder.CreateDefaultBuilder();
+        var b = CodeBuilder.CreateDefaultBuilder();
 
-        db.Header(nameof(StylizationOptionsGenerator)).br();
+        b.Header(nameof(StylizationOptionsGenerator)).br();
 
-        db.Using("JetBrains.Annotations");
-        db.Using("UnityEngine");
-        db.Using(NameOf.Graffiti_Internal).br();
+        b.Using("JetBrains.Annotations");
+        b.Using("UnityEngine");
+        b.Using(NameOf.Graffiti_Internal).br();
 
-        using (db.Namespace(NameOf.Graffiti_Internal)) {
-            db.Internal.Enum(
-                NameOf.ColorType, Enum => {
-                    Enum.WriteDefaultMember();
-                    foreach (StylizationOptionsData.ColorField field in StylizationOptionsData.ColorFields)
-                        Enum.WriteMember(field.name);
-                });
+        using (b.Namespace(NameOf.Graffiti_Internal)) {
+            b.Internal.Enum(NameOf.ColorType, Enum => {
+                Enum.WriteDefaultMember();
+                foreach (StylizationOptionsData.ColorField field in StylizationOptionsData.ColorFields)
+                    Enum.WriteMember(field.name);
+            });
         }
 
-        using (db.Namespace(NameOf.Graffiti)) {
-            using (db.PublicAPI.br().Public.Partial.Class(NameOf.ColorPalette).br()) {
+        using (b.Namespace(NameOf.Graffiti)) {
+            b.PublicAPI.br();
+            using (b.Public.Partial.Class(NameOf.ColorPalette).br()) {
                 // [field: SerializeField] public GffColor White { get; private set; } = new GffColor(new Color(0.93f, 0.93f, 0.93f), "#eee");
                 foreach (StylizationOptionsData.ColorField field in StylizationOptionsData.ColorFields)
-                    db.field_SerializeField.Public.Property(NameOf.GffColor, field.trimmedName)
-                      .GetPrivateSet(MethodBodyOf.New.GffColor(field.UnityColor, field.ShortHexColor));
-                db.br();
+                    b.field_SerializeField.Public.Property(NameOf.GffColor, field.trimmedName)
+                     .GetPrivateSet(MethodBodyOf.New.GffColor(field.UnityColor, field.ShortHexColor));
+                b.br();
 
-                db.Internal.Method(
-                    NameOf.GffColor, NameOf.FindColor,
-                    (type: NameOf.ColorType, name: "color"), Method => {
-                        db.Switch(
-                            Method.Params[0].name, Switch => {
-                                Switch.WriteDefaultCase().br();
-                                Switch.WriteCase($"{NameOf.ColorType}.Default")
-                                      .Return(nameof(ColorPalette.DefaultConsoleColor));
-                                foreach (StylizationOptionsData.ColorField field in StylizationOptionsData.ColorFields)
-                                    Switch.WriteCase($"{NameOf.ColorType}.{field.trimmedName}")
-                                          .Return(field.trimmedName);
-                            });
+                b.Internal.Method.Returns(NameOf.GffColor).Name(NameOf.FindColor).Params((type: NameOf.ColorType, name: "color")).Body(Method => {
+                    b.Switch(Method.GetParam(0).name, Switch => {
+                        Switch.WriteDefaultCase().br();
+                        Switch.WriteCase($"{NameOf.ColorType}.Default").Return(nameof(ColorPalette.DefaultConsoleColor));
+                        foreach (StylizationOptionsData.ColorField field in StylizationOptionsData.ColorFields)
+                            Switch.WriteCase($"{NameOf.ColorType}.{field.trimmedName}").Return(field.trimmedName);
                     });
+                });
             }
 
-            db.br();
+            b.br();
 
-            using (db.PublicAPI.br().Public.Partial
-                     .Class(NameOf.StringStyle, $"{NameOf.StringStyle}.{NameOf.IOnlyColor}").br()) {
-                WriteCommonInterfaces(db.Root.CurrentCodeBlock.Name);
+            b.PublicAPI.br();
+            using (b.Public.Partial.Class(NameOf.StringStyle, $"{NameOf.StringStyle}.{NameOf.IOnlyColor}").br()) {
+                WriteCommonInterfaces(b.Root.CurrentCodeBlock.Name);
                 // public StringStyle White => PrepareColor(ColorType.White);
                 // public StringStyle SmokingHot => PrepareModifierCharacter(ModifierCharacterType.SmokingHot);
                 WriteCommonProperties();
             }
 
-            db.br();
+            b.br();
 
-            using (db.PublicAPI.br().Public.Partial
-                     .Class(NameOf.StyledString, $"{NameOf.StyledString}.{NameOf.IOnlyColor}").br()) {
-                WriteCommonInterfaces(db.Root.CurrentCodeBlock.Name);
+            b.PublicAPI.br();
+            using (b.Public.Partial.Class(NameOf.StyledString, $"{NameOf.StyledString}.{NameOf.IOnlyColor}").br()) {
+                WriteCommonInterfaces(b.Root.CurrentCodeBlock.Name);
                 // public StyledString White { get { LastStyle.PrepareColor(ColorType.White ); return this; } }
                 // public StyledString SmokingHot { get { LastStyle.PrepareModifierCharacter(ModifierCharacterType.SmokingHot); return this; } }
                 WriteCommonProperties();
             }
 
-            db.br();
+            b.br();
 
-            using (db.PublicAPI.br().Public.Static.Partial.Class(NameOf.Style).br()) {
+            b.PublicAPI.br();
+            using (b.Public.Static.Partial.Class(NameOf.Style).br()) {
                 // public static StringStyle White => StringStyle.Create().PrepareColor(ColorType.White);
                 // public static StringStyle SmokingHot => StringStyle.Create().PrepareModifierCharacter(ModifierCharacterType.SmokingHot);
                 WriteCommonProperties();
             }
         }
 
-        return db.ToString();
+        return b.ToString();
 
 
         void WriteCommonProperties()
@@ -83,7 +79,7 @@ public static class StylizationOptionsGenerator {
             WriteCommonPropertyAuto("DefaultColor", MethodBodyOf.PrepareColor, true);
             foreach (StylizationOptionsData.ColorField field in StylizationOptionsData.ColorFields)
                 WriteCommonPropertyAuto(field.trimmedName, MethodBodyOf.PrepareColor);
-            db.br();
+            b.br();
 
             foreach (StylizationOptionsData.ModifierCharacterField field in StylizationOptionsData.ModifierCharacterFields)
                 WriteCommonPropertyAuto(field.trimmedName, MethodBodyOf.PrepareModifierCharacter);
@@ -91,29 +87,29 @@ public static class StylizationOptionsGenerator {
 
         void WriteCommonInterfaces(string returnType)
         {
-            db.PublicAPI.br();
-            using (db.Public.Interface(NameOf.IOnlyColor)) {
+            b.PublicAPI.br();
+            using (b.Public.Interface(NameOf.IOnlyColor)) {
                 foreach (StylizationOptionsData.ColorField field in StylizationOptionsData.ColorFields)
-                    db.Public.Writeln($"{returnType} {field.trimmedName} {{ get; }}");
+                    b.Public.Writeln($"{returnType} {field.trimmedName} {{ get; }}");
             }
 
-            db.br();
+            b.br();
         }
 
         void WriteCommonPropertyAuto(string propertyName, Func<string, string> getBody, bool isDefaultItem = false)
         {
             string itemName = isDefaultItem ? "Default" : propertyName;
-            switch (db.Root.CurrentCodeBlock.Name) {
+            switch (b.Root.CurrentCodeBlock.Name) {
                 case NameOf.StringStyle:
-                    db.Public.Property(NameOf.StringStyle, propertyName).Expression(getBody(itemName));
+                    b.Public.Property(NameOf.StringStyle, propertyName).Expression(getBody(itemName));
                     break;
                 case NameOf.StyledString:
-                    db.Public.Property(NameOf.StyledString, propertyName)
-                      .GetReturnThis("LastStyle." + getBody(itemName));
+                    b.Public.Property(NameOf.StyledString, propertyName)
+                     .GetReturnThis("LastStyle." + getBody(itemName));
                     break;
                 case NameOf.Style:
-                    db.Public.Static.Property(NameOf.StringStyle, propertyName)
-                      .Expression(MethodBodyOf.StringStyle_Create() + "." + getBody(itemName));
+                    b.Public.Static.Property(NameOf.StringStyle, propertyName)
+                     .Expression(MethodBodyOf.StringStyle_Create() + "." + getBody(itemName));
                     break;
             }
         }

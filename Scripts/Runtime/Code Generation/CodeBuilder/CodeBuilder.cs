@@ -61,29 +61,31 @@ public class CodeBuilder : CodeBuilderBase<CodeBuilder> {
             Root, CodeBlockInfo.Create(name),
             $"class {name}{(string.IsNullOrEmpty(inherit) ? "" : $" : {inherit}")}");
 
-    public void Method(string returns, string name, (string type, string name) param0, Action<MethodBlock> body)
-        => Method(returns, name, body, param0);
+    public CodeBlockModels.MethodBlock Method => new CodeBlockModels.MethodBlock(this.Root);
 
-    public void Method(
+    public void MethodD(string returns, string name, (string type, string name) param0, Action<MethodDBlock> body)
+        => MethodD(returns, name, body, param0);
+
+    public void MethodD(
         string returns,
         string name,
         (string type, string name) param0,
         (string type, string name) param1,
-        Action<MethodBlock> body)
-        => Method(returns, name, body, param0, param1);
+        Action<MethodDBlock> body)
+        => MethodD(returns, name, body, param0, param1);
 
-    public void Method(
+    public void MethodD(
         string returns,
         string name,
         (string type, string name) param0,
         (string type, string name) param1,
         (string type, string name) param2,
-        Action<MethodBlock> body)
-        => Method(returns, name, body, param0, param1, param2);
+        Action<MethodDBlock> body)
+        => MethodD(returns, name, body, param0, param1, param2);
 
-    public void Method(string returns, string name, Action<MethodBlock> body, params (string type, string name)[] params_)
+    public void MethodD(string returns, string name, Action<MethodDBlock> body, params (string type, string name)[] params_)
     {
-        using var block = new MethodBlock(Root, returns, name, params_);
+        using var block = new MethodDBlock(Root, returns, name, params_);
         body.Invoke(block);
     }
 

@@ -3,6 +3,7 @@ using Graffiti.Internal;
 
 namespace Graffiti.CodeGeneration {
 public static class StylizationOptionsData {
+
     public static readonly List<ColorField> ColorFields = new List<ColorField> {
         new ColorField("White", " ", "new Color(0.93f, 0.93f, 0.93f)" /*"#eeeeee"*/, "#eee"),
         new ColorField("Grey", "  ", "new Color(0.67f, 0.67f, 0.67f)" /*"#aaaaaa"*/, "#aaa"),
@@ -38,6 +39,7 @@ public static class StylizationOptionsData {
 
 
     public struct ColorField {
+
         public readonly string name, space, trimmedName, UnityColor, ShortHexColor;
 
         public ColorField(string fieldName, string field_space, string unityColor, string shortHexColor)
@@ -48,9 +50,11 @@ public static class StylizationOptionsData {
             UnityColor = unityColor;
             ShortHexColor = shortHexColor;
         }
+
     }
 
     public struct UnityFontStyleField {
+
         public readonly string name, space, trimmedName;
 
         public UnityFontStyleField(string fieldName, string field_space)
@@ -59,9 +63,11 @@ public static class StylizationOptionsData {
             space = field_space;
             trimmedName = fieldName + field_space;
         }
+
     }
 
     public struct ModifierCharacterField {
+
         public readonly string name, space, trimmedName;
 
         public ModifierCharacterField(string fieldName, string field_space)
@@ -70,6 +76,8 @@ public static class StylizationOptionsData {
             space = field_space;
             trimmedName = fieldName + field_space;
         }
+
     }
+
 }
 }

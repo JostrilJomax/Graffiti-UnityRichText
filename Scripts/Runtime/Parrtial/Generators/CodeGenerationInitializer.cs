@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Graffiti.Internal {
 public static class CodeGenerationInitializer {
+
     [InitializeOnLoadMethod]
     public static void Initialize() => GenerateFile_StylizationOptions();
 
@@ -49,5 +50,6 @@ public static class CodeGenerationInitializer {
 
         return fileDestinationPath;
     }
+
 }
 }

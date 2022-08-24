@@ -1,68 +1,72 @@
-﻿using System.Linq;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
+using UnityEngine;
 
 namespace Graffiti.CodeGeneration {
-public class PropertyBuilder : CodeBuilderBase<PropertyBuilder> {
+public static class CodeBlockModels {
 
-    public PropertyBuilder(CodeBuilderInfo root, string returnType, string name)
-            : base(root)
-    {
-        Write($"{returnType} {name}");
+    public class MethodBlock : CodeBlockBase<MethodBlock> {
+
+        private (string type, string name)[] _params;
+
+        public MethodBlock(CodeBuilderInfo root) : base(root) { }
+
+        public MethodBlock Returns(string type = null)
+            => ActionOrDefault(Writesp, type, "void", true);
+
+        public MethodBlock Name([NotNull] string name)
+            => ActionOrDefault(Write, name, "_UnnamedMethod_", false);
+
+        public MethodBlock Params([NotNull] params (string type, string name)[] params_)
+        {
+            if (params_.Length == 0)
+                return this;
+
+            int lastIndex = params_.Length - 1;
+            for (int i = 0; i < params_.Length; i++) {
+                ActionOrDefault(Write, params_[i].type, "_UnmanagedType_", false);
+                ActionOrDefault(Write, params_[i].name, "_UnmanagedParamName_", false);
+                if (i < lastIndex)
+                    Write(", ");
+            }
+
+            _params = params_;
+
+            return this;
+        }
+
+        public (string type, string name) GetParam(int i)
+        {
+            if (i < 0 || i > _params.Length - 1) {
+                // TODO: Handle Error
+                Debug.LogError("!");
+                return ("", "");
+            }
+
+            return _params[i];
+        }
+
     }
 
-    public void GetPrivateSet([CanBeNull] string equateTo = null)
-        => Writeln($" {{ get; private set; }}{(equateTo == null ? "" : $" = {equateTo};")}");
-
-    public void GetReturnThis(string body)        => Writeln($" {{ get {{ {body}; return this; }} }}");
-    public void Expression([NotNull] string body) => Writeln($" => {body};");
-
-}
-
-
-public class MethodBlock : CodeBlockBase<MethodBlock> {
-
-    public readonly (string type, string name)[] Params;
-
-    public MethodBlock(CodeBuilderInfo root, string returns, string name, [CanBeNull] (string type, string name)[] params_)
-            : base(
-                root, CodeBlockInfo.Create(name),
-                $"{returns} {name}({(params_ == null ? "" : string.Join(", ", params_.ToList().ConvertAll(x => $"{x.type} {x.name}")))})")
-    {
-        Params = params_;
-    }
-
-}
-
-public class EnumBlock : CodeBlockBase<EnumBlock> {
-
-    public EnumBlock(CodeBuilderInfo root, string name, string insideBlock = "") : base(
-        root, CodeBlockInfo.Create(name), $"enum {name}", insideBlock) { }
-
-    public EnumBlock WriteDefaultMember()     => WriteMember("Default");
-    public EnumBlock WriteMember(string name) => Writeln($"{name}, ");
-
-}
-
-public class SwitchBlock : CodeBlockBase<SwitchBlock> {
-
-    public SwitchBlock(CodeBuilderInfo root, string name) : base(root, CodeBlockInfo.Create(name), $"switch ({name})") { }
-    public SwitchBlock WriteDefaultCase()     => Write("default:");
-    public SwitchBlock WriteCase(string name) => Write($"case {name}: ");
-    public SwitchBlock Return(string value)   => Writeln($"return {value};");
-    public SwitchBlock Break()                => Writeln("break;");
-
-}
-
-public class CodeBlock : CodeBlockBase<CodeBlock> {
-
-    public CodeBlock(
-        CodeBuilderInfo root,
-        CodeBlockInfo newBlockInfo,
-        string beforeBlock = "",
-        string insideBlock = "",
-        string afterBlock = "",
-        bool doIndentContent = true)
-            : base(root, newBlockInfo, beforeBlock, insideBlock, afterBlock, doIndentContent) { }
+    // public class EnumBlock : CodeBlockBase<EnumBlock> {
+    //
+    //     public EnumBlock(CodeBuilderInfo root, string name, string insideBlock = "") : base(
+    //         root, CodeBlockInfo.Create(name), $"enum {name}", insideBlock) { }
+    //
+    //     public EnumBlock WriteDefaultMember()     => WriteMember("Default");
+    //     public EnumBlock WriteMember(string name) => Writeln($"{name}, ");
+    //
+    // }
+    //
+    // public class SwitchBlock : CodeBlockBase<SwitchBlock> {
+    //
+    //     public SwitchBlock(CodeBuilderInfo root) : base(root) { }
+    //
+    //     public SwitchBlock DefaultCase()     => Write("default:");
+    //     public SwitchBlock Case(string name) => Write($"case {name}: ");
+    //     public SwitchBlock Return(string value)   => Writeln($"return {value};");
+    //     public SwitchBlock Break()                => Writeln("break;");
+    //
+    // }
 
 }
 }

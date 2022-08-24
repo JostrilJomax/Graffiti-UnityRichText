@@ -1,4 +1,6 @@
 ﻿using System;
+using JetBrains.Annotations;
+using UnityEngine;
 
 namespace Graffiti.CodeGeneration {
 /// <summary> This class contains all non-generic shared methods. See <see cref="CodeBuilderBase{T}"/> for more info. </summary>
@@ -11,10 +13,11 @@ public class CodeBuilderBase {
 
     protected internal CodeBuilderInfo Root { get; }
 
-    protected       void   IncreaseIndent() => Root.IndentLevel++;
-    protected       void   DecreaseIndent() => Root.IndentLevel = Math.Max(--Root.IndentLevel, 0);
-    protected       void   EnableIndent()   => Root.IsIndentNeeded = true;
-    protected       void   DisableIndent()  => Root.IsIndentNeeded = false;
+    protected void IncreaseIndent() => Root.IndentLevel++;
+    protected void DecreaseIndent() => Root.IndentLevel = Math.Max(--Root.IndentLevel, 0);
+    protected void EnableIndent()   => Root.IsIndentNeeded = true;
+    protected void DisableIndent()  => Root.IsIndentNeeded = false;
+
     public override string ToString()       => Root.Sb.ToString();
 
 }
@@ -29,47 +32,12 @@ public class CodeBuilderBase<T> : CodeBuilderBase where T : CodeBuilderBase<T> {
 
     protected CodeBuilderBase(CodeBuilderInfo root) : base(root) { }
 
-    public T Private {
-        get {
-            Root.CurrentCodeBlock.IsPrivate = true;
-            return Write("private ");
-        }
-    }
-
-    public T Public {
-        get {
-            Root.CurrentCodeBlock.IsPublic = true;
-            return Write("public ");
-        }
-    }
-
-    public T Internal {
-        get {
-            Root.CurrentCodeBlock.IsInternal = true;
-            return Write("internal ");
-        }
-    }
-
-    public T Static {
-        get {
-            Root.CurrentCodeBlock.IsStatic = true;
-            return Write("static ");
-        }
-    }
-
-    public T Abstract {
-        get {
-            Root.CurrentCodeBlock.IsAbstract = true;
-            return Write("abstract ");
-        }
-    }
-
-    public T Partial {
-        get {
-            Root.CurrentCodeBlock.IsPartial = true;
-            return Write("partial ");
-        }
-    }
+    public T Private  { get { Root.CurrentCodeBlock.IsPrivate = true;  return Write("private ");  } }
+    public T Public   { get { Root.CurrentCodeBlock.IsPublic = true;   return Write("public ");   } }
+    public T Internal { get { Root.CurrentCodeBlock.IsInternal = true; return Write("internal "); } }
+    public T Static   { get { Root.CurrentCodeBlock.IsStatic = true;   return Write("static ");   } }
+    public T Abstract { get { Root.CurrentCodeBlock.IsAbstract = true; return Write("abstract "); } }
+    public T Partial  { get { Root.CurrentCodeBlock.IsPartial = true;  return Write("partial ");  } }
 
     /// <summary> Appends '\n', breaking current line. Activates indentation on the next line. </summary>
     /// <remarks> Name "br" stands for "break line" </remarks>
@@ -98,6 +66,28 @@ public class CodeBuilderBase<T> : CodeBuilderBase where T : CodeBuilderBase<T> {
         }
 
         Root.Sb.Append(value);
+        return this as T;
+    }
+
+    /// <summary> Same as <see cref="Write"/>, but adds space at the end. </summary>
+    protected T Writespln(string value) => Writeln(value + " ");
+
+    /// <summary> Same as <see cref="Writeln"/>, but adds space at the end. </summary>
+    protected T Writesp(string value) => Write(value + " ");
+
+    protected T ActionOrDefault<T2>([NotNull] Func<string, T2> action, [CanBeNull] string str, [NotNull] string default_, bool isAllowed)
+    {
+        if (string.IsNullOrEmpty(str)) {
+            if (!isAllowed) {
+                // TODO: Add error handling
+                Debug.LogError("!");
+            }
+            action(default_);
+            return this as T;
+        }
+
+        action(str);
+
         return this as T;
     }
 
