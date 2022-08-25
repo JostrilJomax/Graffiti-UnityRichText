@@ -28,6 +28,7 @@ public static class CodeGenerationInitializer {
     }
 
 
+
     private static string GetFileDestinationPath()
     {
         const string pointerClass = nameof(CodeGenerationInitializer);

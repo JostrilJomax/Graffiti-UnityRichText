@@ -1,5 +1,5 @@
 ﻿namespace Graffiti.CodeGeneration {
-public class MemberModifiers {
+public class MemberInfo {
 
     public bool IsPartial  { get; internal set; }
     public bool IsAbstract { get; internal set; }
@@ -8,7 +8,7 @@ public class MemberModifiers {
     public bool IsPublic   { get; internal set; }
     public bool IsStatic   { get; internal set; }
 
-    public void CopyTo(MemberModifiers to)
+    public void CopyMemberInfoTo(MemberInfo to)
     {
         to.IsPartial = IsPartial;
         to.IsAbstract = IsAbstract;

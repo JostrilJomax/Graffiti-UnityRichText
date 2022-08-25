@@ -1,9 +1,11 @@
 ﻿namespace Graffiti.CodeGeneration {
-public class CodeBlockInfo : MemberModifiers {
+public class CodeBlockInfo : MemberInfo {
 
-    public string Name { get; private set; }
+    public string Name { get; internal set; }
 
-    public static CodeBlockInfo Create(string name) => new CodeBlockInfo { Name = name };
-
+    public static CodeBlockInfo CreateRootBlockInfo()
+        => new CodeBlockInfo {
+            Name = "Root",
+        };
 }
 }
