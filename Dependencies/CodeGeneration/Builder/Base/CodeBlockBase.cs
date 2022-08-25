@@ -1,8 +1,9 @@
 ﻿using System;
+using Graffiti.CodeGeneration.Internal.Helpers;
 using JetBrains.Annotations;
-using UnityEngine;
 
 namespace Graffiti.CodeGeneration {
+[PublicAPI]
 public abstract class CodeBlockBase<T> : CodeBuilderBase<T> where T : CodeBlockBase<T> {
 
     protected CodeBlockBase(CodeBuilderGlue glue) : base(glue) => Glue.InitNewBlock();

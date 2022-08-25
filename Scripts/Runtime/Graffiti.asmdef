@@ -1,17 +1,18 @@
 {
-  "name": "Graffiti",
-  "rootNamespace": "Graffiti",
-  "references": [
-    "GUID:9c6102e32d397e647b2ac87218399784",
-    "GUID:135fa1be93a0f9948bb5ee9ea5911cbf"
-  ],
-  "includePlatforms": [],
-  "excludePlatforms": [],
-  "allowUnsafeCode": false,
-  "overrideReferences": false,
-  "precompiledReferences": [],
-  "autoReferenced": true,
-  "defineConstraints": [],
-  "versionDefines": [],
-  "noEngineReferences": false
+    "name": "Graffiti",
+    "rootNamespace": "Graffiti",
+    "references": [
+        "GUID:9c6102e32d397e647b2ac87218399784",
+        "GUID:135fa1be93a0f9948bb5ee9ea5911cbf",
+        "GUID:9af2809a8b807dc4abea1fd6dfcef82f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

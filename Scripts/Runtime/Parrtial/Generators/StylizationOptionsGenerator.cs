@@ -1,6 +1,5 @@
 ﻿using System;
 using Graffiti.CodeGeneration;
-using UnityEngine;
 
 namespace Graffiti {
 public static class StylizationOptionsGenerator {
@@ -9,17 +8,20 @@ public static class StylizationOptionsGenerator {
     {
         var b = CodeBuilder.CreateDefaultBuilder();
 
-        b.Config
-         .SetRule
-         .CommentAll();
+        // b.Config
+        //  .SetRule
+        //  .CommentAll();
 
         b.Header(nameof(StylizationOptionsGenerator)).Br();
 
         b.Using("JetBrains.Annotations");
         b.Using("UnityEngine");
-        b.Using(NameOf.Graffiti_Internal).Br();
+        b.Using("Graffiti.Internal");
+        b.Using("Graffiti.Internal.Helpers").Br();
 
-        b.Namespace.Name(NameOf.Graffiti_Internal).Body(() => {
+        b.TitledSeparator("Graffiti Colors");
+
+        b.Namespace.Name("Graffiti.Internal").Body(() => {
             b.Internal.Enum.Name(NameOf.ColorType).Body(Enum => {
                 Enum.DefaultMember();
                 foreach (var field in StylizationOptionsData.ColorFields)
@@ -27,7 +29,7 @@ public static class StylizationOptionsGenerator {
             });
         }).Br();
 
-        b.Namespace.Name(NameOf.Graffiti).Body(() => {
+        b.Namespace.Name("Graffiti").Body(() => {
             b.PublicAPI.Br();
             b.Public.Partial.Class.Nameof<ColorPalette>().Body(() => {
                 b.Br();
@@ -41,38 +43,40 @@ public static class StylizationOptionsGenerator {
                  .Body(Method => {
                       b.Switch.Value(Method.GetParam(0).name).Body(Switch => {
                           Switch.DefaultCase().Br();
-                          Switch.Case(NameOf.ColorType.Dot("Default"))
+                          Switch.Case(NameOf.ColorType + ".Default")
                                 .Return(nameof(ColorPalette.DefaultConsoleColor));
                           foreach (var field in StylizationOptionsData.ColorFields)
-                              Switch.Case(NameOf.ColorType.Dot(field.trimmedName))
+                              Switch.Case(NameOf.ColorType + "." + (field.trimmedName))
                                     .Return(field.trimmedName);
                       });
                   });
             }).Br();
 
+            b.TitledSeparator("Generic Interface");
+
             b.PublicAPI.Br();
-            b.Public.Partial.Class.Nameof<StringStyle>().Inherit(nameof(StringStyle).Dot(NameOf.IOnlyColor)).Body(() => {
+            b.Public.Interface.Name(NameOf.IOnlyColor).Write("<out T>").Body(() => {
+                foreach (var field in StylizationOptionsData.ColorFields)
+                    b.Public.Write("T ").Write(field.trimmedName).Write(" { get; }").Br();
+            }).Br();
+
+            b.TitledSeparator("Fluent API");
+
+            b.PublicAPI.Br();
+            b.Public.Partial.Class.Nameof<StyledString>().Inherit(INameOf.IOnlyColor(b.Self)).Body(() => {
                 b.Br();
-                WriteCommonInterfaces(b.Glue.CurrentCodeBlock.Name);
-                // public StringStyle White => PrepareColor(ColorType.White);
-                // public StringStyle SmokingHot => PrepareModifierCharacter(ModifierCharacterType.SmokingHot);
                 WriteCommonProperties();
             }).Br();
 
             b.PublicAPI.Br();
-            b.Public.Partial.Class.Nameof<StyledString>().Inherit(nameof(StyledString).Dot(NameOf.IOnlyColor)).Body(() => {
+            b.Public.Partial.Class.Nameof<StringStyle>().Inherit(INameOf.IOnlyColor(b.Self)).Body(() => {
                 b.Br();
-                WriteCommonInterfaces(b.Glue.CurrentCodeBlock.Name);
-                // public StyledString White { get { LastStyle.PrepareColor(ColorType.White ); return this; } }
-                // public StyledString SmokingHot { get { LastStyle.PrepareModifierCharacter(ModifierCharacterType.SmokingHot); return this; } }
                 WriteCommonProperties();
             }).Br();
 
             b.PublicAPI.Br();
             b.Public.Static.Partial.Class.Name(nameof(Style)).Body(() => {
                 b.Br();
-                // public static StringStyle White => StringStyle.Create().PrepareColor(ColorType.White);
-                // public static StringStyle SmokingHot => StringStyle.Create().PrepareModifierCharacter(ModifierCharacterType.SmokingHot);
                 WriteCommonProperties();
             });
         });
@@ -94,25 +98,16 @@ public static class StylizationOptionsGenerator {
             }
         }
 
-        void WriteCommonInterfaces(string returnType)
-        {
-            b.PublicAPI.Br();
-            b.Public.Interface.Name(NameOf.IOnlyColor).Body(() => {
-                foreach (var field in StylizationOptionsData.ColorFields)
-                    b.Public.Writeln($"{returnType} {field.trimmedName} {{ get; }}");
-            }).Br();
-        }
-
         void WriteCommonPropertyAuto(string propertyName, Func<string, string> getBody, bool isDefaultItem = false)
         {
             string itemName = isDefaultItem ? "Default" : propertyName;
-            switch (b.Glue.CurrentCodeBlock.Name) {
-                case NameOf.StringStyle:
-                    b.Public.Property.Returns(NameOf.StringStyle).Name(propertyName).Expression(getBody(itemName));
-                    break;
+            switch (b.Self) {
                 case NameOf.StyledString:
                     b.Public.Property.Returns(NameOf.StyledString).Name(propertyName)
-                     .GetReturnThis("LastStyle." + getBody(itemName));
+                     .Expression("LastStyle." + getBody(itemName) + ".Return(this)");
+                    break;
+                case NameOf.StringStyle:
+                    b.Public.Property.Returns(NameOf.StringStyle).Name(propertyName).Expression(getBody(itemName));
                     break;
                 case NameOf.Style:
                     b.Public.Static.Property.Returns(NameOf.StringStyle).Name(propertyName)
@@ -125,12 +120,9 @@ public static class StylizationOptionsGenerator {
     // Constants
     private static class NameOf {
 
-        public const string Graffiti              = "Graffiti";
-        public const string Graffiti_Internal     = "Graffiti.Internal";
         public const string ColorType             = "ColorType";
         public const string ModifierCharacterType = nameof(Internal.ModifierCharacterType);
         public const string GffColor              = nameof(global::Graffiti.GffColor);
-        public const string ColorPalette          = nameof(global::Graffiti.ColorPalette);
         public const string StyledString          = nameof(global::Graffiti.StyledString);
         public const string StringStyle           = nameof(global::Graffiti.StringStyle);
         public const string Style                 = nameof(global::Graffiti.Style);
@@ -155,6 +147,12 @@ public static class StylizationOptionsGenerator {
                 => $"new {NameOf.GffColor}({unityColor}, \"{shortHexColor}\")";
 
         }
+
+    }
+
+    private static class INameOf {
+
+        public static string IOnlyColor(string T) => $"{NameOf.IOnlyColor}<{T}>";
 
     }
 

@@ -1,8 +1,11 @@
 ﻿using JetBrains.Annotations;
 using UnityEngine;
 
-namespace Graffiti.CodeGeneration {
-public static class StringExtensions {
+namespace Graffiti.CodeGeneration.Internal.Helpers {
+internal static class StringExtensions {
+
+    public static string InAngleBrackets(this string self, string content)
+        => $"{self}<{content}>";
 
     public static string Dot(this string self, string str1)
         => string.Join('.', self, str1);

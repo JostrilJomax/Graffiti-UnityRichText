@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using Graffiti.CodeGeneration.Internal.Helpers;
+using JetBrains.Annotations;
 
 namespace Graffiti.CodeGeneration {
 public static class CodeBuilderModels {
