@@ -23,15 +23,15 @@ internal static class StringExtensions {
 
     public static string SelfOrDefault([CanBeNull] this string self, [NotNull] string default_, bool isAllowed)
     {
-        if (string.IsNullOrEmpty(self)) {
-            if (!isAllowed) {
-                // TODO: Add error handling
-                Debug.LogError("!");
-            }
-            return default_;
-        }
+        if (!string.IsNullOrEmpty(self))
+            return self;
 
-        return self;
+        if (!isAllowed) {
+            // TODO: Add error handling
+            Debug.LogError("!");
+        }
+        return default_;
+
     }
 }
 }

@@ -15,6 +15,15 @@ public static class CodeBuilderModels {
             => Write(type.SelfOrDefault("void", true))
                    .Write(" ");
 
+        public void Get([CanBeNull] string equateTo = null)
+            => Write(" { get; }")
+              .Write(equateTo == null ? "" : $" = {equateTo};")
+              .Br();
+
+        public void GetSet([CanBeNull] string equateTo = null)
+            => Write(" { get; set; }")
+              .Write(equateTo == null ? "" : $" = {equateTo};")
+              .Br();
 
         public void GetPrivateSet([CanBeNull] string equateTo = null)
             => Write(" { get; private set; }")

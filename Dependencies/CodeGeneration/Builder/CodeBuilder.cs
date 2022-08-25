@@ -62,6 +62,8 @@ public class CodeBuilder : CodeBuilderBase<CodeBuilder> {
         return this;
     }
 
+    public CodeBuilder Summary(string summary) => Writeln("/// <summary>" + summary + "</summary>");
+
     /// <summary> Writes a simple commented separator for better code readability. </summary>
     public CodeBuilder TitledSeparator(string title)
     {

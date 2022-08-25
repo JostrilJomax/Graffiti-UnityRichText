@@ -58,10 +58,12 @@ public static class CodeBlockModels {
             => Write(type.SelfOrDefault("void", true))
               .Write(" ");
 
-        public MethodBlock Params([NotNull] params (string type, string name)[] params_)
+        public MethodBlock Params(params (string type, string name)[] params_)
         {
-            if (params_.Length == 0)
+            if (params_ == null || params_.Length == 0) {
+                Write("()");
                 return this;
+            }
 
             Write("(");
             int lastIndex = params_.Length - 1;
