@@ -6,14 +6,14 @@ namespace Graffiti.Internal {
 /// <summary> Helper class to create Unity's Gradient class. </summary>
 internal static class GradientBuilder {
 
-    internal static Gradient CreateGradient([NotNull] IList<StringStyleColor> list)
+    public static Gradient CreateGradient([NotNull] IList<StringStyleColor> list)
     {
         var colors = new Color[list.Count];
         for (int i = 0; i < colors.Length; i++) colors[i] = list[i].GetUnityColor();
         return CreateGradient(colors);
     }
 
-    internal static Gradient CreateGradient(Color[] list)
+    public static Gradient CreateGradient([NotNull] Color[] list)
     {
         var gr = new Gradient();
         int length = list.Length > 8 ? 8 : list.Length;

@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Linq;
 using Graffiti;
 using Graffiti.Internal;
 using Graffiti.Tests;
 using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 using GUI = GraffitiEditor.GraffitiGUI;
 
 
@@ -80,31 +83,67 @@ public class GraffitiSettingsSo_Editor : Editor {
             MethodScript = "text.Stylize(-.3f).Orange.Size(24)",
             Description = "Last 30% of the words are Colored and has size 24",
         },
+        new UsageExample {
+            Method = txt => LONG_LOREM_IPSUM_TEXT
+                           .Stylize(..).Green.Blue.Red.Purple
+                           .And(..1).Size(18)
+                           .And(2, 15).Italic.Bold
+                           .And(-.5f).Underline[Style.Purple.Yellow]
+                           .And(24..30).Strikethrough[Style.DefaultColor],
+            MethodScript = "txt.Stylize(..).Green.Blue.Red.Purple"
+                          + ".And(..1).Size(18)"
+                          + ".And(2, 15).Italic.Bold"
+                          + ".And(-.5f).Underline[Style.Purple.Yellow]"
+                          + ".And(24..30).Strikethrough[Style.DefaultColor]",
+            Description = "All text - gradient Green-Blue-Red-Purple\n"
+                          + "2 first word - size 18\n"
+                          + "words 3 to 15 - Italic-Bold\n"
+                          + "last 50% - Purple-Yellow Underline\n"
+                          + "words 25 to 30 - Strikethrough",
+        },
     };
 
-    private static bool _isExpanded_ColorPaletteSelection;
-    private static bool _isExpanded_Settings;
-    private static bool _isExpanded_ExampleText = true;
+    private static readonly bool[] _isDescriptionExpanded = new bool[_usageExamples.Length];
+    private static readonly bool[] _isTxtExpanded         = new bool[_usageExamples.Length];
+    private static readonly bool[] _isScriptExpanded      = new bool[_usageExamples.Length];
 
 
-    private static readonly bool[]             _isDescriptionExpanded = new bool[_usageExamples.Length];
-    private static readonly bool[]             _isScriptExpanded      = new bool[_usageExamples.Length];
-    [CanBeNull] private     ColorPaletteSo     _SO_palette;
-    private                 SerializedProperty _SP_config;
-    [CanBeNull] private     SerializedProperty _SP_palette;
+    private static GUIStyle _gui_textArea => new GUIStyle("TextArea") {
+    };
+
+    private static GUIStyle _gui_richTextTextArea => new GUIStyle("TextArea") {
+        richText = true
+    };
+
+    private static GUIStyle _gui_testCaseTextArea => new GUIStyle("TextArea") {
+        richText = true, alignment = TextAnchor.MiddleLeft, stretchHeight = true
+    };
+
+    private static GUIStyle _guis_testDescriptionHelpBox => new GUIStyle("HelpBox") {
+        richText = true, stretchWidth = true, fontSize = 12
+    };
+
+    private static GUIStyle _guis_testScriptHelpBox      => new GUIStyle("HelpBox") {
+        richText = true, stretchWidth = true, fontSize = 12
+    };
+
+    private static GUIStyle _guis_testInfoButton => new GUIStyle("Button") {
+        richText = true, fixedWidth = 28, fixedHeight = GUI.DefaultPropertyHeight * 2
+    };
+
+    private bool _isExpanded_ColorPaletteSelection;
+    private bool _isExpanded_Settings;
+    private bool _isExpanded_ExampleText = true;
+
+    private             SerializedProperty _SP_config;
+    [CanBeNull] private ColorPaletteSo     _SO_palette;
+    [CanBeNull] private SerializedProperty _SP_palette;
 
     private GraffitiSettingsSo _target;
 
-    private static GUIStyle _guis_richText => new GUIStyle("TextArea") { richText = true };
+    private readonly Stopwatch          _stopWatch          = new Stopwatch();
+    private readonly TimeSpan[]     _exampleMethodTicks = new TimeSpan[_usageExamples.Length];
 
-    private static GUIStyle _guis_exampleHeader
-        => new GUIStyle("TextArea") { richText = true, fixedHeight = GUI.DefaultPropertyHeight * 2, alignment = TextAnchor.MiddleLeft };
-
-    private static GUIStyle _guis_exampleDescription => new GUIStyle("HelpBox") { richText = true, stretchWidth = true, fontSize = 12 };
-    private static GUIStyle _guis_exampleScript      => new GUIStyle("HelpBox") { richText = true, stretchWidth = true, fontSize = 12 };
-
-    private static GUIStyle _guis_exampleButton
-        => new GUIStyle("Button") { richText = true, fixedWidth = 28, fixedHeight = GUI.DefaultPropertyHeight * 2 };
 
 
     private void UpdateVariables()
@@ -148,23 +187,29 @@ public class GraffitiSettingsSo_Editor : Editor {
                 for (int i = 0; i < _usageExamples.Length; i++) {
                     GUI.Space();
 
+
+                    _stopWatch.Restart();
+                    string exampleText = _usageExamples[i].Method(Txt);
+                    _exampleMethodTicks[i] = _stopWatch.Elapsed;
+                    _stopWatch.Stop();
+
                     using (GUI.Horizontal()) {
-                        GUILayout.TextArea(_usageExamples[i].Method(Txt), _guis_exampleHeader);
-                        if (GUILayout.Button("<b>C#</b>", _guis_exampleButton)) {
+                        GUILayout.TextArea(exampleText, _gui_testCaseTextArea);
+                        if (GUILayout.Button("<b>C#</b>", _guis_testInfoButton)) {
                             _isScriptExpanded[i] = !_isScriptExpanded[i];
                         }
 
-                        if (GUI.Button("<b>?</b>", _guis_exampleButton)) {
+                        if (GUI.Button("<b>?</b>", _guis_testInfoButton)) {
                             _isDescriptionExpanded[i] = !_isDescriptionExpanded[i];
+                        }
+
+                        if (GUI.Button("<b>txt</b>", _guis_testInfoButton)) {
+                            _isTxtExpanded[i] = !_isTxtExpanded[i];
                         }
                     }
 
-                    if (_isDescriptionExpanded[i]) {
-                        GUILayout.Label($"<b>?:</b> {_usageExamples[i].Description}", _guis_exampleDescription);
-                    }
-
                     if (_isScriptExpanded[i]) {
-                        if (GUILayout.Button($"<b>C#:</b> <i>{_usageExamples[i].MethodScript}</i>", _guis_exampleScript)) {
+                        if (GUILayout.Button($"<b>C#:</b> <i>{_usageExamples[i].MethodScript}</i>", _guis_testScriptHelpBox)) {
                             Debug.Log(GraffitiAssetDatabase.FindPathToFile(nameof(GraffitiSettingsSo_Editor), true)[0]);
                             AssetDatabase.OpenAsset(
                                 AssetDatabase.LoadAssetAtPath<TextAsset>(
@@ -174,17 +219,18 @@ public class GraffitiSettingsSo_Editor : Editor {
                             );
                         }
                     }
+
+                    if (_isDescriptionExpanded[i]) {
+                        GUILayout.Label($"<b>?:</b> {_usageExamples[i].Description}", _guis_testDescriptionHelpBox);
+                        GUILayout.Label($"Benchmark: {_exampleMethodTicks[i].Milliseconds} ms; {_exampleMethodTicks[i].Ticks} ticks", _guis_testDescriptionHelpBox);
+                    }
+
+                    if (_isTxtExpanded[i]) {
+                        GUILayout.Label($"txt:\n{exampleText}", _gui_textArea);
+                    }
                 }
 
-
-                GUILayout.TextArea(
-                    LONG_LOREM_IPSUM_TEXT
-                           .Stylize(..).Green.Blue.Red.Purple
-                           .And(..1).Size(18)
-                           .And(2, 15).Italic.Bold
-                           .And(-.5f).Underline[Style.Purple.Yellow]
-                           .And(24..30).Strikethrough[Style.DefaultColor],
-                    _guis_richText);
+                GUI.Space();
             }
         }
 

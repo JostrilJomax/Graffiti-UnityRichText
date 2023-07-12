@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using JetBrains.Annotations;
 
@@ -81,7 +82,7 @@ internal static class StyledStringRenderer {
 
     private static Scope[] GetWords(string str, char[] separators)
     {
-        var words = new List<Scope>();
+        var words = new List<Scope>(str.Length / 4);
 
         int i = 0, separatorStartIndex = 0;
         for (; i < str.Length; i++) {
@@ -117,6 +118,7 @@ internal static class StyledStringRenderer {
 
         bool EqualToAnySeparator(char ch)
         {
+            return separators.Contains(ch);
             foreach (char separ in separators)
                 if (ch == separ) {
                     return true;

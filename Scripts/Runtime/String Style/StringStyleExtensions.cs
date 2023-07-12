@@ -6,17 +6,17 @@ internal static class StringStyleExtensions {
     /// <inheritdoc cref="StringStyleExtensions.MergeStyleCores"/>
     internal static void MergeStyles(this StringStyle self, StringStyle other)
     {
-        self.MergeStyleCores(other);
+        MergeStyleCores(self, other);
         if (other.HasModifierCharacterSet) {
             self.ModifierCharacterSet.MergeWith(other.ModifierCharacterSet);
         }
     }
 
     /// <remarks>
-    ///     Style [<see cref="self"/>] is the highest priority. This means that if it has some modifier, that modifier
-    ///     won't be replaced by the same modifier of [<see cref="other"/>] style.
+    ///     Style [<see cref="first"/>] is the highest priority. This means that if it has some modifier, that modifier
+    ///     won't be replaced by the same modifier of [<see cref="second"/>] style.
     /// </remarks>
-    internal static void MergeStyleCores(this StringStyleCore self, StringStyleCore other)
+    internal static void MergeStyleCores(StringStyleCore first, StringStyleCore second)
     {
         // Note (1):
         // Check for '!self.HasColor' in gradient preparation is required to prevent scenarios
@@ -28,21 +28,21 @@ internal static class StringStyleExtensions {
         // In the example word 'Printed' is expected to be White
         // (styles are processed from the end, so the last style is dominant)
 
-        if (!self.HasColor && !self.HasGradient && other.HasGradient) // (1)
+        if (!first.HasColor && !first.HasGradient && second.HasGradient) // (1)
         {
-            self.PrepareGradient(other.Gradient);
+            first.PrepareGradient(second.Gradient);
         }
 
-        if (!self.HasColor && other.HasOnlyOneColor) {
-            self.PrepareColor(other.Color.GetColorHexValue());
+        if (!first.HasColor && second.HasOnlyOneColor) {
+            first.PrepareColor(second.Color.GetColorHexValue());
         }
 
-        if (!self.HasSize && other.HasSize) {
-            self.PrepareSize(other.SizeValue);
+        if (!first.HasSize && second.HasSize) {
+            first.PrepareSize(second.SizeValue);
         }
 
-        if (!self.HasFont && other.HasFont) {
-            self.PrepareFontStyle(other.FontStyle);
+        if (!first.HasFont && second.HasFont) {
+            first.PrepareFontStyle(second.FontStyle);
         }
     }
 

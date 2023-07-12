@@ -45,7 +45,7 @@ public static class CodeGenerationInitializer {
         string fileDestinationPath = pointerClassPath.Replace($"Generators/{pointerClass}.cs", $"Generated/{resultFileName}");
 
         if (File.Exists(fileDestinationPath)) {
-            Debug.LogWarning("Can't generate file, it already exists.");
+            //Debug.LogWarning("Can't generate file, it already exists.");
             return null;
         }
 

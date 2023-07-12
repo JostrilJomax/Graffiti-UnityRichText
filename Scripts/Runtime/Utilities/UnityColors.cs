@@ -106,75 +106,29 @@ internal static class UnityColors {
     {
         colorName = colorName.ToLower();
         switch (colorName) {
-            case "white":
-                namedHexColor = White;
-                return true;
-            case "silver":
-                namedHexColor = Silver;
-                return true;
-            case "grey":
-                namedHexColor = Grey;
-                return true;
-            case "black":
-                namedHexColor = Black;
-                return true;
-            case "brown":
-                namedHexColor = Brown;
-                return true;
-            case "maroon":
-                namedHexColor = Maroon;
-                return true;
-            case "red":
-                namedHexColor = Red;
-                return true;
-            case "orange":
-                namedHexColor = Orange;
-                return true;
-            case "yellow":
-                namedHexColor = Yellow;
-                return true;
-            case "olive":
-                namedHexColor = Olive;
-                return true;
-            case "lime":
-                namedHexColor = Lime;
-                return true;
-            case "green":
-                namedHexColor = Green;
-                return true;
-            case "lightblue":
-                namedHexColor = Lightblue;
-                return true;
-            case "cyan":
-                namedHexColor = Cyan;
-                return true;
-            case "aqua":
-                namedHexColor = Aqua;
-                return true;
-            case "teal":
-                namedHexColor = Teal;
-                return true;
-            case "blue":
-                namedHexColor = Blue;
-                return true;
-            case "darkblue":
-                namedHexColor = Darkblue;
-                return true;
-            case "navy":
-                namedHexColor = Navy;
-                return true;
-            case "magenta":
-                namedHexColor = Magenta;
-                return true;
-            case "fuchsia":
-                namedHexColor = Fuchsia;
-                return true;
-            case "purple":
-                namedHexColor = Purple;
-                return true;
-            default:
-                namedHexColor = White;
-                return false;
+            case "white": namedHexColor = White; return true;
+            case "silver": namedHexColor = Silver; return true;
+            case "grey": namedHexColor = Grey; return true;
+            case "black": namedHexColor = Black; return true;
+            case "brown": namedHexColor = Brown; return true;
+            case "maroon": namedHexColor = Maroon; return true;
+            case "red": namedHexColor = Red; return true;
+            case "orange": namedHexColor = Orange; return true;
+            case "yellow": namedHexColor = Yellow; return true;
+            case "olive": namedHexColor = Olive; return true;
+            case "lime": namedHexColor = Lime; return true;
+            case "green": namedHexColor = Green; return true;
+            case "lightblue": namedHexColor = Lightblue; return true;
+            case "cyan": namedHexColor = Cyan; return true;
+            case "aqua": namedHexColor = Aqua; return true;
+            case "teal": namedHexColor = Teal; return true;
+            case "blue": namedHexColor = Blue; return true;
+            case "darkblue": namedHexColor = Darkblue; return true;
+            case "navy": namedHexColor = Navy; return true;
+            case "magenta": namedHexColor = Magenta; return true;
+            case "fuchsia": namedHexColor = Fuchsia; return true;
+            case "purple": namedHexColor = Purple; return true;
+            default: namedHexColor = White; return false;
         }
     }
 
@@ -206,11 +160,11 @@ internal static class UnityColors {
 
         private GffColor[] _backgrounds;
 
-        public GffColor GetBgIndentLevel(int indentLevel)
-        {
-            indentLevel = Mathf.Max(indentLevel, 0);
-            return indentLevel >= _backgrounds.Length ? _backgrounds[^1] : _backgrounds[indentLevel];
-        }
+        // public GffColor GetBgIndentLevel(int indentLevel)
+        // {
+        //     indentLevel = Mathf.Max(indentLevel, 0);
+        //     return indentLevel >= _backgrounds.Length ? _backgrounds[^1] : _dbackgrounds[indentLevel];
+        // }
 
     }
 
@@ -238,14 +192,10 @@ internal static class UnityColors {
         }
 
         internal enum Format {
-
             Name,
             HexColor,
             ShortHexColor,
-
         }
-
     }
-
 }
 }

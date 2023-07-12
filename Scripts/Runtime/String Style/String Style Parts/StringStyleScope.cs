@@ -30,17 +30,14 @@ internal struct StringStyleScope {
             _from = Mathf.Clamp(_from, 0, lastIndex);
             _to = Mathf.Clamp(_to, 0, lastIndex);
 
-            if (_isFromEnd1) {
+            if (_isFromEnd1)
                 _from = lastIndex - _from;
-            }
 
-            if (_isFromEnd2) {
+            if (_isFromEnd2)
                 _to = lastIndex - _to;
-            }
 
-            if (_from > _to) {
+            if (_from > _to)
                 return (_to, _from);
-            }
 
             return (_from, _to);
         }
@@ -57,20 +54,16 @@ internal struct StringStyleScope {
 
         if (_usePercentage) {
             bool isFromEnd = _percentage < 0;
-            if (isFromEnd) {
+            if (isFromEnd)
                 _percentage *= -1;
-            }
 
             _percentage = Mathf.Clamp01(_percentage);
 
-            if (_percentage > .997f) // note: to prevent float from being compared to 1
-            {
+            if (_percentage > .995f) // note: to prevent float from being compared to 1
                 return (0, lastIndex);
-            }
 
-            if (isFromEnd) {
+            if (isFromEnd)
                 return (lastIndex - (int) (lastIndex * _percentage), lastIndex);
-            }
 
             return (0, (int) (lastIndex * _percentage));
         }

@@ -1,5 +1,8 @@
+using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using static Graffiti.Internal.GraffitiStylist;
+using Debug = UnityEngine.Debug;
 
 namespace Graffiti.Tests {
 public static class SimpleTests {
@@ -9,13 +12,20 @@ public static class SimpleTests {
     private static          string Color1 => ColorPalette.DefaultInstance.Green.ShortHex;
     private static          string Color2 => ColorPalette.DefaultInstance.White.ShortHex;
 
+    private static Stopwatch _stopwatch = new Stopwatch();
+
     public static void RunAllTests() => TestBaseFunctionality();
 
+    public static Stack<int> a = new Stack<int>();
 
 
     //[MenuItem("Tools/Sugar/TestBaseFunctionality1 &#%Y")]
     public static void AnotherMethod()
     {
+        var b = new Queue<int>();
+
+
+
         bool flag = Random.Range(0, 1) == 1;
 
         Debug.Log($"{nameof(flag)} is set to {flag}".Stylize(0).Bold.And(^0).Bold);
