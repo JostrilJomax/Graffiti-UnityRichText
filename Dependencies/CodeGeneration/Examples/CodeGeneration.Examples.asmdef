@@ -1,11 +1,12 @@
 {
-    "name": "Graffiti",
-    "rootNamespace": "Graffiti",
+    "name": "CodeGeneration.Examples",
+    "rootNamespace": "",
     "references": [
-        "IndexRange",
         "CodeGeneration"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

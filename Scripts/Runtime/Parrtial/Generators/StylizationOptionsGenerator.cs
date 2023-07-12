@@ -1,4 +1,5 @@
 ﻿using System;
+using CodeGeneration;
 using Graffiti.CodeGeneration;
 
 namespace Graffiti {

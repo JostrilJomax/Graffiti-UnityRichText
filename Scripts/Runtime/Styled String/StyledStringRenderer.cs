@@ -119,12 +119,6 @@ internal static class StyledStringRenderer {
         bool EqualToAnySeparator(char ch)
         {
             return separators.Contains(ch);
-            foreach (char separ in separators)
-                if (ch == separ) {
-                    return true;
-                }
-
-            return false;
         }
     }
 

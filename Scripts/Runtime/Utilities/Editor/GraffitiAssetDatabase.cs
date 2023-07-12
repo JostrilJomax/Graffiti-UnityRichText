@@ -134,15 +134,16 @@ internal static class GraffitiAssetDatabase {
         string[] foundedFiles = Directory.GetFiles(Application.dataPath, fileName, SearchOption.AllDirectories);
 
         if (foundedFiles.Length == 0) {
-            GraffitiDebug.LogError($"No script with name {fileName}.");
+            Debug.LogError($"No script with name {fileName}.");
             return Array.Empty<string>();
         }
 
         if (foundedFiles.Length > 1) {
-            GraffitiDebug.LogWarning($"Found several files with name {fileName}.");
+            Debug.LogWarning($"Found several files with name {fileName}.");
         }
 
-        for (int i = 0; i < foundedFiles.Length; i++) foundedFiles[i] = foundedFiles[i].Replace("\\", "/");
+        for (int i = 0; i < foundedFiles.Length; i++)
+            foundedFiles[i] = foundedFiles[i].Replace("\\", "/");
 
         return foundedFiles;
     }
