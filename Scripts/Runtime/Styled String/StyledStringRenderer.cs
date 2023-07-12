@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using JetBrains.Annotations;
+using UnityEngine;
 
 namespace Graffiti.Internal {
 internal static class StyledStringRenderer {
@@ -57,7 +58,10 @@ internal static class StyledStringRenderer {
                     continue;
                 }
 
-                if (styles[j].HasGradient && !tempStyle.HasGradient) {
+                // Prioritize last style. So it does not matter if other styles have gradient here
+                if ((styles[j].HasGradient || styles[j].HasGradientOnAnyModifierCharacter)
+                    && (!tempStyle.HasGradient && !tempStyle.HasGradientOnAnyModifierCharacter)) {
+                    // Indexes of the first letter of the first word and the last letter of the last word
                     gradientGlobalScope = new Scope(
                         elementBorders[cachedStyleScopes[j].Start].Start,
                         elementBorders[cachedStyleScopes[j].End].End);
@@ -145,9 +149,9 @@ internal static class StyledStringRenderer {
     {
         int prevLength = sb.Length;
 
-        if (style.HasModifierCharacterSet) {
+        if (style.ModifierCharSet != null) {
             GraffitiStylist.ModifierCharacter.InsertChar(
-                sb, style.Gradient, style.ModifierCharacterSet.Unpack(),
+                sb, style.Gradient, style.ModifierCharSet.Unpack(),
                 start, end, gradientSimulationStart, gradientSimulationEnd, null);
         }
         else if (style.HasGradient) {

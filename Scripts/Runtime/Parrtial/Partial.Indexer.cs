@@ -28,7 +28,7 @@ public partial class StyledString {
     /// </remarks>
     public StyledString this[StringStyleCore style] {
         get {
-            if (LastStyle.ModifierCharacterExists) {
+            if (LastStyle.HasAnyModifierCharacter) {
                 LastStyle.SetStyleTodModifierCharacter(style);
             }
             else {
@@ -50,7 +50,7 @@ public partial class StringStyle {
     /// <remarks> • Example of indexer usage (Yellow Underline style): <br/>var myStyle = Style.Underline[Style.Yellow]; </remarks>
     public StringStyle this[StringStyleCore style] {
         get {
-            if (ModifierCharacterExists) {
+            if (HasAnyModifierCharacter) {
                 SetStyleTodModifierCharacter(style);
             }
             else {

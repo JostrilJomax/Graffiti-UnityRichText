@@ -57,19 +57,19 @@ public class Tests {
     //[MenuItem("Tools/Sugar/RunTest_3 &#%8")]
     public static void RunTest_3()
     {
-        Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize(..3).Red.Yellow.Bold.And(2..).Blue.Orange.Bold);
+        Debug.Log("Incredibly interesting, simply delightful and even more".Stylize(..3).Red.Yellow.Bold.And(2..).Blue.Orange.Bold);
         Debug.Log(
-            "Helicopter helicopter, TWO Tree Four Five Six".Stylize(..3).Underline.Red.Yellow.Bold.And(2..).Strikethrough.Blue.Orange.Bold);
+            "Incredibly interesting, simply delightful and even more".Stylize(..3).Underline.Red.Yellow.Bold.And(2..).Strikethrough.Blue.Orange.Bold);
         Debug.Log(
-            "Helicopter helicopter, TWO Tree Four Five Six"
+            "Incredibly interesting, simply delightful and even more"
                    .Stylize(..3).Underline[Style.Blue].Red.Yellow.Bold.And(2..).Strikethrough[Style.Red.White].Blue
                    .Orange.Bold);
         Debug.Log(
-            "Helicopter helicopter, TWO Tree Four Five Six"
+            "Incredibly interesting, simply delightful and even more"
                    .Stylize(..3).Strikethrough[Style.Blue].Red.Yellow.Bold.And(2..).Strikethrough[Style.Red.White]
                    .Blue.Orange.Bold);
         Debug.Log(
-            "Helicopter helicopter, TWO Tree Four Five Six".Stylize(..3).DoubleUnderline.Blue.Orange.Bold.And(2..)
+            "Incredibly interesting, simply delightful and even more".Stylize(..3).DoubleUnderline.Blue.Orange.Bold.And(2..)
                                                            .Dotted[Style.DefaultColor]);
         Debug.Log("Helicopter helicopter, TWO ".Stylize().Underline[Style.Blue].Red.Yellow.Bold);
         Debug.Log("[" + " Babardar".Stylize().Blue.Yellow);
@@ -80,7 +80,7 @@ public class Tests {
           + " Tree Four Five Six".Stylize().Strikethrough[Style.Red.White].Blue.Orange.Bold);
 
 
-        string result = "Helicopter helicopter, TWO Tree Four Five Six".Stylize(1..3).Underline[Style.Blue].Red.Yellow.Bold;
+        string result = "Incredibly interesting, simply delightful and even more".Stylize(1..3).Underline[Style.Blue].Red.Yellow.Bold;
         Debug.Log(result);
         //Run_Main005();
     }
@@ -88,54 +88,54 @@ public class Tests {
     public static void Run_Main005()
     {
         Debug.Log("---- 8 ----");
-        Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize(1..3).Red);
-        Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize(1..3).Red.Underline);
-        Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize(1..3).Underline.Red.Bold);
-        Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize(1..3).Underline.Red.Yellow.Bold);
+        Debug.Log("Incredibly interesting, simply delightful and even more".Stylize(1..3).Red);
+        Debug.Log("Incredibly interesting, simply delightful and even more".Stylize(1..3).Red.Underline);
+        Debug.Log("Incredibly interesting, simply delightful and even more".Stylize(1..3).Underline.Red.Bold);
+        Debug.Log("Incredibly interesting, simply delightful and even more".Stylize(1..3).Underline.Red.Yellow.Bold);
         Debug.Log(
-            "Helicopter helicopter, TWO Tree Four Five Six".Stylize(1..3).Underline.Red.Yellow.Bold.And(2..5).Strikethrough.Blue.Orange
+            "Incredibly interesting, simply delightful and even more".Stylize(1..3).Underline.Red.Yellow.Bold.And(2..5).Strikethrough.Blue.Orange
                                                            .Bold);
-        Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize(1..3).Underline[Style.Blue.Size(20)].Red.Yellow.Bold);
-        Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize().Yellow.Underline[Style.Blue]);
+        Debug.Log("Incredibly interesting, simply delightful and even more".Stylize(1..3).Underline[Style.Blue.Size(20)].Red.Yellow.Bold);
+        Debug.Log("Incredibly interesting, simply delightful and even more".Stylize().Yellow.Underline[Style.Blue]);
         Debug.Log(
-            "Helicopter helicopter, TWO Tree Four Five Six".Stylize().Red.Blue.Yellow.Violet.Bold.And(2..5).Underline[Style.Blue].And(..1)
+            "Incredibly interesting, simply delightful and even more".Stylize().Red.Blue.Yellow.Violet.Bold.And(2..5).Underline[Style.Blue].And(..1)
                                                            .Black);
         Debug.Log(
-            "Helicopter helicopter, TWO Tree Four Five Six".Stylize().Red.Blue.Yellow.Violet.Bold.And(2..5).Red.Underline[Style.Blue]
+            "Incredibly interesting, simply delightful and even more".Stylize().Red.Blue.Yellow.Violet.Bold.And(2..5).Red.Underline[Style.Blue]
                                                            .And(..1).Black);
-        Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize().Red.Violet.Bold.And(1..5).Underline[Style.Blue.Yellow]);
+        Debug.Log("Incredibly interesting, simply delightful and even more".Stylize().Red.Violet.Bold.And(1..5).Underline[Style.Blue.Yellow]);
     }
 
     public static void Run_Main004()
     {
         Debug.Log("Test is Running...");
 
-        Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize());
-        Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize().Dark);
-        Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize().Light);
+        Debug.Log("Incredibly interesting, simply delightful and even more".Stylize());
+        Debug.Log("Incredibly interesting, simply delightful and even more".Stylize().Dark);
+        Debug.Log("Incredibly interesting, simply delightful and even more".Stylize().Light);
 
-        Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize().Red.Underline.Green);
-        Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize().Red.Yellow.Underline.Green);
-        Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize().Red.Yellow.Underline.Purple.Green);
-        Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize().Red.Yellow.Underline.Purple.Green);
+        Debug.Log("Incredibly interesting, simply delightful and even more".Stylize().Red.Underline.Green);
+        Debug.Log("Incredibly interesting, simply delightful and even more".Stylize().Red.Yellow.Underline.Green);
+        Debug.Log("Incredibly interesting, simply delightful and even more".Stylize().Red.Yellow.Underline.Purple.Green);
+        Debug.Log("Incredibly interesting, simply delightful and even more".Stylize().Red.Yellow.Underline.Purple.Green);
         Debug.Log(
             "Going really craaaazyyyy now normal again".Stylize(.5f).Red.Blue.Yellow.Underline.Purple.Green.Bold.Strikethrough.Blue.Orange
                                                        .SmokingHot.Red);
-        Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize(1..4).Red.Blue.Yellow.Underline.Purple.Green.Bold);
-        Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize(9090).Red.Blue.Yellow.Underline.Purple.Green.Bold);
-        Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize(..).Red.Blue.Underline.Purple.Green.Wheel);
-        Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize(..).Red.Blue.Wheel);
+        Debug.Log("Incredibly interesting, simply delightful and even more".Stylize(1..4).Red.Blue.Yellow.Underline.Purple.Green.Bold);
+        Debug.Log("Incredibly interesting, simply delightful and even more".Stylize(9090).Red.Blue.Yellow.Underline.Purple.Green.Bold);
+        Debug.Log("Incredibly interesting, simply delightful and even more".Stylize(..).Red.Blue.Underline.Purple.Green.Wheel);
+        Debug.Log("Incredibly interesting, simply delightful and even more".Stylize(..).Red.Blue.Wheel);
 
         Debug.Log("Hardcore...");
 
-        Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize(..3).Red.And(2..).Violet);
+        Debug.Log("Incredibly interesting, simply delightful and even more".Stylize(..3).Red.And(2..).Violet);
         Debug.Log(
-            "Helicopter helicopter, TWO Tree Four Five Six".Stylize(..2).Blue.Red.Blue.Wheel.Purple.Orange.And(2..).Violet.Orange
+            "Incredibly interesting, simply delightful and even more".Stylize(..2).Blue.Red.Blue.Wheel.Purple.Orange.And(2..).Violet.Orange
                                                            .Strikethrough.Black.Blue);
 
-        Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize(..2).Blue.Red.Blue);
+        Debug.Log("Incredibly interesting, simply delightful and even more".Stylize(..2).Blue.Red.Blue);
         Debug.Log(
-            "Helicopter helicopter, TWO Tree Four Five Six".Stylize(..1).Blue.Red.Yellow.And(4..).Purple.Green.And().Underline.Violet);
+            "Incredibly interesting, simply delightful and even more".Stylize(..1).Blue.Red.Yellow.And(4..).Purple.Green.And().Underline.Violet);
 
 
         //Debug.Log("AAAA".Stylize().Blue.Stylize());
@@ -184,21 +184,21 @@ public class Tests {
 
     public static void Run_Main001()
     {
-        Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize().Green.Dark.Green.Light.Green);
+        Debug.Log("Incredibly interesting, simply delightful and even more".Stylize().Green.Dark.Green.Light.Green);
 
-        Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize(-.7f).Size(24).Bold);
-        //Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".To(.3f).Yellow.Red.And(-.7f).Red.Yellow);
-        Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize(-.7f).Yellow.Red.Blue);
-        Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize(.999f).Blue.Orange);
-        Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize(-.999f).Blue.Orange);
-        // Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".To(.00001f).Blue.Orange);
-        // Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".To(-.00001f).Blue.Orange);
-        Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize(..3).Red);
-        Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize(3..).Red.Blue);
-        Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize(..^3).Red);
-        Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize(^5..).Red);
-        Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize(..).Red);
-        Debug.Log("Helicopter helicopter, TWO Tree Four Five Six".Stylize(^5).Red);
+        Debug.Log("Incredibly interesting, simply delightful and even more".Stylize(-.7f).Size(24).Bold);
+        //Debug.Log("Incredibly interesting, simply delightful and even more".To(.3f).Yellow.Red.And(-.7f).Red.Yellow);
+        Debug.Log("Incredibly interesting, simply delightful and even more".Stylize(-.7f).Yellow.Red.Blue);
+        Debug.Log("Incredibly interesting, simply delightful and even more".Stylize(.999f).Blue.Orange);
+        Debug.Log("Incredibly interesting, simply delightful and even more".Stylize(-.999f).Blue.Orange);
+        // Debug.Log("Incredibly interesting, simply delightful and even more".To(.00001f).Blue.Orange);
+        // Debug.Log("Incredibly interesting, simply delightful and even more".To(-.00001f).Blue.Orange);
+        Debug.Log("Incredibly interesting, simply delightful and even more".Stylize(..3).Red);
+        Debug.Log("Incredibly interesting, simply delightful and even more".Stylize(3..).Red.Blue);
+        Debug.Log("Incredibly interesting, simply delightful and even more".Stylize(..^3).Red);
+        Debug.Log("Incredibly interesting, simply delightful and even more".Stylize(^5..).Red);
+        Debug.Log("Incredibly interesting, simply delightful and even more".Stylize(..).Red);
+        Debug.Log("Incredibly interesting, simply delightful and even more".Stylize(^5).Red);
     }
 
     public static void Run_TestUnicode()

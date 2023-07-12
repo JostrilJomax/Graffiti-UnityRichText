@@ -84,7 +84,7 @@ public static class SimpleTests {
 
     private static void Log(object self, string description = null)
     {
-        Debug.Log(AddLogNumber() + AddSpaces() + $"|{self}|" + "\n" + AddDescription() + "\n");
+        Debug.Log($"{self}" + "\n" + AddLogNumber() + " " + AddDescription() + "\n");
 
         string AddLogNumber() => AddTag.Color($"<b>[{_assertsCount++}]:</b>", Color1);
 

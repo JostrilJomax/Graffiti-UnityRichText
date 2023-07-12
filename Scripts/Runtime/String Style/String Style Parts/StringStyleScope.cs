@@ -18,6 +18,18 @@ internal struct StringStyleScope {
     internal bool IsEmpty => !_useIndex && !_useRange && !_usePercentage;
 
 
+    internal void CopyTo(StringStyleScope other)
+    {
+        other._useIndex = _useIndex;
+        other._useRange = _useRange;
+        other._usePercentage = _usePercentage;
+        other._from = _from;
+        other._to = _to;
+        other._isFromEnd1 = _isFromEnd1;
+        other._isFromEnd2 = _isFromEnd2;
+        other._percentage = _percentage;
+    }
+
     internal (int fromN, int toN) CreateScope(int length)
     {
         if (IsEmpty) {

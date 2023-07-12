@@ -7,8 +7,9 @@ internal static class StringStyleExtensions {
     internal static void MergeStyles(this StringStyle self, StringStyle other)
     {
         MergeStyleCores(self, other);
-        if (other.HasModifierCharacterSet) {
-            self.ModifierCharacterSet.MergeWith(other.ModifierCharacterSet);
+        if (other.HasAnyModifierCharacter) {
+            self.ModifierCharSet ??= new ModifierCharacterSet();
+            self.ModifierCharSet.MergeWith(other.ModifierCharSet);
         }
     }
 
@@ -73,7 +74,7 @@ internal static class StringStyleExtensions {
 
     internal static void MergeWith(this ModifierCharacterSet self, ModifierCharacterSet other)
     {
-        if (!GraffitiProperties.Config.AllowMultipleModifierCharacters && self.HasAnyModifierCharacter) {
+        if (!GraffitiProperties.Config.AllowMultipleModifierCharacters && self.HasAnyModifierCharacter && other.HasAnyModifierCharacter) {
             return;
         }
 

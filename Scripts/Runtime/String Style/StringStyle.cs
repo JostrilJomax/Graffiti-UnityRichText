@@ -16,10 +16,8 @@ namespace Graffiti {
 [Serializable]
 public partial class StringStyle : StringStyleCore {
 
-    [SerializeField] [CanBeNull] private ModifierCharacterSet _modifierCharSet;
-
     public override bool IsEmpty
-        => IsScopeEmpty || IsEmpty_WithoutScope && (_modifierCharSet == null || !_modifierCharSet.HasAnyModifierCharacter);
+        => IsScopeEmpty || IsEmpty_WithoutScope && (ModifierCharSet == null || !ModifierCharSet.HasAnyModifierCharacter);
 
     /// <summary>
     ///     Modifier character is a special character that modifies the character that precedes it. For example, there
@@ -29,15 +27,26 @@ public partial class StringStyle : StringStyleCore {
     ///     Modifier characters can be combined, so you can have underline <b> and </b> strikethrough modification for
     ///     the same character.
     /// </remarks>
-    internal bool ModifierCharacterExists { get; private set; }
+    internal bool HasAnyModifierCharacter => ModifierCharSet != null && ModifierCharSet.HasAnyModifierCharacter;
 
-    internal bool                 HasModifierCharacterSet => _modifierCharSet != null;
-    internal ModifierCharacterSet ModifierCharacterSet    => _modifierCharSet ??= new ModifierCharacterSet();
+    internal bool HasGradientOnAnyModifierCharacter => HasAnyModifierCharacter && ModifierCharSet!.HasGradientOnAny();
+
+    internal bool CanApplyStyleToModifierCharacter
+        => ModifierCharSet != null && GraffitiProperties.Config.AllowModifierCharacterStyle;
+
+    [SerializeField] [CanBeNull] internal ModifierCharacterSet ModifierCharSet;
+
+
 
     internal static StringStyle Create() => new StringStyle();
 
     internal new StringStyle PrepareSize(int size)
     {
+        if (CanApplyStyleToModifierCharacter) {
+            ModifierCharSet!.GetStyleOfLastModifier()?.PrepareSize(size);
+            return this;
+        }
+
         if (!GraffitiProperties.Config.ApplySize) return this;
         base.PrepareSize(size);
         return this;
@@ -45,6 +54,11 @@ public partial class StringStyle : StringStyleCore {
 
     internal new StringStyle PrepareFontStyle(UnityBuildInFontStyleType fontStyle)
     {
+        if (CanApplyStyleToModifierCharacter) {
+            ModifierCharSet!.GetStyleOfLastModifier()?.PrepareFontStyle(fontStyle);
+            return this;
+        }
+
         if (!GraffitiProperties.Config.ApplyFontStyle) return this;
         base.PrepareFontStyle(fontStyle);
         return this;
@@ -55,8 +69,16 @@ public partial class StringStyle : StringStyleCore {
 
     internal new StringStyle __PrepareColor(ColorType? gffColor, string strColor)
     {
+        if (CanApplyStyleToModifierCharacter) {
+            ModifierCharSet!.GetStyleOfLastModifier()?.__PrepareColor(gffColor, strColor);
+            return this;
+        }
+
         if (!GraffitiProperties.Config.ApplyColor) return this;
-        base.__PrepareColor(gffColor, strColor);
+        if (HasNeverAppliedColor)
+            base.__PrepareColor(gffColor, strColor);
+        else
+            PrepareColorAdditionally(gffColor, strColor);
         return this;
     }
 
@@ -82,14 +104,19 @@ public partial class StringStyle : StringStyleCore {
 
     internal StringStyle PrepareModifierCharacter(ModifierCharacterType type)
     {
-        ModifierCharacterExists = type != ModifierCharacterType.None;
-        if (!ModifierCharacterExists) return this;
         if (!GraffitiProperties.Config.AllowModifierCharacters) return this;
-        ModifierCharacterSet.SetModifierCharacter(type);
+        if (type == ModifierCharacterType.None) return this;
+        ModifierCharSet ??= new ModifierCharacterSet();
+        ModifierCharSet.SetModifierCharacter(type);
+        if (CanApplyStyleToModifierCharacter)
+            ModifierCharSet.GetStyleOfLastModifier()?.PrepareScope(Scope);
         return this;
     }
 
-    internal void SetStyleTodModifierCharacter(StringStyleCore style) => ModifierCharacterSet.SetStyleToLastAddedModifierCharacter(style);
-
+    internal void SetStyleTodModifierCharacter(StringStyleCore style)
+    {
+        ModifierCharSet ??= new ModifierCharacterSet();
+        ModifierCharSet.SetStyleToLastAddedModifierCharacter(style);
+    }
 }
 }

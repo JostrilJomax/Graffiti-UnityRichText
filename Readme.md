@@ -1,18 +1,71 @@
-﻿# Graffiti (Rich Text Fluent API)
+﻿# Graffiti - Rich Text for Unity using Html Tags
 
-### Code Comments:
+#### It's a small project, made mostly for fun
 
-```c#
-//Why?: Description why the following code exists
+This projects allows you to modify string using html tags and<br/>
+modifier characters like Underline, Strikethrough.<br/>
 
-//Notice!: Important information that should be noticed
-```
+It also supports gradients and multiple styles on the same string.<br/>
+There is an option to specify the range of modification for each style.<br/>
 
-## TODO
+So, for example, one style can colorize first half of a string and the second<br/>
+one can add underline to the rest of a string.<br/>
 
-// todo: write wat problem we are solving. Pictures, examples. 
-// todo: draw picture of objects and classes
+All html colors are of short hex format (#RGB)
 
-## License:
+### Basics
 
-See LICENSE file
+<details>
+  <summary>Examples, Code and Description</summary>
+
+![](Documentation~/Basic_1.png)
+![](Documentation~/Basic_1_1.png)
+
+</details>
+
+### Range specification
+
+<details>
+  <summary>Examples, Code and Description</summary>
+
+![](Documentation~/Basic_2.png)
+![](Documentation~/Basic_2_1.png)
+
+</details>
+
+### Available settings
+
+<details>
+  <summary>Settings</summary>
+
+![](Documentation~/Graffiti_4.png)
+
+</details>
+
+### Other Examples
+
+<details>
+  <summary>Other</summary>
+
+![](Documentation~/Graffiti_2.png)
+![](Documentation~/Graffiti_3.png)
+
+</details>
+
+### How to download
+
+Create new Unity project and clone this repository to <b>Assets/Plugins/</b> folder<br/>
+To see what it can do go to <b>Assets/Plugins/Graffiti/Resources</b> folder<br/>
+And select ScriptableObject <b>"Graffiti Settings"</b>. It contains all examples tests.<br/>
+There are several test scripts in <b>Graffiti/Scripts/Tests</b> that
+
+Be warned! This project was not tested and it contains huge amount of bugs, but it works.
+
+### Summary
+
+There is not much use to it in it's current state.<br/>
+It's not optimized, it can't perform complex selection operations,<br/>
+so you need to specify modification range using IndexRange or by index of a word.<br/>
+It also has some bugs when modifier characters with gradient overlap.<br/>
+
+I wanted to utilize Unity console html support to it's limits and I think I succeeded.

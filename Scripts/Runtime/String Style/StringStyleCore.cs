@@ -55,14 +55,14 @@ public class StringStyleCore {
     internal virtual void PrepareColor(ColorType gffColor) => __PrepareColor(gffColor, null);
     internal virtual void PrepareColor(string strColor)    => __PrepareColor(null, strColor);
 
+    protected bool HasNeverAppliedColor => !StartedCollectingColorsForGradient && !HasColor;
+
     internal virtual void __PrepareColor(ColorType? gffColor, string strColor)
     {
-        if (!StartedCollectingColorsForGradient && !HasColor) {
+        if (HasNeverAppliedColor)
             _color.__SetColor(gffColor, strColor, GetColorModificator());
-        }
-        else {
+        else
             PrepareColorAdditionally(gffColor, strColor);
-        }
     }
 
     internal virtual void PrepareColorAdditionally(ColorType? gffColor, string strColor)
@@ -102,6 +102,8 @@ public class StringStyleCore {
         => _scope.ApplyScope(startIndex, isFromEnd1, endIndex, isFromEnd2);
 
     internal virtual void PrepareScope(float percentage) => _scope.ApplyScope(percentage);
+
+    internal virtual void PrepareScope(StringStyleScope scope) => scope.CopyTo(_scope);
 
     private GffColor.Modifier GetColorModificator()
     {

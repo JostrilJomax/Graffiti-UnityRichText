@@ -247,7 +247,8 @@ public static class GraffitiGUI {
 
     public static List<GUILayoutOption> CreateOptions() => new List<GUILayoutOption>();
 
-    public static List<GUILayoutOption> Width(this List<GUILayoutOption> self, float width) => self.Add_Return(GUILayout.Width(width));
+    public static List<GUILayoutOption> Width(this List<GUILayoutOption> self, float width)
+        => self.Add_Return(GUILayout.Width(width));
 
     public static List<GUILayoutOption> MinWidth(this List<GUILayoutOption> self, float minWidth)
         => self.Add_Return(GUILayout.MinWidth(minWidth));
